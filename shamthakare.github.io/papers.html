@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Publications — Sham Satish Thakare</title>
+    <meta name="description" content="Publications and manuscripts by Sham Satish Thakare — Foundation Model Reasoning, Reinforcement Learning, and Reliable Systems.">
+    <meta name="author" content="Sham Satish Thakare">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="canonical" href="https://shamddd.github.io/shamthakare.github.io/papers.html">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="wrapper header-container">
+            <a class="site-title" href="index.html">Sham Satish Thakare</a>
+            <nav class="site-nav">
+                <a href="index.html">About</a>
+                <a href="papers.html" class="active">Publications</a>
+                <a href="index.html#research">Research</a>
+                <a href="Sham_Satish_Thakare_Academic_CV.pdf" target="_blank">CV</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <div class="wrapper">
+            <h1 class="page-heading">Publications & Manuscripts</h1>
+
+            <p style="margin-bottom: 28px; color: var(--text-muted); font-size: 15px;">
+                Complete list of academic manuscripts, submitted papers, and working papers. All empirical claims are paired with reproducible software repositories.
+            </p>
+
+            <h2 class="section-heading">Submitted / Under Review</h2>
+
+            <div class="paper-entry">
+                <a href="papers/ear-grpo.html" class="paper-title">When Confidence Proxies Confound Reasoning Complexity: Pitfalls of Uncertainty-Weighted Credit Assignment in Language Model Reinforcement Learning</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Submitted to IEEE Transactions on Artificial Intelligence (IEEE TAI), 2026</div>
+                <div class="paper-desc">
+                    In language model reinforcement learning (RLVR/GRPO), weighting policy gradients by outcome confidence proxies has been proposed to focus updates on uncertain reasoning steps. We expose completion-length confounding in token predictive entropy (r = +0.486, 95% CI [+0.318, +0.627]), which collapses to non-significance (r_partial = -0.092, p = 0.365) after controlling for sequence length. We demonstrate that sample-level uncertainty weighting yields zero online advantage (d = 0.00, 80.00% ± 0.00% Pass@1) over standard outcome-supervised GRPO across N=3 matched seeds, misidentifying correct complex derivations as uncertain in 42.1% of cases.
+                </div>
+                <div class="paper-links">
+                    <a href="pdfs/ear-grpo-reasoning.pdf" target="_blank" class="link-btn">PDF Manuscript</a>
+                    <a href="https://github.com/shamddd/ear_grpo_reasoning" target="_blank" rel="noopener" class="link-btn">Code</a>
+                    <a href="papers/ear-grpo.html" class="link-btn">Paper Subpage</a>
+                </div>
+            </div>
+
+            <div class="paper-entry">
+                <a href="papers/recovery-eval.html" class="paper-title">recovery_eval: State-Matched and Provenance-Aware Evaluation of Recovery Behavior in Language-Model Reasoning</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Submitted to 11th IEEE Special Session on Machine Learning on Big Data (IEEE BigData 2026 / MLBD, Submission ID: BigD497), 2026</div>
+                <div class="paper-desc">
+                    Formulates state-contrast continuation evaluation (D_recovery = -0.1100) measuring error recovery under frozen structural covariates across reasoning model rollouts. We demonstrate that aggregate benchmark metrics mask recovery failure modes, and provide an empirical protocol measuring recovery across 9 post-training checkpoints.
+                </div>
+                <div class="paper-links">
+                    <a href="pdfs/recovery-eval.pdf" target="_blank" class="link-btn">PDF Manuscript</a>
+                    <a href="https://github.com/shamddd/recovery_eval" target="_blank" rel="noopener" class="link-btn">Code</a>
+                    <a href="papers/recovery-eval.html" class="link-btn">Paper Subpage</a>
+                </div>
+            </div>
+
+            <div class="paper-entry">
+                <a href="papers/stateshift.html" class="paper-title">StateShift: State-Matched Evaluation of Error Recovery in Neural Reasoning</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Submitted to Elsevier Artificial Intelligence (AIJ, Manuscript ID: ARTINT-D-26-01491), 2026</div>
+                <div class="paper-desc">
+                    Standard evaluations of reinforcement-learning post-training emphasize aggregate benchmark accuracy, masking behavioural shifts conditional on intermediate reasoning state. StateShift introduces a counterfactual difference-in-differences protocol matching Recovery (invalid step) and Control states. We observe an 11.76-percentage-point interaction contrast (Γ_256 = +0.1176, 95% bootstrap CI [+0.0955, +0.1400]) that is statistically detectable by checkpoint step t=32, robust across strict decontamination filtering.
+                </div>
+                <div class="paper-links">
+                    <a href="pdfs/stateshift.pdf" target="_blank" class="link-btn">PDF Manuscript</a>
+                    <a href="https://github.com/shamddd/stateshift" target="_blank" rel="noopener" class="link-btn">Code</a>
+                    <a href="papers/stateshift.html" class="link-btn">Paper Subpage</a>
+                </div>
+            </div>
+
+            <h2 class="section-heading">Working Papers & Preprints</h2>
+
+            <div class="paper-entry">
+                <a href="papers/amortized-intervention-frontiers.html" class="paper-title">Amortized Intervention Frontiers for Language-Model Reasoning: When Does Training Beat Search?</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Working Paper, 2026 (Target under consideration: TMLR)</div>
+                <div class="paper-desc">
+                    Investigates Pareto frontiers between test-time compute search (best-of-N, tree search) and amortized policy gradient training for multi-step algorithmic derivation.
+                </div>
+                <div class="paper-links">
+                    <a href="papers/amortized-intervention-frontiers.html" class="link-btn">Paper Subpage</a>
+                    <a href="https://github.com/shamddd/submission_package" target="_blank" rel="noopener" class="link-btn">Code</a>
+                </div>
+            </div>
+
+            <div class="paper-entry">
+                <a href="papers/rl-plasticity.html" class="paper-title">Predicting Reinforcement-Learning Plasticity of Intermediate Language-Model Checkpoints: A Cross-Architecture Diagnostic Study</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Working Paper, 2026 (Target under consideration: JMLR)</div>
+                <div class="paper-desc">
+                    Post-training policy gradient optimization across language model checkpoints is computationally expensive. We propose CARLS, a pre-hoc diagnostic probing framework analyzing representation rank and gradient spectral norms across intermediate checkpoints. Across Pythia and Qwen lineages, CARLS reliably identifies high-plasticity checkpoints prior to RL execution, saving 18.7% of total RL training FLOPs.
+                </div>
+                <div class="paper-links">
+                    <a href="papers/rl-plasticity.html" class="link-btn">Paper Subpage</a>
+                    <a href="https://github.com/shamddd/adaptive-rl-forge" target="_blank" rel="noopener" class="link-btn">Code</a>
+                </div>
+            </div>
+
+            <div class="paper-entry">
+                <a href="papers/enclaveshield.html" class="paper-title">EnclaveShield: Zero-Knowledge Memory Attestation and Side-Channel Mitigation for Hardware Enclaves</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Working Paper, 2026 (Target under consideration: IEEE TDSC)</div>
+                <div class="paper-desc">
+                    Confidential hardware enclaves remain vulnerable to memory access pattern side channels. EnclaveShield integrates Path-ORAM access pattern obfuscation with succinct zero-knowledge state transition proofs to verify enclave computation integrity without revealing memory access distributions.
+                </div>
+                <div class="paper-links">
+                    <a href="papers/enclaveshield.html" class="link-btn">Paper Subpage</a>
+                    <a href="https://github.com/shamddd/enclaveshield" target="_blank" rel="noopener" class="link-btn">Code</a>
+                </div>
+            </div>
+
+            <div class="paper-entry">
+                <a href="papers/adaptive-replica.html" class="paper-title">AdaptiveReplica: Dynamic Quorum Adaptation and Failure-Aware Replica Selection in Distributed Consensus</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Working Paper, 2026 (Target under consideration: IEEE TPDS)</div>
+                <div class="paper-desc">
+                    Static quorum configurations in Raft consensus clusters suffer severe tail latency degradation during asymmetric network partitions. We propose a C++20 dynamic quorum adaptation algorithm that tracks moving-window peer latency distributions and re-weights voting subsets while maintaining strict linearizability and quorum intersection invariants, reducing p99 write latency by 41.3%.
+                </div>
+                <div class="paper-links">
+                    <a href="papers/adaptive-replica.html" class="link-btn">Paper Subpage</a>
+                    <a href="https://github.com/shamddd/quorumshift" target="_blank" rel="noopener" class="link-btn">Code</a>
+                </div>
+            </div>
+
+            <div class="paper-entry">
+                <a href="papers/tracemind.html" class="paper-title">TraceMind: Graph-Constrained Causal Reasoning for Root-Cause Localization in Microservice Systems</a>
+                <div class="paper-authors"><strong>Sham Satish Thakare</strong></div>
+                <div class="paper-venue">Working Paper, 2026 (Target under consideration: IEEE TCC)</div>
+                <div class="paper-desc">
+                    Microservice failure cascades generate floods of correlated telemetry alerts that mislead naive anomaly detectors. TraceMind projects OpenTelemetry distributed trace spans onto directed acyclic dependency graphs and applies topological causal constraints to filter downstream symptoms, achieving 88.4% Top-1 root-cause localization accuracy in under 350ms.
+                </div>
+                <div class="paper-links">
+                    <a href="papers/tracemind.html" class="link-btn">Paper Subpage</a>
+                    <a href="https://github.com/shamddd/tracemind" target="_blank" rel="noopener" class="link-btn">Code</a>
+                </div>
+            </div>
+
+            <p style="margin-top: 35px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 14.5px;">
+                Looking for raw bib entries? Download the complete <a href="publications.bib" target="_blank"><strong>publications.bib</strong></a> file.
+            </p>
+
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="wrapper footer-content">
+            <div>
+                © 2026 Sham Satish Thakare · Pune, India
+            </div>
+            <div class="footer-links">
+                <a href="mailto:shamthakare3000@gmail.com">Email</a>
+                <a href="https://github.com/shamddd" target="_blank" rel="noopener">GitHub</a>
+                <a href="Sham_Satish_Thakare_Academic_CV.pdf" target="_blank">CV</a>
+                <a href="publications.bib" target="_blank">BibTeX</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
