@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>When Confidence Proxies Confound Reasoning Complexity — Sham Satish Thakare</title>
+  <meta name="description" content="Technical research essay by Sham Satish Thakare exposing completion-length confounding in token predictive entropy within RLVR post-training.">
+
+  <!-- Google Scholar Meta Tags -->
+  <meta name="citation_title" content="When Confidence Proxies Confound Reasoning Complexity: Pitfalls of Uncertainty-Weighted Credit Assignment in Language Model Reinforcement Learning">
+  <meta name="citation_author" content="Thakare, Sham Satish">
+  <meta name="citation_publication_date" content="2026/08">
+  <meta name="citation_journal_title" content="IEEE Transactions on Artificial Intelligence">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="canonical" href="https://shamddd.github.io/shamthakare.github.io/writing/when-confidence-confounds-reasoning-complexity.html">
+
+  <!-- MathJax -->
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" href="/">Sham Satish Thakare</a>
+
+      <nav class="site-nav">
+        <a class="page-link" href="/">About</a>
+        <a class="page-link" href="../papers.html">Publications</a>
+        <a class="page-link active" href="../blog.html">Blog</a>
+        <a class="page-link" href="https://github.com/shamddd" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="page-link" href="https://ssrn.com/author=13130226" target="_blank" rel="noopener noreferrer">SSRN</a>
+        <a class="page-link" href="../Sham_Satish_Thakare_Academic_CV.pdf" target="_blank" rel="noopener noreferrer">CV</a>
+        <a class="page-link" href="mailto:shamthakare3000@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper" style="max-width: 780px;">
+
+      <p style="margin-bottom: 20px;">
+        <a href="../blog.html" style="font-size: 14px; color: #64748b; text-decoration: none;">&larr; Back to Blog</a>
+      </p>
+
+      <h1>When Confidence Proxies Confound Reasoning Complexity</h1>
+      <p style="font-size: 18px; color: #64748b; font-style: italic; margin-top: -6px; margin-bottom: 12px;">
+        Testing estimator validity and negative controls in RLVR post-training
+      </p>
+
+      <div style="font-size: 14px; color: #64748b; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+        <strong>Sham Satish Thakare</strong> &bull; August 2026 &bull; 12 min read &bull; Under review at <em>IEEE TAI</em>
+      </div>
+
+      <div style="background-color: #f8fafc; border-left: 4px solid #0284c7; padding: 16px 20px; border-radius: 4px; margin-bottom: 30px;">
+        <strong style="color: #0f172a;">Abstract:</strong>
+        A diagnostic audit exposing completion-length confounding ($r = +0.486$, $N=100$) in token predictive entropy, proving MC-dropout determinism on zero-dropout LLMs, and demonstrating via preregistered negative controls that consistency weighting produced zero observed online advantage ($d = 0.00$, $N=3$ seeds) over outcome-supervised GRPO.
+      </div>
+
+      <div class="links" style="margin-bottom: 32px;">
+        <a href="https://github.com/shamddd/ear_grpo_reasoning" class="link-btn" target="_blank" rel="noopener noreferrer">GitHub Code Probes</a>
+        <a href="../pdfs/ear-grpo-reasoning.pdf" class="link-btn" target="_blank" rel="noopener noreferrer">Full Manuscript (PDF)</a>
+      </div>
+
+      <h2>1. The Confounding Hypothesis</h2>
+      <p>
+        In reinforcement learning with verifiable rewards (RLVR) for mathematical and logical reasoning, Group Relative Policy Optimization (GRPO) relies on outcome verification to compute advantage estimates. Recent work proposes weighting policy gradients by intermediate confidence proxies—such as token predictive entropy $H(x_t)$, sequence mean negative log-likelihood (NLL), or self-consistency clustering.
+      </p>
+      <p>
+        The unstated premise is that higher entropy marks critical reasoning forks requiring larger updates. However, mathematical reasoning derivations are heterogeneous in length: complex, multi-step sub-proofs naturally generate larger cumulative predictive entropy and wider logit dispersion regardless of error presence.
+      </p>
+      
+      <p style="text-align: center; margin: 24px 0;">
+        $$H(x_t) = -\sum_{v \in V} P(x_t = v \mid x_{<t}) \log P(x_t = v \mid x_{<t})$$
+      </p>
+
+      <h2>2. Zero-Order vs. Partial Correlation Controls</h2>
+      <p>
+        Across 100 untouched mathematical problems from GSM8K evaluated on Qwen2.5-0.5B-Instruct, zero-order token predictive entropy exhibits a significant positive correlation with total completion token length ($r = +0.486$, 95% CI $[+0.318, +0.627]$, $p < 0.001$).
+      </p>
+      <p>
+        When controlling for sequence length via partial correlation analysis, the apparent relationship collapses to non-significance ($r_{\text{partial}} = -0.092$, $p = 0.365$). This demonstrates that entropy-weighted advantage estimators primarily act as sequence-length regularizers rather than step-level difficulty detectors.
+      </p>
+
+      <div style="overflow-x: auto; margin: 24px 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;">
+          <thead>
+            <tr style="border-bottom: 2px solid #cbd5e1; background: #f8fafc;">
+              <th style="padding: 10px;">Confidence Metric</th>
+              <th style="padding: 10px;">Zero-Order r (vs Length)</th>
+              <th style="padding: 10px;">95% Confidence Interval</th>
+              <th style="padding: 10px;">Partial r (Controlled)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 10px; font-weight: 500;">Token Predictive Entropy $H(x)$</td>
+              <td style="padding: 10px;">+0.486</td>
+              <td style="padding: 10px;">[+0.318, +0.627]</td>
+              <td style="padding: 10px;">-0.092 (p = 0.365)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 10px; font-weight: 500;">Sequence Mean NLL</td>
+              <td style="padding: 10px;">+0.432</td>
+              <td style="padding: 10px;">[+0.258, +0.579]</td>
+              <td style="padding: 10px;">-0.074 (p = 0.466)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 10px; font-weight: 500;">Logit Margin Gap</td>
+              <td style="padding: 10px;">+0.495</td>
+              <td style="padding: 10px;">[+0.329, +0.634]</td>
+              <td style="padding: 10px;">-0.061 (p = 0.548)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>3. The MC-Dropout Determinism Failure Mode</h2>
+      <p>
+        Monte Carlo Dropout is frequently cited as an epistemic uncertainty estimator. We audited 50 forward passes per prompt across modern transformer decoder models (Qwen2.5, LLaMA-3). Because modern autoregressive foundation models omit dropout layers during standard inference configurations, token log-probabilities remain completely deterministic: $\text{Var}(\log P(x_t)) = 0.0000$ across all sampled passes. Estimators relying on nominal MC-dropout on inference-mode checkpoints produce degenerate constant variance vectors.
+      </p>
+
+      <h2>4. Five-Way Online Advantage Ablations</h2>
+      <p>
+        To test whether confidence weighting translates to online reinforcement learning gains, we executed a 5-way matched ablation study on GSM8K across $N=3$ random seeds. Outcome-supervised GRPO achieved $80.00\% \pm 0.00\%$ Pass@1. Confidence-Aware GRPO (CA-GRPO) achieved an identical $80.00\% \pm 0.00\%$ Pass@1, yielding Cohen's $d = 0.00$. Furthermore, inverse-length weighting and uniform random noise perturbations matched or degraded convergence stability.
+      </p>
+
+      <h2>5. Recommendations for Reasoning Evaluation</h2>
+      <ol style="margin-left: 24px; margin-bottom: 24px; color: #334155; line-height: 1.7;">
+        <li>Always report partial correlations controlling for completion length before claiming entropy corresponds to reasoning uncertainty.</li>
+        <li>Verify the presence of active stochasticity before reporting Monte Carlo dropout variance.</li>
+        <li>Include length-matched negative control baselines in all RLVR credit assignment publications.</li>
+      </ol>
+
+      <h2>BibTeX Citation</h2>
+      <pre style="background: #f1f5f9; padding: 14px; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 12px; overflow-x: auto; color: #1e293b; border: 1px solid #e2e8f0;">@article{thakare2026confidence,
+  author  = {Thakare, Sham Satish},
+  title   = {When Confidence Proxies Confound Reasoning Complexity: Pitfalls of Uncertainty-Weighted Credit Assignment in Language Model Reinforcement Learning},
+  journal = {IEEE Transactions on Artificial Intelligence},
+  year    = {2026},
+  note    = {Under Review, Manuscript ID: TAI-2026-Aug-A-01878},
+  url     = {https://github.com/shamddd/ear_grpo_reasoning}
+}</pre>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <div>&copy; 2026 Sham Satish Thakare &bull; Pune, India</div>
+      <div class="footer-links">
+        <a href="https://github.com/shamddd" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://ssrn.com/author=13130226" target="_blank" rel="noopener noreferrer">SSRN</a>
+        <a href="../Sham_Satish_Thakare_Academic_CV.pdf" target="_blank" rel="noopener noreferrer">CV (PDF)</a>
+        <a href="../papers.html">Publications</a>
+        <a href="mailto:shamthakare3000@gmail.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

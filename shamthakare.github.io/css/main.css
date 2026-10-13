@@ -1,0 +1,378 @@
+/* Rachit Bansal / Academic Jekyll Minima inspired stylesheet */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, blockquote, pre, hr, dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 350;
+  color: #1a1a1a;
+  background-color: #fafbfc;
+  -webkit-text-size-adjust: 100%;
+}
+
+.wrapper {
+  max-width: 840px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+/* Header */
+.site-header {
+  border-top: 5px solid #334155;
+  border-bottom: 1px solid #e2e8f0;
+  min-height: 60px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.site-header .wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.site-title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: #1e293b;
+  text-decoration: none;
+}
+
+.site-title:hover {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.site-nav .page-link {
+  color: #475569;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.site-nav .page-link:hover {
+  color: #0284c7;
+  text-decoration: underline;
+}
+
+.site-nav .page-link.active {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Page Content */
+.page-content {
+  padding: 40px 0 60px 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #0f172a;
+  margin-top: 28px;
+  margin-bottom: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 { font-size: 26px; }
+h2 { 
+  font-size: 20px; 
+  border-bottom: 1px solid #e2e8f0; 
+  padding-bottom: 6px; 
+  margin-top: 36px;
+}
+h3 { font-size: 17px; }
+
+p {
+  margin-bottom: 18px;
+  text-align: justify;
+  color: #334155;
+}
+
+a {
+  color: #0284c7;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
+
+/* Profile Photo */
+.profile-photo {
+  float: right;
+  margin: 4px 0 20px 24px;
+  width: 175px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 640px) {
+  .profile-photo {
+    float: none;
+    display: block;
+    margin: 0 auto 24px auto;
+    width: 150px;
+    height: 190px;
+  }
+  p {
+    text-align: left;
+  }
+}
+
+/* News / Updates list */
+.news-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.news-list li {
+  padding: 8px 0;
+  border-bottom: 1px dashed #e2e8f0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.news-list li:last-child {
+  border-bottom: none;
+}
+
+.news-date {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+  margin-right: 10px;
+  display: inline-block;
+  min-width: 75px;
+}
+
+/* Publications Grid Cards (Rachit Bansal style) */
+.fullCard {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  margin: 18px 0;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.fullCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.thumbnail-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 120px;
+}
+
+.thumbnail-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-placeholder {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0369a1;
+  background-color: #e0f2fe;
+  padding: 6px 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.cardContent {
+  padding: 2px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.paper_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.paper_title a {
+  color: #0f172a;
+}
+
+.paper_title a:hover {
+  color: #0284c7;
+}
+
+.paper_authors {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.paper_authors strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.venue_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.conf_name {
+  font-size: 13px;
+  font-weight: 600;
+  font-style: italic;
+  color: #b45309; /* amber-700 */
+}
+
+.conf_name.accepted {
+  color: #15803d; /* green-700 */
+}
+
+.conf_name.review {
+  color: #0369a1; /* sky-700 */
+}
+
+.paper_desc {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.link-btn {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #334155;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.link-btn:hover {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .fullCard {
+    grid-template-columns: 1fr;
+  }
+  .thumbnail-box {
+    height: 90px;
+  }
+}
+
+/* BibTeX Collapsible */
+details.bibtex-details {
+  margin-top: 8px;
+}
+
+details.bibtex-details summary {
+  font-size: 12px;
+  color: #64748b;
+  cursor: pointer;
+  outline: none;
+}
+
+details.bibtex-details pre {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  overflow-x: auto;
+  color: #334155;
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid #e2e8f0;
+  padding: 28px 0;
+  background-color: #ffffff;
+  font-size: 13.5px;
+  color: #64748b;
+  margin-top: 50px;
+}
+
+.site-footer .wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 14px;
+}
+
+.footer-links a {
+  color: #64748b;
+}
+
+.footer-links a:hover {
+  color: #0284c7;
+}

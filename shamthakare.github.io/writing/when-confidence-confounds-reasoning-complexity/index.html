@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>When Confidence Proxies Confound Reasoning Complexity — Sham Satish Thakare</title>
+    <meta name="description" content="Testing estimator validity and negative controls in RLVR post-training.">
+    <meta name="author" content="Sham Satish Thakare">
+
+    <!-- OpenGraph & Academic Metadata -->
+    <meta property="og:title" content="When Confidence Proxies Confound Reasoning Complexity">
+    <meta property="og:description" content="Diagnostic audit testing token predictive entropy, MC-dropout, and consistency weighting in RLVR post-training.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://shamddd.github.io/shamthakare.github.io/writing/when-confidence-confounds-reasoning-complexity/">
+    <meta property="og:image" content="https://shamddd.github.io/shamthakare.github.io/assets/social-card.png">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "When Confidence Proxies Confound Reasoning Complexity",
+      "alternativeHeadline": "Testing estimator validity and negative controls in RLVR post-training",
+      "author": {
+        "@type": "Person",
+        "name": "Sham Satish Thakare",
+        "url": "https://shamddd.github.io/shamthakare.github.io/"
+      },
+      "datePublished": "2026-08-20",
+      "dateModified": "2026-08-21",
+      "description": "Diagnostic audit exposing sequence-length confounding in token predictive entropy for RLVR post-training.",
+      "url": "https://shamddd.github.io/shamthakare.github.io/writing/when-confidence-confounds-reasoning-complexity/"
+    }
+    </script>
+
+    <!-- Highwire / Google Scholar Metadata -->
+    <meta name="citation_title" content="Estimator Validity, Reasoning Complexity, and Negative-Control Protocols for Uncertainty-Weighted Credit Assignment in RLVR Post-Training">
+    <meta name="citation_author" content="Thakare, Sham Satish">
+    <meta name="citation_publication_date" content="2026/08/20">
+    <meta name="citation_pdf_url" content="https://shamddd.github.io/shamthakare.github.io/pdfs/ear-grpo-reasoning.pdf">
+
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="canonical" href="https://shamddd.github.io/shamthakare.github.io/writing/when-confidence-confounds-reasoning-complexity/">
+
+    <!-- KaTeX for Mathematics -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <style>
+      .article-container { max-width: 820px; margin: 0 auto; padding: 2rem 1rem; }
+      .article-header { border-bottom: 1px solid var(--border-color, #e2e8f0); padding-bottom: 2rem; margin-bottom: 2rem; }
+      .article-title { font-size: 2.2rem; font-weight: 800; line-height: 1.25; color: var(--heading-color, #0f172a); margin-bottom: 0.8rem; }
+      .article-subtitle { font-size: 1.15rem; color: #475569; line-height: 1.5; margin-bottom: 1.5rem; }
+      .meta-bar { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.9rem; color: #64748b; align-items: center; }
+      .status-badge { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+      .version-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.85rem; color: #475569; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 1.5rem; }
+      .tldr-box { background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid #0284c7; padding: 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; font-size: 0.95rem; line-height: 1.6; }
+      .callout-box { background: #f8fafc; border-left: 4px solid #2563eb; padding: 1.25rem; margin: 2rem 0; border-radius: 0 6px 6px 0; }
+      .callout-title { font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; font-size: 0.95rem; }
+      .breakout-figure { margin: 2.5rem -2rem; padding: 1rem; background: #0f172a; border-radius: 10px; border: 1px solid #1e293b; overflow-x: auto; }
+      .figure-caption { font-size: 0.85rem; color: #94a3b8; margin-top: 0.75rem; text-align: left; line-height: 1.5; padding: 0 0.5rem; }
+      .metric-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+      .interactive-widget { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 1.5rem; color: #f8fafc; margin: 2.5rem 0; }
+      .findings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+      .findings-box { padding: 1.25rem; border-radius: 8px; }
+      .findings-box.found { background: #f0fdf4; border: 1px solid #bbf7d0; }
+      .findings-box.not-found { background: #fff1f2; border: 1px solid #fecdd3; }
+      .toc-sidebar { position: sticky; top: 2rem; float: left; width: 220px; margin-left: -260px; font-size: 0.85rem; }
+      .toc-sidebar a { display: block; color: #64748b; text-decoration: none; padding: 0.3rem 0; border-left: 2px solid transparent; padding-left: 0.8rem; }
+      .toc-sidebar a.active, .toc-sidebar a:hover { color: #2563eb; border-left-color: #2563eb; font-weight: 600; }
+      @media (max-width: 1100px) { .toc-sidebar { display: none; } .breakout-figure { margin: 2rem 0; } .findings-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="../../index.html">Sham Satish Thakare</a>
+            <nav class="site-nav">
+                <a class="page-link" href="../../index.html">Home</a>
+                <a class="page-link" href="../../papers.html">Publications</a>
+                <a class="page-link" href="../../Sham_Thakare_Academic_CV.pdf" target="_blank">CV</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="article-container">
+        <!-- Sticky Desktop TOC -->
+        <aside class="toc-sidebar" aria-label="Table of Contents">
+            <div style="font-weight: 700; color: #0f172a; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Contents</div>
+            <a href="#phenomenon">Overview</a>
+            <a href="#tldr">30-Second Summary</a>
+            <a href="#findings-panel">What We Found</a>
+            <a href="#intuition">1. Intuition</a>
+            <a href="#why-care">2. Why Care?</a>
+            <a href="#assumptions">3. Assumptions & Methods</a>
+            <a href="#research-question">4. Research Question</a>
+            <a href="#experimental-design">5. Experimental Pipeline</a>
+            <a href="#results-length-confound">6. Length Confounding</a>
+            <a href="#results-auroc">7. Diagnostic Benchmark</a>
+            <a href="#architectural-audit">8. Architectural Audit</a>
+            <a href="#failure-cases">9. Failure Case Analysis</a>
+            <a href="#results-rl">10. Preregistered RL Results</a>
+            <a href="#interactive-explorers">11. Interactive Explorers</a>
+            <a href="#limitations">12. Scope & Boundaries</a>
+            <a href="#inspect-evidence">13. Inspect the Evidence</a>
+        </aside>
+
+        <!-- Restrained Public Article Header -->
+        <header class="article-header">
+            <h1 class="article-title">When Confidence Proxies Confound Reasoning Complexity</h1>
+            <p class="article-subtitle">Testing estimator validity and negative controls in RLVR post-training</p>
+            
+            <div class="meta-bar">
+                <span>By <strong>Sham Satish Thakare</strong></span>
+                <span>•</span>
+                <span>Research Note · Working Paper · August 2026</span>
+                <span>•</span>
+                <span>14 min read</span>
+                <span>•</span>
+                <a href="../../pdfs/ear-grpo-reasoning.pdf" target="_blank">[Paper]</a>
+                <a href="https://github.com/shamddd/ear_grpo_reasoning" target="_blank" rel="noopener">[Code]</a>
+                <a href="#inspect-evidence">[Reproducibility]</a>
+            </div>
+        </header>
+
+        <!-- Artifact Versioning Box -->
+        <div class="version-box">
+            <span><strong>Article Version:</strong> v1.0</span>
+            <span><strong>Article Updated:</strong> August 21, 2026</span>
+            <span><strong>Research Code Commit:</strong> <code title="Full Hash: cc2bec46d5f2421873fe8adfb83b622ad6e10861">cc2bec4</code></span>
+            <span><strong>PDF Revision:</strong> August 16, 2026</span>
+        </div>
+
+        <!-- 30-Second Summary / TL;DR -->
+        <section id="tldr">
+            <div class="tldr-box">
+                <div style="font-weight: 700; color: #0369a1; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; margin-bottom: 0.4rem;">30-Second Summary</div>
+                <p style="margin: 0 0 0.5rem 0;"><strong>Question:</strong> Can common uncertainty proxies confound sequence completion length with mathematical error during RLVR post-training?</p>
+                <p style="margin: 0 0 0.5rem 0;"><strong>Evidence:</strong> Evaluated on GSM8K ($N = 100$ prompt clusters, 98 df), token entropy was positively correlated with length ($r = 0.486, 95\%\text{ CI } [+0.318, +0.627]$). Controlling for completion length decreased the association to $r_{\text{partial}} = -0.092$ ($p = 0.365$). Across $N = 3$ evaluated training seeds (42, 1337, 2026), proposed CA-GRPO and standard GRPO produced the same observed mean Group Pass@1 ($80.00\% \pm 0.00\%, d = 0.00$).</p>
+                <p style="margin: 0;"><strong>Boundary:</strong> These experiments evaluate <code>Qwen2.5-0.5B-Instruct</code> on mathematical reasoning; they do not establish that the same behavior holds for larger model scales ($> 7\text{B}$) or non-mathematical task domains.</p>
+            </div>
+        </section>
+
+        <!-- Opening / Overview -->
+        <section id="phenomenon">
+            <p style="font-size: 1.12rem; line-height: 1.7; color: #1e293b;">
+                In reinforcement learning from verifiable rewards (RLVR) for mathematical reasoning, policy gradient algorithms such as Group Relative Policy Optimization (GRPO) compute baseline-free advantages across sampled rollouts. To protect policies from reward hacking and policy collapse, researchers frequently hypothesize that scaling advantages by internal uncertainty signals—such as token predictive entropy—will suppress unreliable trajectories. However, when benchmarked across multi-step mathematical derivations on GSM8K ($N = 100$ prompt clusters, 98 degrees of freedom), token predictive entropy was positively correlated with completion length ($r = 0.486$). After controlling for completion length, the association decreased from $r = -0.214$ to $r_{\text{partial}} = -0.092$ ($p = 0.365$, not statistically significant). Consequently, naive uncertainty weighting inadvertently suppresses valid, multi-step exploration.
+            </p>
+        </section>
+
+        <!-- What We Found / What We Didn't Find Panel -->
+        <section id="findings-panel">
+            <div class="findings-grid">
+                <div class="findings-box found">
+                    <h3 style="margin-top:0; color:#15803d; font-size:1rem;">What The Experiments Found</h3>
+                    <ul style="margin:0.5rem 0 0 1.2rem; padding:0; font-size:0.88rem; color:#166534; line-height:1.5;">
+                        <li>Token entropy correlates with completion length ($r = 0.486, N=100$).</li>
+                        <li>Controlling for length decreased entropy-error association to $r_{\text{partial}} = -0.092$ ($p = 0.365$).</li>
+                        <li>In zero-dropout models (`Qwen2.5-0.5B-Instruct`), nominal MC-dropout passes yielded deterministic passes ($\text{Var}(\log P) = 0.000000$).</li>
+                        <li>For self-consistency with $K=4$, observed metrics were $r = 0.114$, $r_{\text{partial}} = -0.569, p = 8.1\times 10^{-10}, \text{AUROC} = 0.812$.</li>
+                        <li>Across 3 evaluated seeds ($N=3$), CA-GRPO and standard GRPO produced the same observed mean Group Pass@1 ($80.00\% \pm 0.00\%, d = 0.00$).</li>
+                    </ul>
+                </div>
+
+                <div class="findings-box not-found">
+                    <h3 style="margin-top:0; color:#b91c1c; font-size:1rem;">What They Do NOT Establish</h3>
+                    <ul style="margin:0.5rem 0 0 1.2rem; padding:0; font-size:0.88rem; color:#991b1b; line-height:1.5;">
+                        <li>Do not establish that the same behavior holds for larger model scales ($> 7\text{B}$) or other model families.</li>
+                        <li>Not evidence across non-mathematical domains (e.g., Code, Medical QA).</li>
+                        <li>Not a universal rejection of step-level Process Reward Models (PRMs).</li>
+                        <li>Not proof of universal non-inferiority beyond the evaluated $N=3$ training seeds.</li>
+                        <li>Not proof that uncertainty weighting is universally invalid in all RL formulations.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Intuition -->
+        <section id="intuition">
+            <h2>1. Intuition</h2>
+            <p>
+                Consider how a language model solves a multi-step arithmetic problem versus a simple single-step recall task. A brief, direct derivation involves fewer token transitions and low aggregate predictive entropy. Conversely, a rigorous 10-step mathematical proof requires navigating multiple sub-equations, generating natural language transitions, and resolving intermediate numeric states. Each additional token introduces minor variance in the predictive distribution.
+            </p>
+            <p>
+                If a confidence proxy measures total or mean token entropy without controlling for trajectory length, it naturally assigns higher "uncertainty" to long, correct derivations than to short, confident hallucinations.
+            </p>
+
+            <!-- Figure 1 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/hero-concept.svg" alt="Hero Concept Diagram: Reasoning Complexity Confound" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 1: Reasoning Complexity Confound Overview.</strong><br>
+                    • <em>What Data & Model?</em> Untouched GSM8K prompt clusters ($N = 100$), evaluated on <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Pearson correlation $r$ between sequence length and token predictive entropy.<br>
+                    • <em>What Does Result Show?</em> Longer multi-step reasoning leads to higher token entropy ($r = 0.486$). Naively assuming high entropy means error causes the estimator to penalize valid multi-step derivations in 42.1% of paired comparisons.<br>
+                    • <em>What Does It Not Establish?</em> Does not prove entropy weighting fails in non-mathematical tasks.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Why Should We Care? -->
+        <section id="why-care">
+            <h2>2. Why Should We Care?</h2>
+            <p>
+                When an RL policy gradient algorithm (such as GRPO) scales advantage vectors by a length-confounded uncertainty proxy $U(y_i)$, it alters credit assignment. Trajectories with detailed multi-step reasoning receive reduced advantage weights simply because they are long. Over thousands of RLVR gradient steps, this induces length penalty distortion, pushing the policy toward concise, brittle shortcuts and penalizing the exploratory chain-of-thought derivations necessary for complex reasoning tasks.
+            </p>
+        </section>
+
+        <!-- Section 3: Conventional Assumptions -->
+        <section id="assumptions">
+            <h2>3. Assumptions & Formulations</h2>
+            <p>
+                Standard GRPO (Shao et al., 2024) normalizes rewards across $K$ sampled rollouts $\{y_1, y_2, \dots, y_K\}$ for a prompt $x$:
+            </p>
+            <p style="text-align: center; margin: 1.5rem 0;">
+                $$\hat{A}_i = \frac{R(y_i) - \mu_R}{\sigma_R + \epsilon}$$
+            </p>
+            <p>
+                To incorporate model uncertainty, recent literature proposes weighting advantages by an uncertainty multiplier $U(y_i)$ derived from Monte Carlo dropout (Gal & Ghahramani, 2016), token predictive entropy (Kadavath et al., 2022), or self-consistency consensus (Wang et al., 2023):
+            </p>
+            <p style="text-align: center; margin: 1.5rem 0;">
+                $$\tilde{A}_i = \hat{A}_i \cdot f(U(y_i))$$
+            </p>
+
+            <!-- Figure 2 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/assumption-vs-reality.svg" alt="Old Assumption vs Observed Length Confound" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 2: Conventional Assumption vs. Observed Length Confound.</strong><br>
+                    • <em>What Data & Model?</em> GSM8K ($N = 100$ prompt clusters), <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Partial correlation $r_{\text{partial}}$ controlling for sequence token length.<br>
+                    • <em>What Does Result Show?</em> Conventional intuition assumes token entropy measures error; empirical data proves it acts primarily as a sequence-length proxy ($r = 0.486$).<br>
+                    • <em>What Does It Not Establish?</em> Does not imply that all calibration techniques are length-confounded.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Our Research Question -->
+        <section id="research-question">
+            <div class="callout-box">
+                <div class="callout-title">CENTRAL RESEARCH QUESTION</div>
+                <p style="margin: 0; font-size: 1.05rem; color: #1e293b;">
+                    <em>Does trajectory-level uncertainty weighting causally improve online Group Relative Policy Optimization (GRPO) for reasoning LLMs, or are internal token confidence proxies confounded by reasoning complexity—and does offline error discrimination guarantee online credit assignment utility?</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: Experimental Pipeline -->
+        <section id="experimental-design">
+            <h2>5. Experimental Pipeline</h2>
+            <p>
+                We benchmarked candidate uncertainty proxies across untouched GSM8K confirmatory data ($N = 100$ prompt clusters, 98 degrees of freedom) and preregistered a 5-way controlled RL post-training benchmark across 3 independent seeds ($N = 3$) under a canonical 256-token generation budget.
+            </p>
+
+            <!-- Figure 3 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/experiment-pipeline.svg" alt="Preregistered RLVR Consistency-Aware Evaluation Pipeline" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 3: Preregistered RLVR Evaluation & Advantage Weighting Pipeline.</strong><br>
+                    • <em>What Data & Model?</em> GSM8K ($N = 100$), <code>Qwen2.5-0.5B-Instruct</code>, $K = 4/8$ rollout trajectories.<br>
+                    • <em>What Metric?</em> Pass@1 accuracy, advantage scaling multipliers $\tilde{A}_i$, training reward curves.<br>
+                    • <em>What Does Result Show?</em> End-to-end evaluation pipeline comparing standard GRPO against compute-matched, permuted, and random controls across $N=3$ seeds.<br>
+                    • <em>What Does It Not Establish?</em> Does not evaluate dynamic tree-search decoders during generation.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Results - Length Confounding -->
+        <section id="results-length-confound">
+            <h2>6. Results: Sequence Length Confounding ($N = 100$)</h2>
+            <p>
+                Evaluating candidate confidence proxies on GSM8K ($N = 100$ prompt clusters) reveals a pattern consistent with sequence-length confounding:
+            </p>
+            <ul>
+                <li><strong>Length Correlation</strong>: Token Predictive Entropy was positively correlated with completion length ($r = 0.486, 95\%\text{ CI } [+0.318, +0.627]$) and equation count ($r = 0.421$).</li>
+                <li><strong>Partial Correlation Decrease</strong>: After controlling for completion length via partial correlation, the association between token entropy and correctness decreased from $r = -0.214$ to $r_{\text{partial}} = -0.092$ ($p = 0.365$, not statistically significant).</li>
+                <li><strong>Self-Consistency Consensus</strong>: For self-consistency with $K=4$, observed metrics were $r = 0.114$, $r_{\text{partial}} = -0.569, p = 8.1\times 10^{-10}$, and $\text{AUROC} = 0.812$. Unlike token predictive entropy, self-consistency marginalizes over full sequence completions.</li>
+            </ul>
+
+            <!-- Figure 4 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/correlation-length-entropy.svg" alt="Partial Correlation Analysis Diagram" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 4: Partial Correlation Analysis of Token Predictive Entropy ($N = 100$).</strong><br>
+                    • <em>What Data & Model?</em> GSM8K ($N = 100$ prompt clusters), <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Pearson $r$ vs Partial $r_{\text{partial}}$ controlling for sequence length.<br>
+                    • <em>What Does Result Show?</em> Bivariate association suggests entropy correlates with error ($r = -0.214$), but controlling for sequence length decreases the association to $r_{\text{partial}} = -0.092$ ($p = 0.365$).<br>
+                    • <em>What Does It Not Establish?</em> Does not imply token entropy is useless for single-step classification tasks.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Results - Diagnostic Benchmark -->
+        <section id="results-auroc">
+            <h2>7. Diagnostic Error Discrimination Benchmark ($N = 100$)</h2>
+            <p>
+                Table 1 summarizes the offline diagnostic benchmark across candidate confidence proxies on untouched GSM8K data ($N = 100$ prompt clusters, 98 degrees of freedom):
+            </p>
+
+            <div class="metric-card" style="overflow-x: auto;">
+                <table style="width:100%; border-collapse: collapse; font-size: 0.95rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #cbd5e1; text-align: left;">
+                            <th style="padding: 0.6rem;">Proxy Estimator</th>
+                            <th style="padding: 0.6rem;">Sample Size (N)</th>
+                            <th style="padding: 0.6rem;">AUROC</th>
+                            <th style="padding: 0.6rem;">r (Error)</th>
+                            <th style="padding: 0.6rem;">r (Length)</th>
+                            <th style="padding: 0.6rem;">Partial r (p-value)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e2e8f0; background: #f0fdf4;">
+                            <td style="padding: 0.6rem; font-weight: 600;">Self-Consistency (K=4)</td>
+                            <td style="padding: 0.6rem;">N = 100</td>
+                            <td style="padding: 0.6rem; font-weight: 700; color: #15803d;">0.812</td>
+                            <td style="padding: 0.6rem;">+0.582</td>
+                            <td style="padding: 0.6rem;">+0.114</td>
+                            <td style="padding: 0.6rem; font-weight: 700; color: #15803d;">-0.569 (8.1e-10)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 0.6rem;">Token Pred. Entropy</td>
+                            <td style="padding: 0.6rem;">N = 100</td>
+                            <td style="padding: 0.6rem;">0.618</td>
+                            <td style="padding: 0.6rem;">+0.214</td>
+                            <td style="padding: 0.6rem; color: #b91c1c;">+0.486</td>
+                            <td style="padding: 0.6rem; color: #64748b;">-0.092 (0.365)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 0.6rem;">Logit Margin Unc.</td>
+                            <td style="padding: 0.6rem;">N = 100</td>
+                            <td style="padding: 0.6rem;">0.624</td>
+                            <td style="padding: 0.6rem;">+0.226</td>
+                            <td style="padding: 0.6rem; color: #b91c1c;">+0.495</td>
+                            <td style="padding: 0.6rem; color: #64748b;">-0.104 (0.303)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem;">Mean Token NLL</td>
+                            <td style="padding: 0.6rem;">N = 100</td>
+                            <td style="padding: 0.6rem;">0.605</td>
+                            <td style="padding: 0.6rem;">+0.198</td>
+                            <td style="padding: 0.6rem; color: #b91c1c;">+0.432</td>
+                            <td style="padding: 0.6rem; color: #64748b;">-0.081 (0.422)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Figure 5 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/auroc-benchmark.svg" alt="AUROC Error Discrimination Bar Chart" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 5: Diagnostic Error Discrimination AUROC Benchmark ($N = 100$).</strong><br>
+                    • <em>What Data & Model?</em> Untouched GSM8K prompt clusters ($N = 100$), <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Area Under the Receiver Operating Characteristic Curve (AUROC).<br>
+                    • <em>What Does Result Show?</em> Self-Consistency consensus achieved AUROC = 0.812, whereas token-level proxies clustered around 0.60–0.62 due to sequence length bias.<br>
+                    • <em>What Does It Not Establish?</em> Does not establish online RL policy training utility (see Section 10).
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Architectural Audit -->
+        <section id="architectural-audit">
+            <h2>8. Architectural Audit: Zero-Dropout MC Probing Determinism</h2>
+            <p>
+                Before benchmarking diagnostic proxies, we audited the internal execution graph of target open-weight causal models, specifically <code>Qwen/Qwen2.5-0.5B-Instruct</code>.
+            </p>
+            <p>
+                We find that the model contains <strong>exactly 0 active <code>nn.Dropout</code> modules</strong> in its attention and MLP blocks (<code>attention_dropout = 0.0</code>). Consequently, executing Monte Carlo dropout forward passes with <code>mc_dropout = True</code> produced mathematically deterministic passes in this evaluated architecture:
+            </p>
+            <p style="text-align: center; font-family: monospace; background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                Var(log P) = 0.0000000000, &nbsp; ΔLogit = 0.0
+            </p>
+            <p>
+                When normalized in advantage scaling equations with stability constant $\epsilon = 10^{-8}$, floating-point order-of-operations noise ($\approx 10^{-12}$) yielded a multiplier of $\exp(-\gamma \cdot 10^{-4}) \approx 0.999965$, producing policy update vectors collinear to standard GRPO ($\cos(\Delta\theta) = 1.000000$). In the evaluated zero-dropout architecture, nominal MC-dropout sampling produced deterministic repeated passes.
+            </p>
+
+            <!-- Figure 6 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/zero-dropout-audit.svg" alt="Zero Dropout Architectural Audit Diagram" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 6: Architectural Audit of MC-Dropout Probing.</strong><br>
+                    • <em>What Data & Model?</em> PyTorch compute graph audit of <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Output log-probability variance $\text{Var}(\log P)$ and gradient cosine similarity $\cos(\Delta\theta)$.<br>
+                    • <em>What Does Result Show?</em> Zero active dropout modules collapse MC-dropout variance to $0.000000$ and render uncertainty multipliers collinear to standard GRPO ($\cos(\Delta\theta) = 1.000000$).<br>
+                    • <em>What Does It Not Establish?</em> Does not imply MC-dropout fails on architectures configured with active dropout ($p_{drop} > 0$).
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Failure Cases -->
+        <section id="failure-cases">
+            <h2>9. Failure Case Analysis ($N = 100$)</h2>
+            <p>
+                In the Correct-but-Complex Stress Test ($N = 100$ prompt clusters), token predictive entropy misidentified correct multi-step reasoning traces as more uncertain than short incorrect errors in <strong>42.1% of paired comparisons</strong>.
+            </p>
+
+            <!-- Figure 7 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/stress-test-failure.svg" alt="Correct-but-Complex Failure Mode Diagram" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 7: Correct-but-Complex Derivation Failure Mode ($N = 100$).</strong><br>
+                    • <em>What Data & Model?</em> GSM8K paired trace stress benchmark ($N = 100$), <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Pairwise misclassification ratio between short incorrect vs long correct traces.<br>
+                    • <em>What Does Result Show?</em> Trace A (short incorrect) exhibits low entropy (0.18), while Trace B (long correct) exhibits higher entropy (0.42), misranking the pair in 42.1% of cases.<br>
+                    • <em>What Does It Not Establish?</em> Does not evaluate multi-task reasoning datasets outside math word problems.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Preregistered RL Results -->
+        <section id="results-rl">
+            <h2>10. Preregistered 5-Way Controlled RL Benchmark ($N = 3$ Seeds)</h2>
+            <p>
+                To test whether a validated offline error predictor (Self-Consistency) translates into an effective online policy gradient weight, we preregistered Consistency-Aware GRPO (CA-GRPO):
+            </p>
+            <p style="text-align: center; margin: 1.5rem 0;">
+                $$\tilde{A}_i = \hat{A}_i \cdot \Big(1.0 + \lambda \cdot (c_i - \bar{c})\Big)$$
+            </p>
+            <p>
+                where $c_i = \mathbb{I}(\text{extract}(y_i) = \text{modal answer})$. We benchmarked CA-GRPO against four matched controls across three independent training seeds ($N = 3$ seeds: 42, 1337, 2026):
+            </p>
+
+            <div class="metric-card" style="overflow-x: auto;">
+                <table style="width:100%; border-collapse: collapse; font-size: 0.95rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #cbd5e1; text-align: left;">
+                            <th style="padding: 0.6rem;">Method</th>
+                            <th style="padding: 0.6rem;">Group Size (K)</th>
+                            <th style="padding: 0.6rem;">Seed Count (N)</th>
+                            <th style="padding: 0.6rem;">Pass@1 (%) [N=3 Seeds]</th>
+                            <th style="padding: 0.6rem;">Train Reward</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 0.6rem; font-weight: 600;">Standard-GRPO</td>
+                            <td style="padding: 0.6rem;">4</td>
+                            <td style="padding: 0.6rem;">N = 3</td>
+                            <td style="padding: 0.6rem; font-weight: 700;">80.00% ± 0.00%</td>
+                            <td style="padding: 0.6rem;">0.12</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 0.6rem;">Compute-Matched-GRPO</td>
+                            <td style="padding: 0.6rem;">8</td>
+                            <td style="padding: 0.6rem;">N = 3</td>
+                            <td style="padding: 0.6rem;">78.33% ± 2.89%</td>
+                            <td style="padding: 0.6rem;">0.26</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 0.6rem;">Random-Weight-Control</td>
+                            <td style="padding: 0.6rem;">4</td>
+                            <td style="padding: 0.6rem;">N = 3</td>
+                            <td style="padding: 0.6rem;">75.00% ± 5.00%</td>
+                            <td style="padding: 0.6rem;">0.21</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 0.6rem;">Permuted-Consist.-Control</td>
+                            <td style="padding: 0.6rem;">4</td>
+                            <td style="padding: 0.6rem;">N = 3</td>
+                            <td style="padding: 0.6rem; font-weight: 700;">80.00% ± 0.00%</td>
+                            <td style="padding: 0.6rem;">0.29</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                            <td style="padding: 0.6rem; font-weight: 700; color: #1e293b;">CA-GRPO (Proposed)</td>
+                            <td style="padding: 0.6rem;">4</td>
+                            <td style="padding: 0.6rem;">N = 3</td>
+                            <td style="padding: 0.6rem; font-weight: 700; color: #1e293b;">80.00% ± 0.00%</td>
+                            <td style="padding: 0.6rem;">0.12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                <strong>Statistical Observation</strong>: Across the three evaluated training seeds ($N = 3$), CA-GRPO and standard outcome-supervised GRPO produced the same observed mean Group Pass@1 ($80.00\% \pm 0.00\%$) with an observed effect size of <strong>Cohen's $d = 0.00$</strong>. Permuted consistency controls likewise yielded $80.00\% \pm 0.00\%$. In this evaluated experimental setup, trajectory-specific advantage scaling provided no observed performance advantage over standard outcome-supervised GRPO.
+            </p>
+
+            <!-- Figure 8 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/rl-control-results.svg" alt="Preregistered 5-Way Controlled RL Results Chart" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 8: Preregistered 5-Way Controlled RL Benchmark Results ($N = 3$ seeds).</strong><br>
+                    • <em>What Data & Model?</em> Held-out test evaluation across 3 independent training seeds ($N = 3$), <code>Qwen2.5-0.5B-Instruct</code>.<br>
+                    • <em>What Metric?</em> Group Pass@1 (%) under 256-token generation budget.<br>
+                    • <em>What Does Result Show?</em> CA-GRPO achieved an observed 80.00% Pass@1, showing zero observed performance delta ($d = 0.00$) over standard outcome-supervised GRPO and permuted controls.<br>
+                    • <em>What Does It Not Establish?</em> Does not constitute a formal statistical proof of universal non-inferiority beyond the evaluated $N=3$ seeds.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 11: Interactive Explorers -->
+        <section id="interactive-explorers">
+            <h2>11. Interactive Research Explorers</h2>
+
+            <!-- Metric Explainer Widget -->
+            <div class="interactive-widget">
+                <h3 style="margin-top: 0; color: #60a5fa;">Interactive Metric Explainer: Length Confounding Demonstrator</h3>
+                <p style="font-size: 0.9rem; color: #94a3b8;">
+                    Adjust the sequence token length below to observe how raw token predictive entropy scales with token count, versus length-normalized partial correlation.
+                </p>
+                <div style="margin: 1.5rem 0;">
+                    <label for="lengthSlider" style="font-size: 0.95rem;">Sequence Length (Tokens): <span id="lengthVal" style="font-weight:bold; color:#f59e0b;">32</span></label>
+                    <input type="range" id="lengthSlider" min="5" max="120" value="32" style="width:100%; margin-top: 0.5rem;">
+                </div>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px; background: #1e293b; padding: 1rem; border-radius: 6px;">
+                        <div style="font-size: 0.8rem; color: #94a3b8;">ESTIMATED RAW ENTROPY</div>
+                        <div id="rawEntropyVal" style="font-size: 1.5rem; font-weight: bold; color: #ef4444;">0.342</div>
+                        <div style="font-size: 0.75rem; color: #fca5a5; margin-top: 0.3rem;">Naively Flagged as "Uncertain"</div>
+                    </div>
+                    <div style="flex: 1; min-width: 200px; background: #1e293b; padding: 1rem; border-radius: 6px;">
+                        <div style="font-size: 0.8rem; color: #94a3b8;">PARTIAL CORRELATION (r_partial)</div>
+                        <div id="partialRVal" style="font-size: 1.5rem; font-weight: bold; color: #10b981;">-0.092</div>
+                        <div style="font-size: 0.75rem; color: #6ee7b7; margin-top: 0.3rem;">p = 0.365 (Nonsignificant, N=100)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experiment Explorer Widget -->
+            <div class="interactive-widget">
+                <h3 style="margin-top: 0; color: #c084fc;">Preregistered 5-Way Control Result Explorer ($N = 3$ Seeds)</h3>
+                <p style="font-size: 0.9rem; color: #94a3b8;">
+                    Select an RL training method to inspect its exact verified Pass@1 metric, group size, and seed variance.
+                </p>
+                <select id="methodSelect" style="width:100%; padding: 0.6rem; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.95rem; margin-bottom: 1rem;">
+                    <option value="ca-grpo">CA-GRPO (Proposed Consistency-Aware)</option>
+                    <option value="standard">Standard-GRPO (Outcome Supervised)</option>
+                    <option value="compute">Compute-Matched-GRPO (K=8 Rollouts)</option>
+                    <option value="permuted">Permuted-Consistency-Control (Negative Control)</option>
+                    <option value="random">Random-Weight-Control (Shuffled Weight)</option>
+                </select>
+                <div id="methodDetails" style="background: #1e293b; padding: 1.25rem; border-radius: 6px; font-family: monospace; font-size: 0.9rem; line-height: 1.6;">
+                    Loading method details...
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 12: Scope & Boundaries -->
+        <section id="limitations">
+            <h2>12. Scope & Boundaries</h2>
+            <p>
+                These experiments evaluate <code>Qwen2.5-0.5B-Instruct</code>; they do not establish that the same behavior holds for larger model scales ($> 7\text{B}$) or other model families.
+            </p>
+
+            <!-- Figure 9 -->
+            <div class="breakout-figure">
+                <img src="../../assets/research/rlvr-reasoning/limitations-boundary.svg" alt="Scope and Limitations Boundary Diagram" style="width:100%; display:block;">
+                <div class="figure-caption">
+                    <strong>Figure 9: Scope & Limitations Boundary Diagram.</strong><br>
+                    • <em>What Data & Model?</em> Scope analysis of <code>Qwen2.5-0.5B-Instruct</code> on GSM8K/SVAMP.<br>
+                    • <em>What Metric?</em> Qualitative and empirical validity mapping.<br>
+                    • <em>What Does Result Show?</em> Clearly demarcates established empirical findings from untested future research directions.<br>
+                    • <em>What Does It Not Establish?</em> Does not predict performance on 70B parameter reasoning models.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 13: Inspect the Evidence -->
+        <section id="inspect-evidence" style="margin-top: 3rem; border-top: 1px solid #e2e8f0; padding-top: 2rem;">
+            <h2>13. Inspect the Evidence</h2>
+            <div class="metric-card" style="background: #f8fafc;">
+                <h3 style="margin-top:0; color:#0f172a;">Evidence & Provenance Directory</h3>
+                <ul style="line-height: 1.8; font-size: 0.95rem;">
+                    <li><strong>Manuscript PDF</strong>: <a href="../../pdfs/ear-grpo-reasoning.pdf" target="_blank">Estimator Validity Manuscript PDF</a></li>
+                    <li><strong>Code Repository</strong>: <a href="https://github.com/shamddd/ear_grpo_reasoning" target="_blank" rel="noopener">github.com/shamddd/ear_grpo_reasoning</a></li>
+                    <li><strong>Research Code Commit</strong>: <code>cc2bec46d5f2421873fe8adfb83b622ad6e10861</code></li>
+                    <li><strong>Canonical Data Log</strong>: <a href="../../data/rlvr-reasoning/figure-data.json" target="_blank">figure-data.json</a></li>
+                    <li><strong>Figure Provenance Log</strong>: <a href="../../FIGURE_PROVENANCE.md" target="_blank">FIGURE_PROVENANCE.md</a></li>
+                    <li><strong>Evaluation Seeds</strong>: 42, 1337, 2026</li>
+                    <li><strong>Generation Script</strong>: <code>python3 scripts/generate_figures.py</code></li>
+                </ul>
+            </div>
+
+            <h3>How to Cite</h3>
+            <pre style="background: #0f172a; color: #f8fafc; padding: 1.25rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem;"><code>@article{thakare2026estimator,
+  title={Estimator Validity, Reasoning Complexity, and Negative-Control Protocols for Uncertainty-Weighted Credit Assignment in RLVR Post-Training},
+  author={Thakare, Sham Satish},
+  journal={Working Paper / Research Note},
+  year={2026}
+}</code></pre>
+        </section>
+
+        <!-- References -->
+        <section id="references" style="margin-top: 3rem; border-top: 1px solid #e2e8f0; padding-top: 2rem;">
+            <h2>References</h2>
+            <ol style="font-size: 0.9rem; line-height: 1.6; color: #475569;">
+                <li id="ref1">Z. Shao, P. Wang, Q. Zhu, R. Xu, et al., "DeepSeekMath: Pushing the limits of mathematical reasoning in open language models," <em>arXiv preprint arXiv:2402.03300</em>, 2024.</li>
+                <li id="ref2">K. Cobbe, V. Kosaraju, M. Bavarian, et al., "Training verifiers to solve math word problems," <em>arXiv preprint arXiv:2110.14168</em>, 2021.</li>
+                <li id="ref3">A. Patel, S. Bhattamishra, and N. Goyal, "Are NLP models really able to solve simple math word problems?" in <em>Proc. NAACL-HLT</em>, 2021, pp. 2080–2094.</li>
+                <li id="ref4">S. Kadavath, T. Conerly, A. Askell, et al., "Language models (mostly) know what they know," <em>arXiv preprint arXiv:2207.05221</em>, 2022.</li>
+                <li id="ref5">L. Kuhn, Y. Gal, and S. Farquhar, "Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation," in <em>ICLR</em>, 2023.</li>
+                <li id="ref6">X. Wang, J. Wei, D. Schuurmans, et al., "Self-consistency improves chain of thought reasoning in language models," in <em>ICLR</em>, 2023.</li>
+                <li id="ref7">Y. Gal and Z. Ghahramani, "Dropout as a Bayesian approximation: Representing model uncertainty in deep learning," in <em>ICML</em>, 2016, pp. 1050–1059.</li>
+            </ol>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <p>© 2026 Sham Satish Thakare · <a href="mailto:shamthakare3000@gmail.com">shamthakare3000@gmail.com</a> · <a href="https://github.com/shamddd" target="_blank" rel="noopener">GitHub (@shamddd)</a> · <a href="../../Sham_Thakare_Academic_CV.pdf" target="_blank">CV (PDF)</a></p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripting -->
+    <script>
+      // 1. Metric Explainer Slider
+      const slider = document.getElementById('lengthSlider');
+      const lengthVal = document.getElementById('lengthVal');
+      const rawEntropyVal = document.getElementById('rawEntropyVal');
+
+      slider.addEventListener('input', function() {
+        const len = parseInt(this.value);
+        lengthVal.textContent = len;
+        const estEntropy = (0.12 + 0.0068 * len).toFixed(3);
+        rawEntropyVal.textContent = estEntropy;
+      });
+
+      // 2. Experiment Explorer
+      const methodData = {
+        'ca-grpo': {
+          name: 'CA-GRPO (Proposed Consistency-Aware)',
+          groupSize: 4,
+          seeds: 'N = 3 seeds (42, 1337, 2026)',
+          passAt1: '80.00% ± 0.00%',
+          trainRwd: '0.12',
+          effectSize: "Cohen's d = 0.00 vs Standard GRPO",
+          notes: 'Advantage scaled by self-consistency consensus (c_i - c_bar).'
+        },
+        'standard': {
+          name: 'Standard-GRPO (Outcome Supervised Baseline)',
+          groupSize: 4,
+          seeds: 'N = 3 seeds (42, 1337, 2026)',
+          passAt1: '80.00% ± 0.00%',
+          trainRwd: '0.12',
+          effectSize: 'Baseline Reference',
+          notes: 'Standard outcome-reward advantage normalization (Shao et al., 2024).'
+        },
+        'compute': {
+          name: 'Compute-Matched-GRPO (Group K=8)',
+          groupSize: 8,
+          seeds: 'N = 3 seeds (42, 1337, 2026)',
+          passAt1: '78.33% ± 2.89%',
+          trainRwd: '0.26',
+          effectSize: '∆ = -1.67% vs Standard GRPO',
+          notes: 'Matched for compute budget via doubled rollout sampling (K=8).'
+        },
+        'permuted': {
+          name: 'Permuted-Consistency-Control (Negative Control)',
+          groupSize: 4,
+          seeds: 'N = 3 seeds (42, 1337, 2026)',
+          passAt1: '80.00% ± 0.00%',
+          trainRwd: '0.29',
+          effectSize: "Cohen's d = 0.00 vs Standard GRPO",
+          notes: 'Consistency weights randomly permuted across prompt rollout groups.'
+        },
+        'random': {
+          name: 'Random-Weight-Control (Weight Shuffle)',
+          groupSize: 4,
+          seeds: 'N = 3 seeds (42, 1337, 2026)',
+          passAt1: '75.00% ± 5.00%',
+          trainRwd: '0.21',
+          effectSize: '∆ = -5.00% vs Standard GRPO',
+          notes: 'Uniform random weight multipliers assigned to trajectory advantages.'
+        }
+      };
+
+      const select = document.getElementById('methodSelect');
+      const details = document.getElementById('methodDetails');
+
+      function updateExplorer() {
+        const key = select.value;
+        const d = methodData[key];
+        details.innerHTML = `
+          <div style="color:#60a5fa; font-weight:bold; font-size:1.05rem; margin-bottom:0.5rem;">${d.name}</div>
+          <div>Group Size (K): <span style="color:#f8fafc;">${d.groupSize}</span> | Sample Scale: <span style="color:#f59e0b;">${d.seeds}</span></div>
+          <div>Group Pass@1 (%): <span style="color:#34d399; font-weight:bold;">${d.passAt1}</span></div>
+          <div>Train Reward: <span style="color:#f8fafc;">${d.trainRwd}</span></div>
+          <div>Effect Size: <span style="color:#f59e0b; font-weight:bold;">${d.effectSize}</span></div>
+          <div style="margin-top:0.5rem; color:#94a3b8; font-style:italic;">Notes: ${d.notes}</div>
+        `;
+      }
+
+      select.addEventListener('change', updateExplorer);
+      updateExplorer();
+    </script>
+</body>
+</html>

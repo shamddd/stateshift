@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>When Confidence Proxies Confound Reasoning Complexity — Sham Satish Thakare</title>
+  <meta name="description" content="Research paper by Sham Satish Thakare evaluating uncertainty-weighted credit assignment in language model reinforcement learning.">
+
+  <!-- Google Scholar Meta Tags -->
+  <meta name="citation_title" content="When Confidence Proxies Confound Reasoning Complexity: Pitfalls of Uncertainty-Weighted Credit Assignment in Language Model Reinforcement Learning">
+  <meta name="citation_author" content="Thakare, Sham Satish">
+  <meta name="citation_publication_date" content="2026/08">
+  <meta name="citation_journal_title" content="IEEE Transactions on Artificial Intelligence">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="canonical" href="https://shamddd.github.io/shamthakare.github.io/papers/ear-grpo.html">
+
+  <!-- MathJax -->
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" href="/">Sham Satish Thakare</a>
+
+      <nav class="site-nav">
+        <a class="page-link" href="/">About</a>
+        <a class="page-link active" href="../papers.html">Publications</a>
+        <a class="page-link" href="../blog.html">Blog</a>
+        <a class="page-link" href="https://github.com/shamddd" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="page-link" href="https://ssrn.com/author=13130226" target="_blank" rel="noopener noreferrer">SSRN</a>
+        <a class="page-link" href="../Sham_Satish_Thakare_Academic_CV.pdf" target="_blank" rel="noopener noreferrer">CV</a>
+        <a class="page-link" href="mailto:shamthakare3000@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+
+      <p style="margin-bottom: 20px;">
+        <a href="../papers.html" style="font-size: 14px; color: #64748b; text-decoration: none;">&larr; Back to Publications</a>
+      </p>
+
+      <h1>When Confidence Proxies Confound Reasoning Complexity: Pitfalls of Uncertainty-Weighted Credit Assignment in Language Model Reinforcement Learning</h1>
+      
+      <p style="font-size: 17px; font-weight: 500; color: #0284c7; margin-bottom: 12px;">
+        Sham Satish Thakare
+      </p>
+
+      <div class="venue_bar" style="margin-bottom: 24px;">
+        <span class="conf_name review" style="font-size: 14px;">
+          Under Review at IEEE Transactions on Artificial Intelligence (IEEE TAI, Manuscript ID: TAI-2026-Aug-A-01878)
+        </span>
+      </div>
+
+      <h2>Abstract</h2>
+      <p>
+        In language model reinforcement learning (RLVR/GRPO), weighting policy gradients by outcome confidence proxies has been proposed to focus updates on uncertain steps. In this paper, we expose length confounding in token predictive entropy ($r = +0.486$), mean NLL ($r = +0.432$), and logit margin ($r = +0.495$). We demonstrate that sample-level uncertainty weighting (CA-GRPO) yields 0.00% Pass@1 gain over standard outcome-supervised GRPO across 3 matched seeds, misidentifying correct complex derivations as uncertain in 42.1% of cases.
+      </p>
+
+      <h2>Artifacts & Code</h2>
+      <div class="links" style="margin: 20px 0 32px 0;">
+        <a href="https://github.com/shamddd/ear_grpo_reasoning" class="link-btn" target="_blank" rel="noopener noreferrer">GitHub Code Repository</a>
+        <a href="../writing/when-confidence-confounds-reasoning-complexity.html" class="link-btn">Read Diagnostic Research Note</a>
+      </div>
+
+      <h2>BibTeX</h2>
+      <pre style="background: #f1f5f9; padding: 14px; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 12px; overflow-x: auto; color: #1e293b; border: 1px solid #e2e8f0;">@article{thakare2026confidence,
+  author  = {Thakare, Sham Satish},
+  title   = {When Confidence Proxies Confound Reasoning Complexity: Pitfalls of Uncertainty-Weighted Credit Assignment in Language Model Reinforcement Learning},
+  journal = {IEEE Transactions on Artificial Intelligence},
+  year    = {2026},
+  note    = {Under Review, Manuscript ID: TAI-2026-Aug-A-01878},
+  url     = {https://github.com/shamddd/ear_grpo_reasoning}
+}</pre>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <div>&copy; 2026 Sham Satish Thakare &bull; Pune, India</div>
+      <div class="footer-links">
+        <a href="https://github.com/shamddd" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://ssrn.com/author=13130226" target="_blank" rel="noopener noreferrer">SSRN</a>
+        <a href="../Sham_Satish_Thakare_Academic_CV.pdf" target="_blank" rel="noopener noreferrer">CV (PDF)</a>
+        <a href="../papers.html">Publications</a>
+        <a href="mailto:shamthakare3000@gmail.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
