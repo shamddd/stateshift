@@ -12,7 +12,7 @@
 
 In accordance with strict research software engineering principles:
 1. **Branch Isolation**: All reconstructed and verified artifacts are committed solely to the dedicated branch `research/stateshift-neurips-readiness`.
-2. **Main Branch Invariance**: The default branch `main` at commit `a3aa914` was **never modified, merged into, or force-pushed**.
+2. **Main Branch Invariance**: The default branch `main` at commit `a3aa9140b6934b7c3cdb57ed4f547e2a79e64f01` was **never modified, merged into, or force-pushed**.
 3. **Reproducibility Guarantee**: Every table, figure, metric, confidence interval, and hypothesis test published in the NeurIPS candidate manuscript is directly reproducible via a single CPU command:
    ```bash
    ./reproducibility/run_analysis.sh
@@ -25,8 +25,9 @@ In accordance with strict research software engineering principles:
 ## 2. Commit Cryptographic Record
 
 - **Parent Baseline Commit**: `a3aa9140b6934b7c3cdb57ed4f547e2a79e64f01`
+- **Release Commit SHA**: `9d71f23d8a488c14b0f161320a3d93d9ba332833`
 - **Target Branch**: `research/stateshift-neurips-readiness`
-- **Commit Message**: `feat(research): reconstruct StateShift experimental audit, reproducibility suite, and NeurIPS candidate manuscript`
+- **Commit Message**: `feat(research): reconstruct StateShift empirical audit, reproducibility suite, and NeurIPS candidate package`
 - **Primary Empirical Data**: `artifacts/endpoint/controlled_endpoint_outcomes.csv`
   - **SHA-256 Checksum**: `49549bbd73349bb0e1879603bdbeb04c4a8617ab85d0b31323cfeb188a5c6139`
   - **Sample Size**: $N = 454$ paired problems, $K = 16$ rollouts per cell ($29,056$ total rollouts)
@@ -42,13 +43,13 @@ In accordance with strict research software engineering principles:
 
 | Verification Gate | Command | Expected State | Verified Outcome |
 |:---|:---|:---|:---:|
-| **Remote Origin URL** | `git remote get-url origin` | `https://github.com/shamddd/stateshift.git` | **MATCH** |
+| **Remote Origin URL** | `git remote get-url origin` | `https://github.com/shamddd/stateshift.git` | **MATCH (`origin`)** |
 | **Active Branch** | `git branch --show-current` | `research/stateshift-neurips-readiness` | **MATCH** |
-| **No Staged Credentials** | `git diff --cached \| grep -E "(api_key\|secret\|password)"` | Zero matches | **CLEAN** |
+| **No Staged Credentials** | `git diff --cached \| grep -E "(api_key\|secret\|password)"` | Zero matches | **CLEAN (0 secrets)** |
 | **Unit Test Suite** | `pytest tests/ -v` | 40 passed in $< 4.0\text{ s}$ | **PASSED (40/40)** |
 | **Reproducibility Tests** | `./reproducibility/run_tests.sh` | 11 passed in $< 1.0\text{ s}$ | **PASSED (11/11)** |
-| **Analysis Pipeline** | `./reproducibility/run_analysis.sh` | Zero errors, runtime $< 3.0\text{ s}$ | **PASSED** |
-| **Remote Branch Publication** | `git push origin research/stateshift-neurips-readiness` | Branch published to remote | **EXECUTED** |
+| **Analysis Pipeline** | `./reproducibility/run_analysis.sh` | Zero errors, runtime $< 3.0\text{ s}$ | **PASSED (< 3.0s)** |
+| **Remote Branch Publication** | `git push origin research/stateshift-neurips-readiness` | Branch published to remote | **CONFIRMED (`refs/heads/research/stateshift-neurips-readiness`)** |
 
 ---
 
