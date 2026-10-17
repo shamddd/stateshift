@@ -43,7 +43,107 @@ Because the experimental design evaluates every problem instance $i$ under all f
 \hat{\Gamma}_{256} = (\hat{\mu}_{R,256} - \hat{\mu}_{R,0}) - (\hat{\mu}_{C,256} - \hat{\mu}_{C,0}) = 0.320485 - 0.202919 = \mathbf{+0.117566}
 \end{equation}
 
-\section{Decontamination Protocol & Operator Catalog}
+\section{Measurement Disattenuation and Rollout Sampling Noise}
+\label{app:disattenuation}
+
+In Section~\ref{sec:orthogonality}, we observed an empirical problem-level correlation between recovery gain $\Delta_{R,i}$ and clean gain $\Delta_{C,i}$ of $r = 0.0794$ ($p = 0.0910$), with empirical $R^2 = 0.63\%$. Here, we provide the formal derivation showing that finite rollout sampling ($K=16$) severely attenuates this observed correlation.
+
+\subsection{Error-in-Variables and Sampling Variance Derivation}
+Let $p_{i,s,t} \in [0, 1]$ denote the true, latent continuation success probability for problem instance $i \in \{1, \dots, N\}$, state condition $s \in \{R, C\}$, and checkpoint $t \in \{0, 256\}$.
+Under stochastic decoding with $K$ i.i.d. rollouts per cell, the observed number of successes is $S_{i,s,t} \sim \text{Binomial}(K, p_{i,s,t})$, and the cell sample mean is $\hat{p}_{i,s,t} = S_{i,s,t} / K$.
+The empirical problem-level change between baseline $t=0$ and post-training $t=256$ is:
+\begin{equation}
+\hat{\Delta}_{s,i} = \hat{p}_{i,s,256} - \hat{p}_{i,s,0} = \Delta_{s,i}^* + e_{s,i}
+\end{equation}
+where $\Delta_{s,i}^* = p_{i,s,256} - p_{i,s,0}$ represents the true latent change, and $e_{s,i} = (\hat{p}_{i,s,256} - p_{i,s,256}) - (\hat{p}_{i,s,0} - p_{i,s,0})$ represents estimation error due to finite rollout sampling.
+
+Because rollouts at $t=0$ and $t=256$ are sampled independently, the sampling variance of $e_{s,i}$ conditional on the true probabilities is:
+\begin{equation}
+\sigma^2_{\text{sampling},s,i} = \text{Var}(e_{s,i} \mid p_{i,s}) = \frac{p_{i,s,256}(1 - p_{i,s,256})}{K} + \frac{p_{i,s,0}(1 - p_{i,s,0})}{K}
+\end{equation}
+By the law of total variance:
+\begin{equation}
+\text{Var}(\hat{\Delta}_{s,i}) = \text{Var}(\Delta_{s,i}^*) + \mathbb{E}\left[\sigma^2_{\text{sampling},s,i}\right]
+\end{equation}
+The classical reliability ratio $\text{Rel}(s) \in [0, 1]$ of the observed gain is defined as the proportion of observed variance attributable to true latent variation:
+\begin{equation}
+\text{Rel}(s) = \frac{\text{Var}(\Delta_{s,i}^*)}{\text{Var}(\hat{\Delta}_{s,i})} = 1 - \frac{\bar{\sigma}^2_{\text{sampling},s}}{\text{Var}(\hat{\Delta}_{s,i})}
+\end{equation}
+
+\subsection{Empirical Estimates from the Controlled Cohort}
+Evaluating these terms across the $N=454$ problem blocks with $K=16$:
+\begin{enumerate}
+    \item \textbf{Recovery Condition ($s = R$)}:
+    \begin{itemize}
+        \item Total observed variance: $\text{Var}(\hat{\Delta}_{R,i}) = 0.02958$.
+        \item Average binomial sampling variance: $\bar{\sigma}^2_{\text{sampling},R} = 0.02511$.
+        \item Sampling noise proportion: $\frac{0.02511}{0.02958} = \mathbf{84.89\%}$.
+        \item True latent variance: $\text{Var}(\Delta_{R,i}^*) = 0.02958 - 0.02511 = 0.00447$.
+        \item Reliability: $\text{Rel}(R) = \mathbf{0.1511}$.
+    \end{itemize}
+    \item \textbf{Control Condition ($s = C$)}:
+    \begin{itemize}
+        \item Total observed variance: $\text{Var}(\hat{\Delta}_{C,i}) = 0.03396$.
+        \item Average binomial sampling variance: $\bar{\sigma}^2_{\text{sampling},C} = 0.02727$.
+        \item Sampling noise proportion: $\frac{0.02727}{0.03396} = \mathbf{80.30\%}$.
+        \item True latent variance: $\text{Var}(\Delta_{C,i}^*) = 0.03396 - 0.02727 = 0.00669$.
+        \item Reliability: $\text{Rel}(C) = \mathbf{0.1970}$.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Spearman's Disattenuation Correction}
+Because the rollout errors $e_{R,i}$ and $e_{C,i}$ arise from independent stochastic decodings, $\text{Cov}(e_{R,i}, e_{C,i}) = 0$. The observed sample covariance directly reflects the latent covariance: $\text{Cov}(\hat{\Delta}_{R,i}, \hat{\Delta}_{C,i}) = \text{Cov}(\Delta_{R,i}^*, \Delta_{C,i}^*)$.
+Applying Spearman's classical disattenuation correction:
+\begin{equation}
+r_{\text{adj}} = \frac{r_{\text{obs}}}{\sqrt{\text{Rel}(R) \times \text{Rel}(C)}} = \frac{0.0794}{\sqrt{0.1511 \times 0.1970}} = \frac{0.0794}{0.1725} \approx \mathbf{0.4605}
+\end{equation}
+The disattenuated shared variance is $R^2_{\text{adj}} \approx (0.4605)^2 = \mathbf{21.21\%}$.
+This establishes that while problem-level recovery improvements are uncoupled in raw empirical measurements ($R^2 = 0.63\%$), finite rollout sampling accounts for over $80\%$ of observed variance, and the true latent constructs share moderate overlap ($R^2 \approx 21\%$).
+
+\section{Checkpoint Trajectory and Order-Restricted Isotonic Modeling}
+\label{app:trajectory}
+
+To investigate the temporal progression of state-conditioned recovery, we tracked $\Gamma_t$ across nine checkpoints spanning the DeepScaleR post-training trajectory.
+
+\subsection{Checkpoint Sample Sizes and Observed Outcomes}
+Table~\ref{tab:app_trajectory} presents the complete numerical records across all nine evaluated checkpoints. At the confirmatory endpoints ($t=0$ and $t=256$), evaluations were conducted with $K=16$ rollouts per problem cell ($N=454, 7,264$ rollouts per condition). Intermediate checkpoints ($t \in \{32, 64, \dots, 224\}$) were evaluated with $K=2/3$ rollouts per cell ($908$ to $1,362$ rollouts per condition).
+
+\begin{table}[h]
+\centering
+\caption{Trajectory of Recovery and Control Success Rates, Unconstrained Interaction Contrast ($\hat{\Gamma}_t$), and Isotonic PAVA-Fitted Values ($\tilde{\Gamma}_t$) Across Checkpoints.}
+\label{tab:app_trajectory}
+\small
+\begin{tabular}{rcccccc}
+\toprule
+Checkpoint $t$ & Rollouts / Cell & $\mu_{R,t}$ & $\mu_{C,t}$ & Observed $\hat{\Gamma}_t$ & $95\%$ Blocked CI & Isotonic PAVA $\tilde{\Gamma}_t$ \\
+\midrule
+0   & $K=16$ & $0.3834$ & $0.3892$ & $+0.0000$ & $[+0.0000, +0.0000]$ & $+0.0000$ \\
+32  & $K=2/3$ & $0.4681$ & $0.4406$ & $+0.0333$ & $[+0.0023, +0.0677]$ & $+0.0333$ \\
+64  & $K=2/3$ & $0.4890$ & $0.4611$ & $+0.0337$ & $[+0.0041, +0.0645]$ & $+0.0337$ \\
+96  & $K=2/3$ & $0.5705$ & $0.4989$ & $+0.0774$ & $[+0.0461, +0.1084]$ & $+0.0673$ \\
+128 & $K=2/3$ & $0.5969$ & $0.5279$ & $+0.0748$ & $[+0.0435, +0.1068]$ & $+0.0673$ \\
+160 & $K=2/3$ & $0.6068$ & $0.5528$ & $+0.0598$ & $[+0.0278, +0.0911]$ & $+0.0673$ \\
+192 & $K=2/3$ & $0.6553$ & $0.5635$ & $+0.0976$ & $[+0.0674, +0.1292]$ & $+0.0963$ \\
+224 & $K=2/3$ & $0.6696$ & $0.5804$ & $+0.0950$ & $[+0.0631, +0.1265]$ & $+0.0963$ \\
+256 & $K=16$ & $0.7039$ & $0.5921$ & $+0.1176$ & $[+0.0958, +0.1403]$ & $+0.1176$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Pool Adjacent Violators Algorithm (PAVA)}
+To model the overall monotonic progression without imposing a rigid linear or log-linear functional form, we apply the Pool Adjacent Violators Algorithm (PAVA). Let $\hat{\Gamma}_t$ denote the unconstrained estimate at checkpoint step $t_j$ for $j \in \{1, \dots, 9\}$. PAVA solves the weighted order-restricted least-squares problem:
+\begin{equation}
+\min_{\tilde{\Gamma}_1 \le \tilde{\Gamma}_2 \le \dots \le \tilde{\Gamma}_9} \sum_{j=1}^9 w_j (\hat{\Gamma}_{t_j} - \tilde{\Gamma}_{t_j})^2
+\end{equation}
+Because $\hat{\Gamma}_{128} = 0.0748$ and $\hat{\Gamma}_{160} = 0.0598$ violate monotonicity relative to $\hat{\Gamma}_{96} = 0.0774$, PAVA pools these three steps into a single plateau with weighted average value $\tilde{\Gamma} = 0.0673$. Similarly, the dip at step 224 ($\hat{\Gamma}_{224} = 0.0950$ vs. $\hat{\Gamma}_{192} = 0.0976$) is pooled into a plateau with value $\tilde{\Gamma} = 0.0963$.
+
+The total sum of squared errors between the empirical estimates and the isotonic fit is:
+\begin{equation}
+\text{SSE} = \sum_{j=1}^9 (\hat{\Gamma}_{t_j} - \tilde{\Gamma}_{t_j})^2 = 0.000602
+\end{equation}
+The close fit ($\text{SSE} = 0.0006$) demonstrates that the macro-trajectory is well summarized by a non-decreasing profile. However, we clarify that PAVA is an exploratory smoothing technique that constructs a monotonic sequence by algorithm design; it does not constitute an inferential proof of step-by-step monotonicity in the underlying training process.
+
+\section{Decontamination Protocol \& Operator Catalog}
 Solutions from MATH-500 were segmented into distinct reasoning deductions. To ensure structural recoverability and invalidity:
 \begin{enumerate}
     \item \textbf{OP\_CONSTANT\_PERTURB ($N=161$)}: Modifies an intermediate arithmetic constant while preserving equation structure (e.g., $3x + 4 = 19 \implies 3x = 12$).
