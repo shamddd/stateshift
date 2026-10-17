@@ -1,0 +1,23 @@
+file_path,artifact_type,modification_date,git_commit,research_phase,status,claims_supported,reproducibility
+website_clone/artifacts/endpoint/controlled_endpoint_outcomes.csv,RAW_EMPIRICAL_DATA,2026-08-20,8ac7a67,Phase 1J,AUTHORITATIVE,"Gamma_256=+0.1176, N=454, K=16, 29056 rollouts",YES
+website_clone/artifacts/endpoint/strict_decontamination_subset.csv,PROCESSED_DATA,2026-08-20,8ac7a67,Phase 1J,AUTHORITATIVE,"Strict Gamma_256=+0.1160, N=388",YES
+website_clone/artifacts/trajectory/nine_checkpoint_trajectory.csv,PROCESSED_DATA,2026-08-20,64476fc,Phase 1K,AUTHORITATIVE,"9-checkpoint trajectory vector, step 32 emergence",YES
+website_clone/artifacts/trajectory/intermediate_rollouts.jsonl,RAW_EMPIRICAL_DATA,2026-08-20,64476fc,Phase 1K,AUTHORITATIVE,Intermediate checkpoints 32..224 rollouts,YES
+website_clone/artifacts/natural_recovery/natural_error_episodes.csv,PROCESSED_DATA,2026-08-20,8ac7a67,Phase 1J,AUTHORITATIVE,NEI=18.19% (582/3200),YES
+website_clone/artifacts/natural_recovery/natural_recovery_episodes.csv,PROCESSED_DATA,2026-08-20,8ac7a67,Phase 1J,AUTHORITATIVE,NRR=30.93% (180/582),YES
+website_clone/stateshift/statistics/bootstrap.py,PYTHON_SOURCE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,"Problem-blocked bootstrap, B=10000",YES
+website_clone/stateshift/statistics/metrics.py,PYTHON_SOURCE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,State-Matched Interaction Contrast calculation,YES
+website_clone/stateshift/trajectory/order_restricted.py,PYTHON_SOURCE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,Isotonic regression (PAVA) trajectory test,YES
+website_clone/stateshift/natural_recovery/detector.py,PYTHON_SOURCE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,Natural error episode extraction,YES
+website_clone/stateshift/verification/verifier.py,PYTHON_SOURCE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,Formal verifier for math solution equivalence,YES
+website_clone/tests/test_statistics.py,TEST_SUITE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,Unit tests for bootstrap and metrics,YES
+website_clone/tests/test_natural_recovery.py,TEST_SUITE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,Unit tests for natural error detector,YES
+website_clone/tests/test_trajectory.py,TEST_SUITE,2026-08-20,0e169ba,Phase 1K,AUTHORITATIVE,Unit tests for isotonic regression,YES
+stateshift-manuscript-source/01_Main_Manuscript.tex,LATEX_MANUSCRIPT,2026-08-20,9be50ce,Phase 1K,HISTORICAL_AUTHORITATIVE,AIJ camera-ready text ARTINT-D-26-01491,YES
+stateshift-manuscript-source/references.bib,BIBTEX_DATABASE,2026-08-20,42a966f,Phase 1K,AUTHORITATIVE,50 bibliography references,YES
+website_clone/StateShift_AIJ_Final_Submission.zip,ARCHIVE,2026-08-20,9be50ce,Phase 1K,HISTORICAL_AUTHORITATIVE,Submitted Elsevier package with figures/tables,YES
+stateshift_all_documents/03_AUDITS_AND_RED_TEAMING/20_STATESHIFT_SIGN_RECONCILIATION.md,AUDIT_DOSSIER,2026-08-21,N/A,Post-Submission,AUTHORITATIVE,Resolves sign inversion (-6.2% vs +11.76%),YES
+stateshift_all_documents/03_AUDITS_AND_RED_TEAMING/156_FLAGSHIP_SOURCE_OF_TRUTH_AUDIT.md,AUDIT_DOSSIER,2026-08-21,N/A,Post-Submission,AUTHORITATIVE,Comprehensive source of truth audit,YES
+stateshift_all_documents/04_PROJECT_REPORTS_AND_CLAIM_BOUNDARIES/STATESHIFT_TECHNICAL_REPORT.md,HISTORICAL_REPORT,2026-08-15,Pre-Phase1G,Exploratory Pilot,SUPERSEDED,+28.8 pp HumanEval code-gen claim,SUPERSEDED
+neurips_submission/manuscript/main.tex,LATEX_MANUSCRIPT,2026-10-18,Working Tree,NeurIPS Prep,PROVISIONAL_CANDIDATE,Anonymized double-blind NeurIPS 2027 paper,YES
+neurips_submission/reproducibility/reproduce.py,PYTHON_SCRIPT,2026-10-18,Working Tree,NeurIPS Prep,AUTHORITATIVE,One-click CPU reproduction script (<2s),YES

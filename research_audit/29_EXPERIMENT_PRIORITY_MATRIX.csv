@@ -1,0 +1,5 @@
+Priority_Rank,Experiment_Title,Scientific_Objective,Target_Limitation,GPU_Compute_Required,Feasibility,Expected_Information_Gain
+1,Balanced Intermediate Checkpoint Execution (K=16),"Expand intermediate checkpoints (32, 64, 96, 128, 160, 192, 224) from K=2/3 to K=16","Eliminates intermediate variance, resolves non-monotonicity debate",~12 GPU-hours (8x A100/H100),HIGH,VERY_HIGH
+2,Second Model Family Lineage (DeepSeek-R1-Distill-Llama-8B),Evaluate state-matched interaction contrast across an alternative model architecture,Addresses single-model-family generalization concern,~16 GPU-hours,MEDIUM,VERY_HIGH
+3,Error Perturbation Taxonomy Stratification,Stratify recovery contrast across arithmetic vs algebraic vs conceptual error types,Reveals which error types are easiest/hardest for RLVR to recover from,"Zero (Analyzable on existing 29,056 rollouts)",IMMEDIATE (CPU),HIGH
+4,"Token Budget Sensitivity (Cap at 2,048 vs 4,096)",Evaluate Gamma_t under varying token generation caps,Conclusively refutes length-bias confounding,Zero (Truncation analysis on existing raw rollout text),IMMEDIATE (CPU),HIGH

@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering
+\caption{Interaction Contrast Stratified by Injected Error Operator ($N=388$).}
+\label{tab:operators}
+\begin{tabular}{lccccc}
+\toprule
+Applied Error Operator & Problems ($N$) & $\Delta_R$ & $\Delta_C$ & $\Gamma_{256}$ & 95\% Bootstrap CI \\
+\midrule
+Constant Perturbation (\texttt{OP\_CONSTANT\_PERTURB}) & 161 & $+0.3125$ & $+0.1693$ & \textbf{$+0.1432$} & $[+0.1060, +0.1797]$ \\
+Sign Inversion (\texttt{OP\_SIGN\_FLIP})            & 143 & $+0.3418$ & $+0.2185$ & \textbf{$+0.1233$} & $[+0.0822, +0.1648]$ \\
+Fraction Inversion (\texttt{OP\_FRACTION\_FLIP})     & 84  & $+0.2865$ & $+0.2351$ & \textbf{$+0.0513$} & $[-0.0015, +0.1057]$ \\
+\bottomrule
+\end{tabular}
+\end{table}

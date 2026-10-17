@@ -1,0 +1,11 @@
+Location_in_Paper,Parameter_Description,Stated_Value,Verified_Data_Value,Consistency_Status
+Abstract,Primary Interaction Contrast Gamma_256,+0.1176 (11.76 pp),+0.117566,CONSISTENT
+Abstract,95% Blocked Bootstrap CI for Gamma_256,"[+0.0955, +0.1400]","[0.0955, 0.1400]",CONSISTENT
+Abstract,Earliest Checkpoint Interaction Gamma_32,+0.0333,+0.0333,CONSISTENT
+Abstract,Natural Error Incidence (NEI),18.19%,18.1875% (582/3200),CONSISTENT
+Abstract,Natural Recovery Rate (NRR),30.93%,30.9278% (180/582),CONSISTENT
+Table 1,"Base Recovery Success mu_R,0",0.3834 (38.34%),0.383398,CONSISTENT
+Table 1,"Step 256 Recovery Success mu_R,256",0.7039 (70.39%),0.703882,CONSISTENT
+Table 1,"Base Control Success mu_C,0",0.3892 (38.92%),0.389180,CONSISTENT
+Table 1,"Step 256 Control Success mu_C,256",0.5921 (59.21%),0.592098,CONSISTENT
+Table 1,Strict Subset Interaction Gamma_256_strict,+0.1160,+0.1160 (N=388),CONSISTENT

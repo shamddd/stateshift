@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+
+\title{Supplementary Material: StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training}
+\author{Anonymous Authors \\ NeurIPS 2027 Evaluations \& Datasets Track}
+
+\begin{document}
+\maketitle
+
+\appendix
+
+\section{Mathematical Formulations \& Estimand Proofs}
+
+\subsection{Factorial Fixed-Effects Equivalence}
+Consider the two-way fixed-effects linear probability model for rollout continuation outcome $y_{i,s,t,k}$:
+\begin{equation}
+y_{i,s,t,k} = \alpha_i + \beta_1 \mathbb{I}(s = R) + \beta_2 \mathbb{I}(t = 256) + \Gamma_{256} [\mathbb{I}(s = R) \times \mathbb{I}(t = 256)] + \varepsilon_{i,s,t,k}
+\end{equation}
+where $\alpha_i$ represents problem-level fixed effects, $s \in \{R, C\}$ is the experimental state condition, and $t \in \{0, 256\}$ is the checkpoint index.
+Taking conditional expectations:
+\begin{align}
+\mathbb{E}[y_{i,R,256,k}] &= \alpha_i + \beta_1 + \beta_2 + \Gamma_{256} \\
+\mathbb{E}[y_{i,R,0,k}]   &= \alpha_i + \beta_1 \\
+\mathbb{E}[y_{i,C,256,k}] &= \alpha_i + \beta_2 \\
+\mathbb{E}[y_{i,C,0,k}]   &= \alpha_i
+\end{align}
+Subtracting control deltas from recovery deltas:
+\begin{equation}
+(\mathbb{E}[y_{i,R,256,k}] - \mathbb{E}[y_{i,R,0,k}]) - (\mathbb{E}[y_{i,C,256,k}] - \mathbb{E}[y_{i,C,0,k}]) = (\beta_2 + \Gamma_{256}) - \beta_2 = \Gamma_{256}
+\end{equation}
+Because the experimental design evaluates every problem instance $i$ under all four condition-by-checkpoint cells with balanced sample size $K=16$, the OLS estimator for $\Gamma_{256}$ is algebraically identical to the sample double-difference of cell means:
+\begin{equation}
+\hat{\Gamma}_{256} = (\hat{\mu}_{R,256} - \hat{\mu}_{R,0}) - (\hat{\mu}_{C,256} - \hat{\mu}_{C,0}) = 0.320485 - 0.202919 = \mathbf{+0.117566}
+\end{equation}
+
+\section{Decontamination Protocol & Operator Catalog}
+Solutions from MATH-500 were segmented into distinct reasoning deductions. To ensure structural recoverability and invalidity:
+\begin{enumerate}
+    \item \textbf{OP\_CONSTANT\_PERTURB ($N=161$)}: Modifies an intermediate arithmetic constant while preserving equation structure (e.g., $3x + 4 = 19 \implies 3x = 12$).
+    \item \textbf{OP\_SIGN\_FLIP ($N=143$)}: Inverts a sign in an algebraic manipulation (e.g., $x^2 - 5x + 6 = 0 \implies x^2 + 5x + 6 = 0$).
+    \item \textbf{OP\_FRACTION\_FLIP ($N=84$)}: Inverts a fraction within a denominator or summation (e.g., $\frac{1}{n^3} \implies \frac{n^3}{1}$).
+\end{enumerate}
+
+\section{Verification Oracles}
+All evaluations use a deterministic Python verification harness coupling SymPy 1.13 with a LaTeX boxed expression extractor. The oracle verifies symbolic equivalence by expanding and simplifying algebraic differences:
+\begin{equation}
+\text{Verify}(A_{\text{pred}}, A^*) = \mathbb{I}\left(\text{simplify}(A_{\text{pred}} - A^*) = 0\right)
+\end{equation}
+Zero neural evaluators or prompt-based judges were utilized.
+
+\end{document}

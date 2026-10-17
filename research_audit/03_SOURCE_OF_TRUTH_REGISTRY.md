@@ -1,0 +1,33 @@
+# StateShift Master Source-of-Truth Registry & Evidentiary Claim Ledger
+
+**Audit Date**: October 18, 2026  
+**Auditor**: Lead ML Research & Statistical Integrity Agent  
+**Standard**: 100% Cryptographic Traceability · Zero Unsubstantiated Assertions  
+**Classification Schema**: `VERIFIED`, `REPRODUCED`, `HISTORICAL`, `PARTIALLY_VERIFIED`, `UNRESOLVED`, `CONTRADICTED`  
+
+---
+
+## 1. Evidentiary Ledger of Significant Research Claims
+
+| Claim ID | Exact Claim | File Containing Claim | Supporting Result / Experiment | Supporting Implementation | Relevant Commit | Reproduction Status | Contradictory Evidence & Context | Confidence | Classification |
+|:---:|:---|:---|:---|:---|:---:|:---:|:---|:---:|:---:|
+| **C1** | Terminal Recovery Interaction Contrast Gamma_256 = +0.1176 (+11.76 percentage points) | `website_clone/artifacts/endpoint/controlled_endpoint_outcomes.csv` | Confirmatory endpoint trial on MATH-500 (N=454, K=16, 29,056 rollouts) | `stateshift/statistics/metrics.py (calculate_interaction_contrast)` | `8ac7a67` | **REPRODUCED** | Historical preliminary report cited '+28.8 pp' from an early code-gen pilot without control drift subtraction; draft notes incorrectly recorded '-6.2%' due to reversed subtraction order. | **VERY_HIGH** | `VERIFIED` |
+| **C2** | Problem-blocked bootstrap 95% Confidence Interval for Gamma_256 is [+0.0955, +0.1400] | `website_clone/artifacts/endpoint/controlled_endpoint_outcomes.csv` | Problem-blocked bootstrap (B=10,000 resampling clusters of pair_id) | `stateshift/statistics/bootstrap.py (blocked_bootstrap_ci)` | `8ac7a67` | **REPRODUCED** | None. Naive unblocked bootstrap produces artificially tight CI [+0.0988, +0.1362], which is invalid due to intra-problem correlation. | **VERY_HIGH** | `REPRODUCED` |
+| **C3** | Strict Decontamination Subset (N=388) yields Gamma_256,Strict = +0.1160 [95% CI: +0.0913, +0.1408] | `website_clone/artifacts/endpoint/strict_decontamination_subset.csv` | Subset sensitivity analysis removing 66 borderline/adversarially overlapping items | `stateshift/statistics/metrics.py` | `8ac7a67` | **REPRODUCED** | None. Demonstrates that effect is not driven by training set leakage or item contamination. | **VERY_HIGH** | `VERIFIED` |
+| **C4** | Early Emergence at Step 32: Gamma_32 = +0.0333 (+3.33 percentage points) | `website_clone/artifacts/trajectory/nine_checkpoint_trajectory.csv` | Secondary 9-checkpoint longitudinal trajectory evaluation | `stateshift/statistics/metrics.py` | `64476fc` | **REPRODUCED** | Unadjusted p-value is 0.019 (statistically significant at alpha=0.05), but Bonferroni-adjusted p-value across 8 post-baseline evaluations is 0.076 (95% CI [-0.0100, +0.0789] crosses zero). | **HIGH_WITH_CAVEAT** | `PARTIALLY_VERIFIED` |
+| **C5** | Natural Error Incidence (NEI) = 18.19% across unperturbed reasoning rollouts | `website_clone/artifacts/natural_recovery/natural_error_episodes.csv` | 3,200 unperturbed greedy/low-temp rollouts on MATH-500 | `stateshift/natural_recovery/detector.py` | `8ac7a67` | **REPRODUCED** | Exactly 582 error episodes detected out of 3,200 rollouts (582/3200 = 18.1875%). | **VERY_HIGH** | `VERIFIED` |
+| **C6** | Natural Recovery Rate (NRR) = 30.93% following an endogenous error episode | `website_clone/artifacts/natural_recovery/natural_recovery_episodes.csv` | Longitudinal trace tracking of 582 endogenous error episodes | `stateshift/natural_recovery/detector.py` | `8ac7a67` | **REPRODUCED** | Exactly 180 out of 582 errored rollouts autonomously corrected to the exact ground truth (180/582 = 30.9278%). | **VERY_HIGH** | `VERIFIED` |
+| **C7** | Historical Technical Report Claim: '+28.8 percentage points recovery effect' | `stateshift_all_documents/04_PROJECT_REPORTS_AND_CLAIM_BOUNDARIES/STATESHIFT_TECHNICAL_REPORT.md` | Exploratory pilot study on HumanEval/MBPP code synthesis | `Precursor recovery_eval scripts` | `Pre-Phase1G` | **SUPERSEDED** | Evaluated raw errored pass rate (8.4% -> 37.2% = +28.8 pp) without subtracting control drift (Delta_C). Confounded with general capability gain. Replaced by confirmatory MATH-500 design. | **SUPERSEDED** | `HISTORICAL` |
+| **C8** | Historical Draft Claim: '-6.2% Difference-in-Differences recovery' | `stateshift_all_documents/03_AUDITS_AND_RED_TEAMING/20_STATESHIFT_SIGN_RECONCILIATION.md` | Early manual calculation draft | `Draft scratchpad` | `N/A` | **REFUTED** | Caused by reversing subtraction terms: Delta_C (0.2029) - Delta_R (0.3205) = -0.1176. Audited and formally refuted in 20_STATESHIFT_SIGN_RECONCILIATION.md. | **REFUTED** | `CONTRADICTED` |
+| **C9** | Longitudinal Trajectory exhibits Strict Monotonic Recovery Growth across all 9 checkpoints | `website_clone/artifacts/trajectory/nine_checkpoint_trajectory.csv` | Intermediate checkpoints t in {0, 32, 64, 96, 128, 160, 192, 224, 256} | `stateshift/trajectory/order_restricted.py` | `64476fc` | **PARTIALLY_REFUTED** | Strict pairwise monotonicity is violated: Gamma_160 (0.0598) < Gamma_128 (0.0748), and Gamma_224 (0.0950) < Gamma_192 (0.0976). Isotonic regression (PAVA) confirms monotonic envelope (p < 0.001), but point estimates fluctuate due to intermediate sample size (K=2/3). | **MODERATE_REFINED** | `PARTIALLY_VERIFIED` |
+| **C10** | Historical Technical Report Claim: '29,056 rollouts evaluated across 16 checkpoints' | `stateshift_all_documents/04_PROJECT_REPORTS_AND_CLAIM_BOUNDARIES/STATESHIFT_TECHNICAL_REPORT.md` | Historical documentation typo/conflation | `N/A` | `Pre-Phase1J` | **REFUTED_CONFLATION** | The 29,056 rollouts come from 454 problems * 16 replications per cell * 2 arms * 2 endpoints (Step 0 and Step 256). The author accidentally conflated K=16 replications with checkpoint count. Exactly 9 checkpoints were evaluated longitudinally. | **REFUTED_TYPO** | `CONTRADICTED` |
+
+---
+
+## 2. Evidentiary Hierarchy & Reconciled Synthesis
+
+When evaluating claims in future research or submissions:
+1. **Cryptographic Level 1 Empirical Data Governs**: All numbers must match the recomputed values from `controlled_endpoint_outcomes.csv` ($N=454, K=16, 29,056$ rows).
+2. **Interaction Contrast ($\Gamma_t$) Supersedes Raw Recovery**: Uncontrolled gain ($\Delta_R = +32.05$ pp) is scientifically invalid because it incorporates $+20.29$ pp general model improvement. Only the difference $\Gamma_{256} = +11.76$ pp is defensible.
+3. **Multiple Testing Transparency**: Step 32 early emergence ($\Gamma_{32} = +0.0333$) must be reported alongside both unadjusted ($p=0.019$) and Bonferroni-adjusted ($p=0.076$) statistics.
+4. **Trajectory Realism**: The paper must explicitly acknowledge sampling fluctuations at steps 160 and 224 rather than claiming rigid pairwise monotonicity.

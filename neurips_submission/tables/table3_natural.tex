@@ -1,0 +1,13 @@
+\begin{table}[t]
+\centering
+\caption{Study B Natural Post-Error Recovery Metrics ($N=200, K=16, 3,200$ Rollouts).}
+\label{tab:natural}
+\begin{tabular}{lcccc}
+\toprule
+Metric & Event Count & Total Denominator & Rate (\%) & 95\% Blocked Bootstrap CI \\
+\midrule
+Natural Error Incidence ($\text{NEI}$) & 582 & 3,200 rollouts & $18.19\%$ & $[16.84\%, 19.50\%]$ \\
+Natural Post-Error Recovery ($\text{NRR}$) & 180 & 582 error episodes & \textbf{$30.93\%$} & \textbf{$[27.19\%, 34.82\%]$} \\
+\bottomrule
+\end{tabular}
+\end{table}
