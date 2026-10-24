@@ -1,0 +1,302 @@
+canonical_id,line_index,exp_id,problem_id,model_id,condition,prefix_type,temperature,seed,prompt_length_chars,generated_tokens,latency_seconds,tokens_per_second,has_boxed_answer,predicted_answer,gold_answer,is_correct,is_truncated,is_duplicate_execution,sha256_sig
+gen_stage_a_0000_15622577,0,A01_determinism_t0,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,453,150,1.5087,99.42,False,1,p - q,False,True,False,156225774e3c17d4
+gen_stage_a_0001_15622577,1,A01_determinism_t0,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,453,150,1.3499,111.12,False,1,p - q,False,True,True,156225774e3c17d4
+gen_stage_a_0002_15622577,2,A01_determinism_t0,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,453,150,1.3573,110.52,False,1,p - q,False,True,True,156225774e3c17d4
+gen_stage_a_0003_773de74f,3,A01_stochastic_same_seed_1,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.7,42,453,150,1.4019,107.0,False,1,p - q,False,True,False,773de74f985645b7
+gen_stage_a_0004_773de74f,4,A01_stochastic_same_seed_2,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.7,42,453,150,1.3698,109.5,False,1,p - q,False,True,True,773de74f985645b7
+gen_stage_a_0005_084102a8,5,A01_stochastic_diff_seed,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.7,99,453,150,1.3664,109.78,False,1,p - q,False,True,False,084102a88ee05367
+gen_stage_a_0006_bfabdbf1,6,A02_zero_shot,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,453,256,2.2491,113.83,False,1,p - q,False,True,False,bfabdbf1f9eae966
+gen_stage_a_0007_b0b56f8b,7,A03_control_clean,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,550,256,2.2373,114.43,False,1,p - q,False,True,False,b0b56f8bf347f19c
+gen_stage_a_0008_6b46c3d5,8,A03_recovery_corrupt,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,582,256,2.2512,113.72,False,1,p - q,False,True,False,6b46c3d5f8d90553
+gen_stage_a_0009_dd3935ba,9,A02_zero_shot,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,349,256,2.3049,111.07,False,-2,\frac{14}{3},False,True,False,dd3935ba3407bd5c
+gen_stage_a_0010_f14e2335,10,A03_control_clean,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,541,256,2.2583,113.36,False,-2,\frac{14}{3},False,True,False,f14e23358a73b76f
+gen_stage_a_0011_13ad3fa9,11,A03_recovery_corrupt,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,542,256,2.2683,112.86,False,-2,\frac{14}{3},False,True,False,13ad3fa9d4bc54f1
+gen_stage_a_0012_34cacdd5,12,A02_zero_shot,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,290,256,2.1313,120.11,False,2,9,False,True,False,34cacdd576c08ba2
+gen_stage_a_0013_9c051b3a,13,A03_control_clean,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,364,256,2.2118,115.74,False,2,9,False,True,False,9c051b3a8f63568a
+gen_stage_a_0014_42a60def,14,A03_recovery_corrupt,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,399,256,2.1137,121.11,False,2,9,False,True,False,42a60def4e44c8b0
+gen_stage_a_0015_72f2ee9a,15,A02_zero_shot,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,413,256,2.1026,121.75,False,6,42,False,True,False,72f2ee9a512f39a5
+gen_stage_a_0016_2bac02e5,16,A03_control_clean,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,770,253,2.2162,114.16,True,6,42,False,False,False,2bac02e5896c65e6
+gen_stage_a_0017_8ecaa09e,17,A03_recovery_corrupt,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,830,256,2.2553,113.51,False,3,42,False,True,False,8ecaa09efa9f103a
+gen_stage_a_0018_5ce83c30,18,A02_zero_shot,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,340,256,2.1141,121.09,False,3,27,False,True,False,5ce83c300cf6a3da
+gen_stage_a_0019_bfccaf2c,19,A03_control_clean,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,477,256,2.1346,119.93,False,3,27,False,True,False,bfccaf2c05868831
+gen_stage_a_0020_7c247f96,20,A03_recovery_corrupt,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,529,256,2.1593,118.56,False,3,27,False,True,False,7c247f963ec9aec0
+gen_stage_a_0021_8ca0f84c,21,A02_zero_shot,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,428,256,2.1736,117.78,False,3,90^\circ,False,True,False,8ca0f84cc1ab155c
+gen_stage_a_0022_4e559d9f,22,A03_control_clean,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,511,256,2.2607,113.24,False,2,90^\circ,False,True,False,4e559d9f05f94ad9
+gen_stage_a_0023_7a67235d,23,A03_recovery_corrupt,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,566,256,2.1881,116.99,False,3,90^\circ,False,True,False,7a67235dbd1f58e1
+gen_stage_a_0024_5812fbac,24,A02_zero_shot,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,357,256,2.1212,120.69,False,-4,3\sqrt{13},False,True,False,5812fbac2c3ce776
+gen_stage_a_0025_75120571,25,A03_control_clean,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,566,256,2.3274,109.99,False,-4,3\sqrt{13},False,True,False,7512057196e073e9
+gen_stage_a_0026_eec00267,26,A03_recovery_corrupt,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,625,256,2.6505,96.59,False,-4,3\sqrt{13},False,True,False,eec002670829613d
+gen_stage_a_0027_4515fc54,27,A02_zero_shot,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,748,256,2.2125,115.7,False,2,4,False,True,False,4515fc54768f71b6
+gen_stage_a_0028_ca57a6ed,28,A03_control_clean,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,1034,256,2.4286,105.41,False,,4,False,True,False,ca57a6edd26de642
+gen_stage_a_0029_2b61397b,29,A03_recovery_corrupt,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1098,256,2.417,105.92,False,,4,False,True,False,2b61397bd6019929
+gen_stage_a_0030_438ca162,30,A02_zero_shot,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,335,256,2.2027,116.22,False,,2220,False,True,False,438ca1625a832858
+gen_stage_a_0031_b6fb7935,31,A03_control_clean,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,463,256,2.39,107.11,False,,2220,False,True,False,b6fb7935852165e9
+gen_stage_a_0032_efcd2e9a,32,A03_recovery_corrupt,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,532,256,2.1892,116.94,False,,2220,False,True,False,efcd2e9a945e07be
+gen_stage_a_0033_bc77ace6,33,A02_zero_shot,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,357,256,2.2998,111.31,False,2,\frac{3}{56},False,True,False,bc77ace6bc23120d
+gen_stage_a_0034_a38099e6,34,A03_control_clean,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,499,256,2.22,115.32,False,0,\frac{3}{56},False,True,False,a38099e68643c632
+gen_stage_a_0035_fab5ec35,35,A03_recovery_corrupt,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,539,256,2.2149,115.58,False,2,\frac{3}{56},False,True,False,fab5ec35dd3d40d5
+gen_stage_a_0036_726fb558,36,A02_zero_shot,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,451,256,2.1467,119.25,False,280,284,False,True,False,726fb558c05547ef
+gen_stage_a_0037_58c4b10f,37,A03_control_clean,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,518,256,2.1975,116.49,False,2,284,False,True,False,58c4b10fdb37539c
+gen_stage_a_0038_8f6324d7,38,A03_recovery_corrupt,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,550,256,2.2546,113.54,False,2,284,False,True,False,8f6324d7d3538012
+gen_stage_a_0039_6e861a26,39,A02_zero_shot,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,620,256,2.2317,114.71,False,3,5,False,True,False,6e861a26b15a08ed
+gen_stage_a_0040_c3fe9640,40,A03_control_clean,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,779,242,2.1663,111.71,True,5,5,True,False,False,c3fe96406f712402
+gen_stage_a_0041_d5337ed5,41,A03_recovery_corrupt,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,817,256,2.2802,112.27,False,3,5,False,True,False,d5337ed568055d5b
+gen_stage_a_0042_1a234601,42,A02_zero_shot,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,490,256,2.1635,118.32,False,0,\sqrt{51},False,True,False,1a23460177659cd5
+gen_stage_a_0043_2bc6b318,43,A03_control_clean,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,586,256,2.4066,106.38,False,0.7,\sqrt{51},False,True,False,2bc6b318c2058538
+gen_stage_a_0044_ebb6bd56,44,A03_recovery_corrupt,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,586,256,2.3286,109.94,False,0.7,\sqrt{51},False,True,False,ebb6bd56ae8fff47
+gen_stage_a_0045_264fcad6,45,A02_zero_shot,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,633,256,2.3341,109.68,False,2,6 - 5i,False,True,False,264fcad6100acf25
+gen_stage_a_0046_a81fbe82,46,A03_control_clean,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,746,256,2.2452,114.02,False,2,6 - 5i,False,True,False,a81fbe82494b7fe1
+gen_stage_a_0047_58a69ddd,47,A03_recovery_corrupt,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,806,256,2.6635,96.11,False,2,6 - 5i,False,True,False,58a69ddd5fdeb0c5
+gen_stage_a_0048_9a3f9980,48,A02_zero_shot,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,272,256,2.2783,112.36,False,1,-50,False,True,False,9a3f9980a077822f
+gen_stage_a_0049_caacfca7,49,A03_control_clean,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,368,256,2.4103,106.21,False,1,-50,False,True,False,caacfca70bd1be2a
+gen_stage_a_0050_3266e198,50,A03_recovery_corrupt,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,420,256,2.6378,97.05,False,-50,-50,True,True,False,3266e1987bf0facd
+gen_stage_a_0051_928630ea,51,A02_zero_shot,math500_018,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,583,256,2.4868,102.94,False,,28,False,True,False,928630ead2cd5e04
+gen_stage_a_0052_de5b901e,52,A03_control_clean,math500_018,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,965,256,2.469,103.69,False,180,28,False,True,False,de5b901e24b8167b
+gen_stage_a_0053_3f0b5d76,53,A03_recovery_corrupt,math500_018,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1020,256,2.3574,108.59,False,180,28,False,True,False,3f0b5d7671c95077
+gen_stage_a_0054_a14e377d,54,A02_zero_shot,math500_019,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,375,256,2.1842,117.2,False,0,3,False,True,False,a14e377db91c31ea
+gen_stage_a_0055_1acf4694,55,A03_control_clean,math500_019,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,511,256,2.1988,116.43,False,0,3,False,True,False,1acf469407d9ebfc
+gen_stage_a_0056_40b93faa,56,A03_recovery_corrupt,math500_019,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,570,256,2.2869,111.94,False,0,3,False,True,False,40b93faa70bf405d
+gen_stage_a_0057_0b47ae6d,57,A02_zero_shot,math500_020,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,258,126,1.2306,102.39,True,6 + 9i,6+9i,True,False,False,0b47ae6d2b6484cf
+gen_stage_a_0058_7300de70,58,A03_control_clean,math500_020,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,377,127,1.2114,104.84,True,6 + 9i,6+9i,True,False,False,7300de701d37e889
+gen_stage_a_0059_1264349f,59,A03_recovery_corrupt,math500_020,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,441,129,1.1872,108.66,True,6 + 9i,6+9i,True,False,False,1264349fe387b45e
+gen_stage_a_0060_4a595da2,60,A02_zero_shot,math500_021,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,326,256,2.1837,117.23,False,4.881,13535,False,True,False,4a595da2008ecd06
+gen_stage_a_0061_21de79ee,61,A03_control_clean,math500_021,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,420,256,2.8701,89.19,False,,13535,False,True,False,21de79eeedb9b696
+gen_stage_a_0062_35cccb38,62,A03_recovery_corrupt,math500_021,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,489,256,2.6502,96.6,False,0,13535,False,True,False,35cccb3837c3dba9
+gen_stage_a_0063_37376178,63,A02_zero_shot,math500_022,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,697,256,2.6192,97.74,False,,5,False,True,False,373761788b704193
+gen_stage_a_0064_053e2b68,64,A03_control_clean,math500_022,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,958,256,2.6191,97.74,False,,5,False,True,False,053e2b6828c258f8
+gen_stage_a_0065_47217155,65,A03_recovery_corrupt,math500_022,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,998,256,2.6753,95.69,False,12,5,False,True,False,47217155c8a03bc3
+gen_stage_a_0066_eac122d6,66,A02_zero_shot,math500_023,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,310,256,2.7428,93.33,False,11,x=5,False,True,False,eac122d6e156b241
+gen_stage_a_0067_7cf9894a,67,A03_control_clean,math500_023,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,487,256,2.5592,100.03,False,11,x=5,False,True,False,7cf9894a363f7c23
+gen_stage_a_0068_e8b73334,68,A03_recovery_corrupt,math500_023,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,519,256,2.4287,105.4,False,11,x=5,False,True,False,e8b73334c4f62024
+gen_stage_a_0069_f46ee6bf,69,A02_zero_shot,math500_024,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,665,256,2.7794,92.11,False,20000,10,False,True,False,f46ee6bfcdc8410d
+gen_stage_a_0070_46b89c70,70,A03_control_clean,math500_024,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,1060,256,3.0826,83.05,False,1,10,False,True,False,46b89c70c91ba63f
+gen_stage_a_0071_22111c1d,71,A03_recovery_corrupt,math500_024,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1061,256,2.7263,93.9,False,20000,10,False,True,False,22111c1dd9f95c5d
+gen_stage_a_0072_bc56ca7c,72,A02_zero_shot,math500_025,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,467,256,2.6421,96.89,False,0,"1,-2",False,True,False,bc56ca7ce91f7cf3
+gen_stage_a_0073_e47cf305,73,A03_control_clean,math500_025,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,528,256,2.687,95.27,False,1,"1,-2",False,True,False,e47cf3059ad2cfa9
+gen_stage_a_0074_34491f2c,74,A03_recovery_corrupt,math500_025,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,563,256,2.5066,102.13,False,0,"1,-2",False,True,False,34491f2c39b251b9
+gen_stage_a_0075_56a0fb5d,75,A02_zero_shot,math500_026,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,455,256,2.5719,99.54,False,,144,False,True,False,56a0fb5ded837060
+gen_stage_a_0076_ddedaaf0,76,A03_control_clean,math500_026,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,696,256,2.8963,88.39,False,,144,False,True,False,ddedaaf029694ada
+gen_stage_a_0077_3fe0474b,77,A03_recovery_corrupt,math500_026,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,756,256,2.9261,87.49,False,,144,False,True,False,3fe0474b5e3e4c20
+gen_stage_a_0078_3f09be88,78,A02_zero_shot,math500_027,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,none,0.0,42,507,256,3.0345,84.36,False,119,78,False,True,False,3f09be88b48f05f9
+gen_stage_a_0079_5067feb1,79,A03_control_clean,math500_027,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,control,0.0,42,934,256,2.7064,94.59,False,18,78,False,True,False,5067feb1b28a69e0
+gen_stage_a_0080_ca976653,80,A03_recovery_corrupt,math500_027,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,986,256,3.0036,85.23,False,162,78,False,True,False,ca9766539975db31
+gen_stage_a_0081_7ae10c95,81,A04_Forced_Restart,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,644,256,2.9673,86.27,False,1,p - q,False,True,False,7ae10c95cc74d7e4
+gen_stage_a_0082_3e4cb9ce,82,A04_Forced_Repair,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,652,256,3.1075,82.38,False,1,p - q,False,True,False,3e4cb9cee3c50598
+gen_stage_a_0083_c43c8653,83,A04_State_Preserving,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,626,256,3.0983,82.63,False,1,p - q,False,True,False,c43c8653ff791d0d
+gen_stage_a_0084_e6ce4efc,84,A04_Forced_Restart,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,604,256,2.9498,86.79,False,-2,\frac{14}{3},False,True,False,e6ce4efc6dc9c308
+gen_stage_a_0085_412c6361,85,A04_Forced_Repair,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,612,256,3.1307,81.77,False,-2,\frac{14}{3},False,True,False,412c6361ea5356b6
+gen_stage_a_0086_32022587,86,A04_State_Preserving,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,586,256,2.735,93.6,False,-2,\frac{14}{3},False,True,False,320225874fe2712b
+gen_stage_a_0087_a6ab5a19,87,A04_Forced_Restart,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,461,256,2.6925,95.08,False,2,9,False,True,False,a6ab5a19532c4b95
+gen_stage_a_0088_adc5fc99,88,A04_Forced_Repair,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,469,237,2.4925,95.09,True,9,9,True,False,False,adc5fc99aa4069c3
+gen_stage_a_0089_3f022e46,89,A04_State_Preserving,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,443,193,2.0509,94.11,True,9,9,True,False,False,3f022e467f905e7f
+gen_stage_a_0090_5c6e1b1d,90,A04_Forced_Restart,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,892,256,3.1121,82.26,False,6,42,False,True,False,5c6e1b1d209b5c31
+gen_stage_a_0091_27004a7c,91,A04_Forced_Repair,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,900,256,3.1893,80.27,False,6,42,False,True,False,27004a7cc8bf0bf1
+gen_stage_a_0092_04d86f6e,92,A04_State_Preserving,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,874,256,2.9319,87.32,False,6,42,False,True,False,04d86f6e6c48fa1c
+gen_stage_a_0093_1115b033,93,A04_Forced_Restart,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,591,256,2.6968,94.93,False,3,27,False,True,False,1115b033ac239a94
+gen_stage_a_0094_f7106e87,94,A04_Forced_Repair,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,599,256,2.8274,90.54,False,3,27,False,True,False,f7106e87b7157307
+gen_stage_a_0095_fc14764e,95,A04_State_Preserving,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,573,256,2.734,93.63,False,3,27,False,True,False,fc14764e4bfada65
+gen_stage_a_0096_bc9d1485,96,A04_Forced_Restart,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,628,256,2.6332,97.22,False,3,90^\circ,False,True,False,bc9d1485b8aa9f97
+gen_stage_a_0097_4203c9f8,97,A04_Forced_Repair,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,636,256,2.4255,105.55,False,3,90^\circ,False,True,False,4203c9f8c62f2bac
+gen_stage_a_0098_2ff24317,98,A04_State_Preserving,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,610,256,2.2947,111.56,False,3,90^\circ,False,True,False,2ff24317b387a2a9
+gen_stage_a_0099_dd0d075a,99,A04_Forced_Restart,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,687,256,2.3499,108.94,False,-4,3\sqrt{13},False,True,False,dd0d075a35b89846
+gen_stage_a_0100_a2baefa6,100,A04_Forced_Repair,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,695,256,2.6252,97.52,False,-4,3\sqrt{13},False,True,False,a2baefa6451160f8
+gen_stage_a_0101_6e485755,101,A04_State_Preserving,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,669,228,2.9876,76.31,True,3\sqrt{13},3\sqrt{13},True,False,False,6e48575598577564
+gen_stage_a_0102_6cbe5fee,102,A04_Forced_Restart,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,1160,256,4.8976,52.27,False,121,4,False,True,False,6cbe5fee6d414e2a
+gen_stage_a_0103_a04304b8,103,A04_Forced_Repair,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,1168,256,3.0582,83.71,False,2,4,False,True,False,a04304b8de900ee2
+gen_stage_a_0104_c4e8ec52,104,A04_State_Preserving,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,1142,256,2.7072,94.56,False,,4,False,True,False,c4e8ec5245d41b14
+gen_stage_a_0105_58c9143a,105,A04_Forced_Restart,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,594,256,2.7933,91.65,False,,2220,False,True,False,58c9143a193394cd
+gen_stage_a_0106_821c6326,106,A04_Forced_Repair,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,602,256,2.4433,104.78,False,,2220,False,True,False,821c6326d027e726
+gen_stage_a_0107_a082226b,107,A04_State_Preserving,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,576,256,2.356,108.66,False,12,2220,False,True,False,a082226b7c5bd7cb
+gen_stage_a_0108_bd2199f9,108,A04_Forced_Restart,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,601,256,2.5321,101.1,False,0,\frac{3}{56},False,True,False,bd2199f9f117f596
+gen_stage_a_0109_2f52c5a2,109,A04_Forced_Repair,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,609,256,2.5605,99.98,False,0,\frac{3}{56},False,True,False,2f52c5a2ac1e4890
+gen_stage_a_0110_1387352f,110,A04_State_Preserving,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,583,256,2.7636,92.63,False,2,\frac{3}{56},False,True,False,1387352f36e234ed
+gen_stage_a_0111_c274dd89,111,A04_Forced_Restart,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,612,256,2.7378,93.5,False,2,284,False,True,False,c274dd89189d6755
+gen_stage_a_0112_30600538,112,A04_Forced_Repair,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,620,256,2.8008,91.4,False,210,284,False,True,False,306005382fa80e5f
+gen_stage_a_0113_c37ac950,113,A04_State_Preserving,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,594,256,2.9446,86.94,False,2,284,False,True,False,c37ac9500d5be531
+gen_stage_a_0114_3a009d69,114,A04_Forced_Restart,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,879,236,2.8929,81.58,True,5,5,True,False,False,3a009d692c90c0af
+gen_stage_a_0115_51eb0bf9,115,A04_Forced_Repair,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,887,256,3.0189,84.8,False,9,5,False,True,False,51eb0bf930bbcfb4
+gen_stage_a_0116_c49f44d0,116,A04_State_Preserving,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,861,233,2.8426,81.97,True,5,5,True,False,False,c49f44d0dfb5accf
+gen_stage_a_0117_fdf2c194,117,A04_Forced_Restart,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,648,256,2.9936,85.51,False,0.7,\sqrt{51},False,True,False,fdf2c194e1528c72
+gen_stage_a_0118_da590dbb,118,A04_Forced_Repair,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,656,256,2.944,86.96,False,0.7,\sqrt{51},False,True,False,da590dbb6d3bfae2
+gen_stage_a_0119_f6916cc3,119,A04_State_Preserving,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,630,256,3.289,77.84,False,0.7,\sqrt{51},False,True,False,f6916cc3e110ac62
+gen_stage_a_0120_d98e39e0,120,A04_Forced_Restart,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,868,256,3.1839,80.41,False,2,6 - 5i,False,True,False,d98e39e02dc6cfdc
+gen_stage_a_0121_27683885,121,A04_Forced_Repair,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,876,256,3.0642,83.55,False,2,6 - 5i,False,True,False,2768388556303295
+gen_stage_a_0122_37853f9c,122,A04_State_Preserving,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,850,256,3.1014,82.54,False,2,6 - 5i,False,True,False,37853f9cb13ccd53
+gen_stage_a_0123_8ca68482,123,A04_Forced_Restart,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_restart,recovery,0.0,42,482,256,2.9696,86.21,False,1,-50,False,True,False,8ca684825ad4c515
+gen_stage_a_0124_30af2c39,124,A04_Forced_Repair,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,490,256,2.9726,86.12,False,,-50,False,True,False,30af2c39d8b59080
+gen_stage_a_0125_eb6661d4,125,A04_State_Preserving,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,464,256,2.9775,85.98,False,-1,-50,False,True,False,eb6661d447185593
+gen_stage_a_0126_87b5ce5e,126,A05_valid_check,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,586,80,1.1367,70.38,False,1,p - q,False,False,False,87b5ce5e0ddf4a9e
+gen_stage_a_0127_9635784d,127,A05_invalid_check,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,618,80,1.2088,66.18,False,1,p - q,False,False,False,9635784da4f9a5cb
+gen_stage_a_0128_84dbc150,128,A05_valid_check,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,577,80,1.1303,70.78,False,-2,\frac{14}{3},False,False,False,84dbc150591a1714
+gen_stage_a_0129_7ffb8161,129,A05_invalid_check,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,578,80,1.1691,68.43,False,-2,\frac{14}{3},False,False,False,7ffb81617dcc03b7
+gen_stage_a_0130_ede254da,130,A05_valid_check,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,400,80,1.086,73.67,False,2,9,False,False,False,ede254da7e0f2cb1
+gen_stage_a_0131_7a8bb13c,131,A05_invalid_check,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,435,78,1.0403,74.98,False,,9,False,False,False,7a8bb13ced8f3b7e
+gen_stage_a_0132_e3363d67,132,A05_valid_check,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,806,80,1.128,70.92,False,,42,False,False,False,e3363d67f7eca243
+gen_stage_a_0133_36f83d01,133,A05_invalid_check,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,866,80,1.1111,72.0,False,,42,False,False,False,36f83d011816ff4a
+gen_stage_a_0134_cc221edc,134,A05_valid_check,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,513,80,1.1009,72.67,False,6561,27,False,False,False,cc221edc05998d4f
+gen_stage_a_0135_ccb0de7b,135,A05_invalid_check,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,565,80,1.0884,73.5,False,,27,False,False,False,ccb0de7b9369b241
+gen_stage_a_0136_d75a21bd,136,A05_valid_check,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,547,80,1.079,74.14,False,3,90^\circ,False,False,False,d75a21bdc5ceab3b
+gen_stage_a_0137_66f000f8,137,A05_invalid_check,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,602,80,1.1201,71.42,False,3,90^\circ,False,False,False,66f000f87c138aef
+gen_stage_a_0138_f3f78a28,138,A05_valid_check,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,602,80,1.0984,72.83,True,,3\sqrt{13},False,False,False,f3f78a280663c61a
+gen_stage_a_0139_b6d8a774,139,A05_invalid_check,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,661,76,1.1427,66.51,False,,3\sqrt{13},False,False,False,b6d8a7745540e077
+gen_stage_a_0140_248c31be,140,A05_valid_check,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,1070,80,1.2544,63.77,False,,4,False,False,False,248c31bedd375dea
+gen_stage_a_0141_8d45505e,141,A05_invalid_check,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,1134,80,1.2221,65.46,False,,4,False,False,False,8d45505ecec9631a
+gen_stage_a_0142_01a63c60,142,A05_valid_check,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,499,80,1.0813,73.98,False,,2220,False,False,False,01a63c606a235ae3
+gen_stage_a_0143_b504576d,143,A05_invalid_check,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,568,80,1.0343,77.35,False,,2220,False,False,False,b504576db92dcdb8
+gen_stage_a_0144_abc110af,144,A05_valid_check,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,535,80,1.1728,68.21,False,2,\frac{3}{56},False,False,False,abc110af2b9b19a0
+gen_stage_a_0145_60076191,145,A05_invalid_check,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,575,80,1.1288,70.87,False,2,\frac{3}{56},False,False,False,6007619116c1086f
+gen_stage_a_0146_146de947,146,A05_valid_check,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,554,80,1.101,72.66,False,,284,False,False,False,146de947889d261f
+gen_stage_a_0147_e7ab5bb5,147,A05_invalid_check,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,586,80,1.1383,70.28,False,2,284,False,False,False,e7ab5bb59926faeb
+gen_stage_a_0148_df8ee076,148,A05_valid_check,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,815,80,1.2378,64.63,False,,5,False,False,False,df8ee0763122a78a
+gen_stage_a_0149_261dac7a,149,A05_invalid_check,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,853,80,1.3092,61.1,False,,5,False,False,False,261dac7a4bd0b0cf
+gen_stage_a_0150_9aef8066,150,A05_valid_check,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,622,80,1.168,68.49,False,,\sqrt{51},False,False,False,9aef80665ec38caf
+gen_stage_a_0151_ee355f07,151,A05_invalid_check,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,622,80,1.1214,71.34,False,,\sqrt{51},False,False,False,ee355f07271e7633
+gen_stage_a_0152_b4f00b6a,152,A05_valid_check,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,782,80,1.2382,64.61,False,2,6 - 5i,False,False,False,b4f00b6ab8b08aab
+gen_stage_a_0153_65576712,153,A05_invalid_check,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,842,80,1.2134,65.93,False,2,6 - 5i,False,False,False,65576712f9511bb9
+gen_stage_a_0154_1b8231d4,154,A05_valid_check,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,control,0.0,42,404,80,1.067,74.98,False,,-50,False,False,False,1b8231d459d81ccf
+gen_stage_a_0155_e4848d84,155,A05_invalid_check,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_detection,recovery,0.0,42,456,80,1.0973,72.91,False,,-50,False,False,False,e4848d843793901d
+gen_stage_a_0156_0c3eb52a,156,A06_localization,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,638,100,1.3306,75.15,False,1,p - q,False,True,False,0c3eb52aead49e7d
+gen_stage_a_0157_a7d5f8b7,157,A06_localization,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,598,100,1.4473,69.09,False,-2,\frac{14}{3},False,True,False,a7d5f8b7af45b150
+gen_stage_a_0158_7b19297c,158,A06_localization,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,455,100,1.4228,70.28,False,2,9,False,True,False,7b19297c07f82ac9
+gen_stage_a_0159_9aa37459,159,A06_localization,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,886,6,0.5427,11.06,False,,42,False,False,False,9aa374599b54bdf6
+gen_stage_a_0160_8df0d2d9,160,A06_localization,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,585,100,1.3524,73.94,False,3,27,False,True,False,8df0d2d90d733dd8
+gen_stage_a_0161_4173c190,161,A06_localization,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,622,100,1.3393,74.67,False,3,90^\circ,False,True,False,4173c19075386e8b
+gen_stage_a_0162_b267882e,162,A06_localization,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,681,79,1.1855,66.64,True,3\sqrt{13},3\sqrt{13},True,False,False,b267882ec1476d93
+gen_stage_a_0163_ddd5c22f,163,A06_localization,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,1154,100,1.4874,67.23,False,,4,False,True,False,ddd5c22fa2807a4a
+gen_stage_a_0164_26ec9d39,164,A06_localization,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,588,100,1.2982,77.03,False,,2220,False,True,False,26ec9d39100dd81f
+gen_stage_a_0165_cbba3536,165,A06_localization,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,595,100,1.3834,72.28,False,2,\frac{3}{56},False,True,False,cbba35361a5bdea4
+gen_stage_a_0166_6ba776f7,166,A06_localization,math500_012,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,606,100,1.4949,66.9,False,2,284,False,True,False,6ba776f7455a5711
+gen_stage_a_0167_9729f058,167,A06_localization,math500_013,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,873,100,1.576,63.45,False,45,5,False,True,False,9729f058c6fd8ae8
+gen_stage_a_0168_643a16f9,168,A06_localization,math500_014,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,642,100,1.4209,70.38,False,0.7,\sqrt{51},False,True,False,643a16f9efe322fe
+gen_stage_a_0169_014459e8,169,A06_localization,math500_015,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,862,100,1.4765,67.73,False,2,6 - 5i,False,True,False,014459e84f3f99f2
+gen_stage_a_0170_ce941996,170,A06_localization,math500_016,mlx-community/Qwen2.5-0.5B-Instruct-4bit,error_localization,recovery,0.0,42,476,100,1.2895,77.55,True,,-50,False,False,False,ce941996d9f5e2b0
+gen_stage_a_0171_37e40e22,171,A12_prompt_v1,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,582,150,1.8453,81.29,False,1,p - q,False,True,False,37e40e22ee730be4
+gen_stage_a_0172_f3a7474c,172,A12_prompt_v2,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,652,150,1.9694,76.17,False,1,p - q,False,True,False,f3a7474c1fd702da
+gen_stage_a_0173_02d3d42f,173,A12_prompt_v3,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,626,150,1.9682,76.21,False,1,p - q,False,True,False,02d3d42fed8818e0
+gen_stage_a_0174_7c353529,174,A12_prompt_v1,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,542,150,1.9885,75.43,False,-2,\frac{14}{3},False,True,False,7c3535291e91fc0b
+gen_stage_a_0175_b7439a98,175,A12_prompt_v2,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,612,150,1.9791,75.79,False,-2,\frac{14}{3},False,True,False,b7439a98dda9a590
+gen_stage_a_0176_d86d6acc,176,A12_prompt_v3,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,586,150,1.9328,77.61,False,-2,\frac{14}{3},False,True,False,d86d6accefe4b55a
+gen_stage_a_0177_ae64eeed,177,A12_prompt_v1,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,399,150,1.8039,83.15,False,2,9,False,True,False,ae64eeed5c4456b9
+gen_stage_a_0178_28608026,178,A12_prompt_v2,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,469,150,1.973,76.03,False,2,9,False,True,False,28608026d327ff53
+gen_stage_a_0179_fbeee9fa,179,A12_prompt_v3,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,443,150,2.0305,73.87,False,2,9,False,True,False,fbeee9fa69ed6f24
+gen_stage_a_0180_a4be009d,180,A12_prompt_v1,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,830,150,2.0666,72.58,False,3,42,False,True,False,a4be009d3c44035f
+gen_stage_a_0181_f9b49018,181,A12_prompt_v2,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,900,150,1.946,77.08,False,,42,False,True,False,f9b4901865b9f3f0
+gen_stage_a_0182_b5dda706,182,A12_prompt_v3,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,874,150,1.9169,78.25,False,,42,False,True,False,b5dda706f36744f5
+gen_stage_a_0183_31650e92,183,A12_prompt_v1,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,529,150,2.002,74.93,False,3,27,False,True,False,31650e92b95b928e
+gen_stage_a_0184_00192760,184,A12_prompt_v2,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,599,150,1.9039,78.79,False,3,27,False,True,False,001927605feda7e7
+gen_stage_a_0185_5326f993,185,A12_prompt_v3,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,573,150,1.8885,79.43,False,3,27,False,True,False,5326f9934940fc2f
+gen_stage_a_0186_48f16982,186,A12_prompt_v1,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,566,150,1.9896,75.39,False,3,90^\circ,False,True,False,48f16982db4ac7df
+gen_stage_a_0187_5890ec45,187,A12_prompt_v2,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,636,150,1.9439,77.16,False,3,90^\circ,False,True,False,5890ec4534a332f0
+gen_stage_a_0188_3c632db8,188,A12_prompt_v3,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,610,150,2.0346,73.72,False,3,90^\circ,False,True,False,3c632db82bae324b
+gen_stage_a_0189_8d434a50,189,A12_prompt_v1,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,625,150,2.0488,73.21,False,,3\sqrt{13},False,True,False,8d434a50dc70b503
+gen_stage_a_0190_39083e4f,190,A12_prompt_v2,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,695,150,1.9947,75.2,False,,3\sqrt{13},False,True,False,39083e4f05bd2c90
+gen_stage_a_0191_728cd37a,191,A12_prompt_v3,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,669,150,2.0136,74.49,False,2,3\sqrt{13},False,True,False,728cd37a26870eb3
+gen_stage_a_0192_fa360e26,192,A12_prompt_v1,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1098,150,2.1436,69.97,False,,4,False,True,False,fa360e260b905ef0
+gen_stage_a_0193_d0bd47a4,193,A12_prompt_v2,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,1168,150,2.2882,65.55,False,2,4,False,True,False,d0bd47a4a5526c8a
+gen_stage_a_0194_43247dd6,194,A12_prompt_v3,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,1142,150,2.1988,68.22,False,,4,False,True,False,43247dd647a5dac0
+gen_stage_a_0195_d427269a,195,A12_prompt_v1,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,532,150,1.8525,80.97,False,,2220,False,True,False,d427269abb40e79d
+gen_stage_a_0196_31c9dc09,196,A12_prompt_v2,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,602,150,1.8729,80.09,False,,2220,False,True,False,31c9dc09e87e61b0
+gen_stage_a_0197_ec802cd3,197,A12_prompt_v3,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,576,150,1.8769,79.92,False,,2220,False,True,False,ec802cd3d022bb48
+gen_stage_a_0198_ba2564f4,198,A12_prompt_v1,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,539,150,2.0004,74.99,False,2,\frac{3}{56},False,True,False,ba2564f4508dab45
+gen_stage_a_0199_37573b7f,199,A12_prompt_v2,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,explicit_local_repair,recovery,0.0,42,609,150,1.9562,76.68,False,0,\frac{3}{56},False,True,False,37573b7f30fc9e03
+gen_stage_a_0200_29d4634f,200,A12_prompt_v3,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,state_preserving_repair,recovery,0.0,42,583,150,1.9094,78.56,False,2,\frac{3}{56},False,True,False,29d4634ff1a9af27
+gen_stage_a_0201_37e40e22,201,A13_temp_0.0,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,582,150,1.8719,80.13,False,1,p - q,False,True,True,37e40e22ee730be4
+gen_stage_a_0202_7c353529,202,A13_temp_0.0,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,542,150,1.8873,79.48,False,-2,\frac{14}{3},False,True,True,7c3535291e91fc0b
+gen_stage_a_0203_ae64eeed,203,A13_temp_0.0,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,399,150,1.7634,85.06,False,2,9,False,True,True,ae64eeed5c4456b9
+gen_stage_a_0204_a4be009d,204,A13_temp_0.0,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,830,150,1.9552,76.72,False,3,42,False,True,True,a4be009d3c44035f
+gen_stage_a_0205_31650e92,205,A13_temp_0.0,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,529,150,1.8338,81.8,False,3,27,False,True,True,31650e92b95b928e
+gen_stage_a_0206_48f16982,206,A13_temp_0.0,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,566,150,1.8352,81.74,False,3,90^\circ,False,True,True,48f16982db4ac7df
+gen_stage_a_0207_8d434a50,207,A13_temp_0.0,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,625,150,1.8326,81.85,False,,3\sqrt{13},False,True,True,8d434a50dc70b503
+gen_stage_a_0208_fa360e26,208,A13_temp_0.0,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1098,150,1.9246,77.94,False,,4,False,True,True,fa360e260b905ef0
+gen_stage_a_0209_d427269a,209,A13_temp_0.0,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,532,150,1.7707,84.71,False,,2220,False,True,True,d427269abb40e79d
+gen_stage_a_0210_ba2564f4,210,A13_temp_0.0,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,539,150,1.9168,78.26,False,2,\frac{3}{56},False,True,True,ba2564f4508dab45
+gen_stage_a_0211_42ca2be4,211,A13_temp_0.3,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,582,150,2.3706,63.27,False,1,p - q,False,True,False,42ca2be4c418cc5f
+gen_stage_a_0212_1df9d9b9,212,A13_temp_0.3,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,542,150,1.8528,80.96,False,2,\frac{14}{3},False,True,False,1df9d9b9ece35109
+gen_stage_a_0213_9436dbf7,213,A13_temp_0.3,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,399,150,1.7602,85.22,False,2,9,False,True,False,9436dbf78a8f7205
+gen_stage_a_0214_954cb089,214,A13_temp_0.3,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,830,150,1.8766,79.93,False,6,42,False,True,False,954cb0896ec98e1a
+gen_stage_a_0215_2be24543,215,A13_temp_0.3,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,529,150,1.884,79.62,False,1,27,False,True,False,2be245432577539d
+gen_stage_a_0216_b5021745,216,A13_temp_0.3,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,566,150,1.9109,78.5,False,3,90^\circ,False,True,False,b50217451c1f1bfe
+gen_stage_a_0217_9dea4c75,217,A13_temp_0.3,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,625,150,1.9733,76.02,False,,3\sqrt{13},False,True,False,9dea4c7549077571
+gen_stage_a_0218_d1b556eb,218,A13_temp_0.3,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,1098,150,2.0103,74.61,False,,4,False,True,False,d1b556eb07244793
+gen_stage_a_0219_9d2c51a4,219,A13_temp_0.3,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,532,150,1.7784,84.34,False,,2220,False,True,False,9d2c51a46029d840
+gen_stage_a_0220_bd753808,220,A13_temp_0.3,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.3,42,539,150,1.8827,79.67,False,2,\frac{3}{56},False,True,False,bd75380880ebf479
+gen_stage_a_0221_d50ffa3a,221,A13_temp_0.7,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,582,150,1.8514,81.02,False,1,p - q,False,True,False,d50ffa3ad19d272a
+gen_stage_a_0222_7bb2295c,222,A13_temp_0.7,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,542,150,1.8975,79.05,False,-2,\frac{14}{3},False,True,False,7bb2295cecd52ae9
+gen_stage_a_0223_a69ad1a7,223,A13_temp_0.7,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,399,150,1.8518,81.0,False,2,9,False,True,False,a69ad1a7a281e3cc
+gen_stage_a_0224_5d5e7879,224,A13_temp_0.7,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,830,150,1.9151,78.32,False,,42,False,True,False,5d5e78798988a563
+gen_stage_a_0225_5edc2239,225,A13_temp_0.7,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,529,150,1.827,82.1,False,3,27,False,True,False,5edc2239f0c86441
+gen_stage_a_0226_c92d7e89,226,A13_temp_0.7,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,566,150,1.8256,82.16,False,3,90^\circ,False,True,False,c92d7e8980b8c8b0
+gen_stage_a_0227_e22486ad,227,A13_temp_0.7,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,625,150,1.8469,81.22,False,,3\sqrt{13},False,True,False,e22486ad2a4e9958
+gen_stage_a_0228_8c3db6e3,228,A13_temp_0.7,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,1098,150,1.9341,77.56,False,,4,False,True,False,8c3db6e3df41246a
+gen_stage_a_0229_f9915f7d,229,A13_temp_0.7,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,532,150,1.8051,83.1,False,,2220,False,True,False,f9915f7d9e8fa03f
+gen_stage_a_0230_e058c450,230,A13_temp_0.7,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.7,42,539,150,1.9291,77.76,False,2,\frac{3}{56},False,True,False,e058c450aee59bd2
+gen_stage_a_0231_be985194,231,A14_cap_128,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,582,128,1.6986,75.36,False,1,p - q,False,True,False,be9851948d03051d
+gen_stage_a_0232_e67ea682,232,A14_cap_128,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,542,128,1.6793,76.22,False,-2,\frac{14}{3},False,True,False,e67ea682cb849f09
+gen_stage_a_0233_317d0fe9,233,A14_cap_128,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,399,128,1.5616,81.97,False,2,9,False,True,False,317d0fe950f92580
+gen_stage_a_0234_2c2fb03e,234,A14_cap_128,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,830,128,1.6567,77.26,False,,42,False,True,False,2c2fb03e5027049a
+gen_stage_a_0235_10851b0a,235,A14_cap_128,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,529,128,1.5506,82.55,False,3,27,False,True,False,10851b0a87be341a
+gen_stage_a_0236_5d4a7df4,236,A14_cap_128,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,566,128,1.7114,74.79,False,3,90^\circ,False,True,False,5d4a7df421cb24c2
+gen_stage_a_0237_f4f72d1f,237,A14_cap_128,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,625,128,1.7276,74.09,False,,3\sqrt{13},False,True,False,f4f72d1f3dd84f21
+gen_stage_a_0238_b044ded0,238,A14_cap_128,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1098,128,1.7907,71.48,False,,4,False,True,False,b044ded0be2b8bfa
+gen_stage_a_0239_417055de,239,A14_cap_128,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,532,128,1.5608,82.01,False,,2220,False,True,False,417055de37d9d8cb
+gen_stage_a_0240_9828aeb6,240,A14_cap_128,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,539,128,1.5757,81.23,False,2,\frac{3}{56},False,True,False,9828aeb61952d5fb
+gen_stage_a_0241_6b46c3d5,241,A14_cap_256,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,582,256,3.0128,84.97,False,1,p - q,False,True,True,6b46c3d5f8d90553
+gen_stage_a_0242_13ad3fa9,242,A14_cap_256,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,542,256,3.0287,84.52,False,-2,\frac{14}{3},False,True,True,13ad3fa9d4bc54f1
+gen_stage_a_0243_42a60def,243,A14_cap_256,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,399,256,2.879,88.92,False,2,9,False,True,True,42a60def4e44c8b0
+gen_stage_a_0244_8ecaa09e,244,A14_cap_256,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,830,256,3.0725,83.32,False,3,42,False,True,True,8ecaa09efa9f103a
+gen_stage_a_0245_7c247f96,245,A14_cap_256,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,529,256,3.0261,84.6,False,3,27,False,True,True,7c247f963ec9aec0
+gen_stage_a_0246_7a67235d,246,A14_cap_256,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,566,256,3.0285,84.53,False,3,90^\circ,False,True,True,7a67235dbd1f58e1
+gen_stage_a_0247_eec00267,247,A14_cap_256,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,625,256,3.0208,84.75,False,-4,3\sqrt{13},False,True,True,eec002670829613d
+gen_stage_a_0248_2b61397b,248,A14_cap_256,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1098,256,3.2239,79.41,False,,4,False,True,True,2b61397bd6019929
+gen_stage_a_0249_efcd2e9a,249,A14_cap_256,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,532,256,2.9451,86.92,False,,2220,False,True,True,efcd2e9a945e07be
+gen_stage_a_0250_fab5ec35,250,A14_cap_256,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,539,256,2.9942,85.5,False,2,\frac{3}{56},False,True,True,fab5ec35dd3d40d5
+gen_stage_a_0251_da7e8fe2,251,A14_cap_512,math500_001,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,582,512,6.1094,83.81,False,1,p - q,False,True,False,da7e8fe207c3b896
+gen_stage_a_0252_135e76e0,252,A14_cap_512,math500_002,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,542,499,6.7069,74.4,True,\frac{19}{6},\frac{14}{3},False,False,False,135e76e02683edf3
+gen_stage_a_0253_b2a04a53,253,A14_cap_512,math500_003,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,399,298,3.6413,81.84,True,9,9,True,False,False,b2a04a53a32c2ec9
+gen_stage_a_0254_ecc6c501,254,A14_cap_512,math500_005,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,830,362,4.271,84.76,True,126,42,False,False,False,ecc6c501cd491b00
+gen_stage_a_0255_791ceacf,255,A14_cap_512,math500_006,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,529,512,5.8106,88.11,False,3,27,False,True,False,791ceacfaf5a5aba
+gen_stage_a_0256_6215f6d8,256,A14_cap_512,math500_007,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,566,512,6.0795,84.22,False,3,90^\circ,False,True,False,6215f6d8c4be9bf5
+gen_stage_a_0257_d38ac78c,257,A14_cap_512,math500_008,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,625,326,3.8192,85.36,True,3\sqrt{13},3\sqrt{13},True,False,False,d38ac78c4e8f0e02
+gen_stage_a_0258_0165f82c,258,A14_cap_512,math500_009,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,1098,512,6.0939,84.02,False,,4,False,True,False,0165f82ceb539212
+gen_stage_a_0259_724c0565,259,A14_cap_512,math500_010,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,532,512,6.2051,82.51,False,,2220,False,True,False,724c05656d86f780
+gen_stage_a_0260_2caeb774,260,A14_cap_512,math500_011,mlx-community/Qwen2.5-0.5B-Instruct-4bit,neutral,recovery,0.0,42,539,512,6.1704,82.98,False,2,\frac{3}{56},False,True,False,2caeb774ba5159a0
+gen_stage_a_0261_f7ad2cd9,261,A15_1.5b_zero_shot,math500_001,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,455,256,8.7371,29.3,False,1,p - q,False,True,False,f7ad2cd94058b0b8
+gen_stage_a_0262_544af9dd,262,A15_1.5b_recovery,math500_001,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,584,256,6.9708,36.72,False,1,p - q,False,True,False,544af9ddfc8335eb
+gen_stage_a_0263_a8607876,263,A15_1.5b_zero_shot,math500_002,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,351,256,7.2754,35.19,False,-2,\frac{14}{3},False,True,False,a86078769bd2ef7c
+gen_stage_a_0264_a57d8461,264,A15_1.5b_recovery,math500_002,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,544,256,7.3601,34.78,False,-2,\frac{14}{3},False,True,False,a57d8461fbcd0514
+gen_stage_a_0265_8205eb76,265,A15_1.5b_zero_shot,math500_003,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,292,256,7.1015,36.05,False,98,9,False,True,False,8205eb766cc7c225
+gen_stage_a_0266_88e59bba,266,A15_1.5b_recovery,math500_003,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,401,202,5.7555,35.1,True,9,9,True,False,False,88e59bba1a84f3d6
+gen_stage_a_0267_bc1786a3,267,A15_1.5b_zero_shot,math500_005,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,415,256,7.1813,35.65,False,7,42,False,True,False,bc1786a3562bc6a6
+gen_stage_a_0268_f9ee2222,268,A15_1.5b_recovery,math500_005,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,832,256,7.7064,33.22,False,7,42,False,True,False,f9ee2222adffb85a
+gen_stage_a_0269_2036e80f,269,A15_1.5b_zero_shot,math500_006,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,342,256,7.1648,35.73,False,3,27,False,True,False,2036e80f29102e6e
+gen_stage_a_0270_e0cb6bd9,270,A15_1.5b_recovery,math500_006,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,531,256,7.0661,36.23,False,3,27,False,True,False,e0cb6bd904c6e6cb
+gen_stage_a_0271_f05c15ae,271,A15_1.5b_zero_shot,math500_007,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,430,256,7.3627,34.77,False,3,90^\circ,False,True,False,f05c15ae97582aa4
+gen_stage_a_0272_868ff54e,272,A15_1.5b_recovery,math500_007,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,568,256,7.1552,35.78,False,3,90^\circ,False,True,False,868ff54e80a34a2c
+gen_stage_a_0273_676cbd93,273,A15_1.5b_zero_shot,math500_008,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,359,256,7.2549,35.29,False,,3\sqrt{13},False,True,False,676cbd932fe94193
+gen_stage_a_0274_0cf4c055,274,A15_1.5b_recovery,math500_008,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,627,256,7.4233,34.49,False,,3\sqrt{13},False,True,False,0cf4c05591985283
+gen_stage_a_0275_05ce480a,275,A15_1.5b_zero_shot,math500_009,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,750,256,7.7974,32.83,False,120,4,False,True,False,05ce480a60631a7d
+gen_stage_a_0276_8d0eca07,276,A15_1.5b_recovery,math500_009,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,1100,256,8.0111,31.96,False,120,4,False,True,False,8d0eca07296f1865
+gen_stage_a_0277_bb9e896d,277,A15_1.5b_zero_shot,math500_010,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,337,256,7.512,34.08,False,,2220,False,True,False,bb9e896d11a66a43
+gen_stage_a_0278_35733c4c,278,A15_1.5b_recovery,math500_010,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,534,256,7.2128,35.49,False,,2220,False,True,False,35733c4c3f68e970
+gen_stage_a_0279_26977fbf,279,A15_1.5b_zero_shot,math500_011,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,359,256,7.2545,35.29,False,2,\frac{3}{56},False,True,False,26977fbfe5fbcdfe
+gen_stage_a_0280_b1ffb410,280,A15_1.5b_recovery,math500_011,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,541,256,7.5403,33.95,False,0,\frac{3}{56},False,True,False,b1ffb410a7f716e7
+gen_stage_a_0281_a3bcfd13,281,A15_1.5b_zero_shot,math500_012,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,453,256,7.3263,34.94,False,2,284,False,True,False,a3bcfd13142a272d
+gen_stage_a_0282_f60be208,282,A15_1.5b_recovery,math500_012,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,552,256,7.7059,33.22,False,2,284,False,True,False,f60be208399b8b7d
+gen_stage_a_0283_8042179a,283,A15_1.5b_zero_shot,math500_013,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,622,206,6.5503,31.45,True,5,5,True,False,False,8042179a6c39fd95
+gen_stage_a_0284_93cad4c0,284,A15_1.5b_recovery,math500_013,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,819,235,8.2233,28.58,True,5,5,True,False,False,93cad4c0387ba517
+gen_stage_a_0285_c1f33753,285,A15_1.5b_zero_shot,math500_014,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,492,158,4.9154,32.14,True,10,\sqrt{51},False,False,False,c1f337538680ee9e
+gen_stage_a_0286_9ed5a5ea,286,A15_1.5b_recovery,math500_014,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,588,256,7.7412,33.07,False,0.7,\sqrt{51},False,True,False,9ed5a5eac8730dfe
+gen_stage_a_0287_5d71d589,287,A15_1.5b_zero_shot,math500_015,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,635,256,7.4267,34.47,False,2,6 - 5i,False,True,False,5d71d589ffc57e72
+gen_stage_a_0288_f17d8ced,288,A15_1.5b_recovery,math500_015,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,808,256,7.904,32.39,False,2,6 - 5i,False,True,False,f17d8ced1ee58017
+gen_stage_a_0289_b77fc83f,289,A15_1.5b_zero_shot,math500_016,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,none,0.0,42,274,190,5.7491,33.05,True,-50,-50,True,False,False,b77fc83fcd497884
+gen_stage_a_0290_57618afc,290,A15_1.5b_recovery,math500_016,mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit,neutral,recovery,0.0,42,422,179,5.3232,33.63,True,-50,-50,True,False,False,57618afc4d547021
+gen_stage_a_0291_d86db6ce,291,A16_smollm_cross_family,math500_001,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,373,28,7.213,3.88,False,1,p - q,False,False,False,d86db6cea86c93c4
+gen_stage_a_0292_729fc8eb,292,A16_smollm_cross_family,math500_002,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,333,2,4.2845,0.47,True,\frac{14}{3},\frac{14}{3},True,False,False,729fc8eb89afb9c9
+gen_stage_a_0293_113027a2,293,A16_smollm_cross_family,math500_003,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,190,34,5.5264,6.15,True,,9,False,False,False,113027a2e156337c
+gen_stage_a_0294_186419c9,294,A16_smollm_cross_family,math500_005,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,621,4,4.3202,0.93,True,42\text{ inches},42,False,False,False,186419c9347cbdef
+gen_stage_a_0295_6dd76087,295,A16_smollm_cross_family,math500_006,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,320,2,4.2278,0.47,False,1,27,False,False,False,6dd760876f191571
+gen_stage_a_0296_47afda2a,296,A16_smollm_cross_family,math500_007,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,357,36,4.2822,8.41,False,3,90^\circ,False,False,False,47afda2a01996625
+gen_stage_a_0297_5c33e204,297,A16_smollm_cross_family,math500_008,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,416,34,4.1971,8.1,True,3\sqrt{13},3\sqrt{13},True,False,False,5c33e20487401676
+gen_stage_a_0298_aeb0365c,298,A16_smollm_cross_family,math500_009,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,889,25,4.6842,5.34,False,,4,False,False,False,aeb0365c5d126861
+gen_stage_a_0299_fceed75f,299,A16_smollm_cross_family,math500_010,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,323,56,4.2065,13.31,False,0,2220,False,False,False,fceed75f2b480939
+gen_stage_a_0300_c573e15f,300,A16_smollm_cross_family,math500_011,HuggingFaceTB/SmolLM-135M,none,none,0.0,42,330,7,4.0998,1.71,False,1.5444444444444444444444444444444444444444444444444444444444444444444444444444,\frac{3}{56},False,False,False,c573e15fe1296910

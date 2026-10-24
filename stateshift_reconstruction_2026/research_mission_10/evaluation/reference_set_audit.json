@@ -1,0 +1,182 @@
+[
+  {
+    "case_id": "ref_case_01",
+    "case_type": "successful_local_repair",
+    "problem_statement": "Compute 7 * 8 + 4.",
+    "recovery_prefix": "We compute 7 * 8 = 54.",
+    "gold_answer": "60",
+    "raw_output": "Wait, 7 * 8 = 56, not 54. Correcting this error, we now compute 56 + 4 = 60. Therefore the final answer is \\boxed{60}.",
+    "manual_labels": {
+      "final_answer_correctness": true,
+      "error_detection": true,
+      "error_localization": true,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": true,
+      "continuation_validity": true,
+      "restart_behavior": false,
+      "verified_local_repair": true
+    }
+  },
+  {
+    "case_id": "ref_case_02",
+    "case_type": "failed_repair_error_propagation",
+    "problem_statement": "Compute 7 * 8 + 4.",
+    "recovery_prefix": "We compute 7 * 8 = 54.",
+    "gold_answer": "60",
+    "raw_output": "Continuing from 54, we add 4 to get 58. Thus the answer is \\boxed{58}.",
+    "manual_labels": {
+      "final_answer_correctness": false,
+      "error_detection": false,
+      "error_localization": false,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": false,
+      "continuation_validity": true,
+      "restart_behavior": false,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_03",
+    "case_type": "successful_forced_restart",
+    "problem_statement": "Solve 2x + 10 = 20.",
+    "recovery_prefix": "Step 1: 2x = 30.",
+    "gold_answer": "5",
+    "raw_output": "Let us start over from scratch and disregard the previous attempt. Given 2x + 10 = 20, subtract 10 to get 2x = 10, then divide by 2 to get x = 5. \\boxed{5}.",
+    "manual_labels": {
+      "final_answer_correctness": true,
+      "error_detection": false,
+      "error_localization": false,
+      "valid_prefix_preservation": false,
+      "local_correction_validity": false,
+      "continuation_validity": true,
+      "restart_behavior": true,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_04",
+    "case_type": "failed_restart",
+    "problem_statement": "Solve 2x + 10 = 20.",
+    "recovery_prefix": "Step 1: 2x = 30.",
+    "gold_answer": "5",
+    "raw_output": "Let us start over from scratch. 2x + 10 = 20, so 2x = 5, x = 2.5. \\boxed{2.5}.",
+    "manual_labels": {
+      "final_answer_correctness": false,
+      "error_detection": false,
+      "error_localization": false,
+      "valid_prefix_preservation": false,
+      "local_correction_validity": false,
+      "continuation_validity": true,
+      "restart_behavior": true,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_05",
+    "case_type": "lucky_guess_hallucinated_reasoning",
+    "problem_statement": "Find the number of positive divisors of 196.",
+    "recovery_prefix": "First prime factorize 196 = 2^3 * 7^1.",
+    "gold_answer": "9",
+    "raw_output": "From 2^3 * 7^1, we observe that the number of divisors is obviously 9. \\boxed{9}.",
+    "manual_labels": {
+      "final_answer_correctness": true,
+      "error_detection": false,
+      "error_localization": false,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": false,
+      "continuation_validity": false,
+      "restart_behavior": false,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_06",
+    "case_type": "correct_reasoning_extraction_failure",
+    "problem_statement": "Simplify 14/2.",
+    "recovery_prefix": "Compute 14 / 2.",
+    "gold_answer": "7",
+    "raw_output": "Notice that 14 divided by 2 gives exactly seven.",
+    "manual_labels": {
+      "final_answer_correctness": true,
+      "error_detection": false,
+      "error_localization": false,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": false,
+      "continuation_validity": true,
+      "restart_behavior": false,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_07",
+    "case_type": "truncated_derivation",
+    "problem_statement": "Compute the sum 1 + 2 + ... + 100.",
+    "recovery_prefix": "Using formula n(n+1)/2 with n=100.",
+    "gold_answer": "5050",
+    "raw_output": "We compute 100 * 101 / 2. First 100 * 101 = 10100. Then we divide by 2: 10100 / 2 = 50",
+    "manual_labels": {
+      "final_answer_correctness": false,
+      "error_detection": false,
+      "error_localization": false,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": false,
+      "continuation_validity": false,
+      "restart_behavior": false,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_08",
+    "case_type": "successful_algebraic_repair",
+    "problem_statement": "If f(x) = (3x-2)/(x-2), find f(0).",
+    "recovery_prefix": "f(0) = (0 - 2)/(0 - 2) = -2/-2 = 2.",
+    "gold_answer": "1",
+    "raw_output": "Wait, the numerator is 3(0) - 2 = -2, and the denominator is 0 - 2 = -2. But -2 / -2 equals 1, not 2. Correcting this, f(0) = 1. \\boxed{1}.",
+    "manual_labels": {
+      "final_answer_correctness": true,
+      "error_detection": true,
+      "error_localization": true,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": true,
+      "continuation_validity": true,
+      "restart_behavior": false,
+      "verified_local_repair": true
+    }
+  },
+  {
+    "case_id": "ref_case_09",
+    "case_type": "spurious_repair_wrong_answer",
+    "problem_statement": "Solve x^2 - 9 = 0 for positive x.",
+    "recovery_prefix": "x^2 = 16.",
+    "gold_answer": "3",
+    "raw_output": "Notice that x^2 = 16 is an error because the problem states x^2 - 9 = 0. Thus x^2 = 9, so x = 4. \\boxed{4}.",
+    "manual_labels": {
+      "final_answer_correctness": false,
+      "error_detection": true,
+      "error_localization": true,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": true,
+      "continuation_validity": false,
+      "restart_behavior": false,
+      "verified_local_repair": false
+    }
+  },
+  {
+    "case_id": "ref_case_10",
+    "case_type": "ambiguous_hedging",
+    "problem_statement": "Compute 15% of 80.",
+    "recovery_prefix": "10% of 80 is 10.",
+    "gold_answer": "12",
+    "raw_output": "Actually, 10% is 8 and 5% is 4, but maybe 10 is close enough. Total is 14. \\boxed{14}.",
+    "manual_labels": {
+      "final_answer_correctness": false,
+      "error_detection": true,
+      "error_localization": false,
+      "valid_prefix_preservation": true,
+      "local_correction_validity": false,
+      "continuation_validity": false,
+      "restart_behavior": false,
+      "verified_local_repair": false
+    }
+  }
+]
