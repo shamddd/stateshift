@@ -1,0 +1,11 @@
+# StateShift Cloud Runtime Dependencies
+# Target: Python 3.10 / 3.11 with CUDA 12.4
+torch>=2.4.0
+transformers>=4.45.0
+accelerate>=0.34.0
+vllm>=0.6.2
+sympy>=1.13.0
+pandas>=2.2.0
+scipy>=1.14.0
+requests>=2.32.0
+psutil>=6.0.0
