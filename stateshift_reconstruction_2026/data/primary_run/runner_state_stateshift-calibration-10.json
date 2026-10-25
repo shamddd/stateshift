@@ -1,0 +1,15 @@
+{
+  "experiment_id": "stateshift-calibration-10",
+  "execution_id": "exec_1792939233",
+  "state": "REMOTE_RUNNER_LAUNCHED",
+  "mode": "CALIBRATION",
+  "pod_id": "czcqju6afvb3du",
+  "controller_pid": 33140,
+  "watchdog_pid": 33141,
+  "remote_pid": null,
+  "manifest_sha256": "f6c2ed07a50e5d4cec5ff4f24c5c7ef0355841fcec39b3b9d8b6d86385cb0de6",
+  "completed_rollouts": 0,
+  "total_expected_requests": 10,
+  "timestamp_utc": 1792939243.579147,
+  "iso_time": "2026-10-25T14:40:43Z"
+}

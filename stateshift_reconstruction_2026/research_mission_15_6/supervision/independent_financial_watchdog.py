@@ -25,6 +25,11 @@ import urllib.error
 import argparse
 from typing import Dict, Any, Tuple, Optional
 
+# Ensure repository root is in sys.path
+_repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if _repo_root not in sys.path:
+    sys.path.insert(0, _repo_root)
+
 # Constants
 RUNPOD_GRAPHQL_ENDPOINT = "https://api.runpod.io/graphql"
 
@@ -256,16 +261,18 @@ class IndependentFinancialWatchdog:
             data=payload,
             headers={"Content-Type": "application/json", "User-Agent": "StateShift-Watchdog-v15.6"}
         )
-        try:
-            with urllib.request.urlopen(req, timeout=5.0) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-                return data, resp.getcode()
-        except urllib.error.HTTPError as e:
-            return {"error": str(e)}, e.code
-        except urllib.error.URLError as e:
-            return {"error": str(e.reason)}, 0
-        except Exception as e:
-            return {"error": str(e)}, 0
+        for attempt in range(2):
+            try:
+                with urllib.request.urlopen(req, timeout=15.0) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    return data, resp.getcode()
+            except urllib.error.HTTPError as e:
+                return {"error": str(e)}, e.code
+            except Exception as e:
+                if attempt == 1:
+                    return {"error": str(e)}, 0
+                time.sleep(1.0)
+        return {"error": "TIMEOUT"}, 0
 
     def query_provider_pod_state(self) -> Tuple[str, Optional[float], str]:
         query = """

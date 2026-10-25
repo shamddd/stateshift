@@ -25,7 +25,27 @@ import urllib.error
 import paramiko
 from typing import Dict, Any, Optional, Tuple, Callable
 
+from research_mission_15_6.auth.execution_lock import assert_cloud_execution_permitted
+
 RUNPOD_GRAPHQL_ENDPOINT = "https://api.runpod.io/graphql"
+
+def safe_channel_wait(channel, timeout_seconds: float = 30.0) -> int:
+    """
+    Polls an SSH channel until the remote command finishes, enforcing a strict
+    monotonic wall-clock deadline. Prevents unbounded hangs on recv_exit_status().
+    """
+    deadline = time.monotonic() + timeout_seconds
+    while not channel.exit_status_ready():
+        if time.monotonic() > deadline:
+            try:
+                channel.close()
+            except Exception:
+                pass
+            raise TimeoutError(
+                f"SSH command execution exceeded wall-clock deadline of {timeout_seconds:.1f}s"
+            )
+        time.sleep(0.1)
+    return channel.recv_exit_status()
 
 class RunPodAPIError(Exception):
     pass
@@ -62,6 +82,7 @@ class ProductionRunPodTransportV2:
 
     def _default_http_post(self, query: str, variables: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Execute GraphQL request to RunPod API."""
+        assert_cloud_execution_permitted()
         if not self._api_key:
             raise RunPodAPIError("RUNPOD_API_KEY is not configured.")
             
@@ -224,8 +245,24 @@ class ProductionRunPodTransportV2:
             
         client = self.get_ssh_client(host, p)
         stdin, stdout, stderr = client.exec_command(cmd, timeout=timeout)
-        exit_code = stdout.channel.recv_exit_status()
-        out = stdout.read().decode("utf-8", errors="replace")
+        try:
+            stdin.close()
+        except Exception:
+            pass
+        exit_code = safe_channel_wait(stdout.channel, timeout_seconds=float(timeout))
+        
+        # Read stdout safely without blocking on detached background processes
+        out_chunks = []
+        try:
+            stdout.channel.settimeout(1.0)
+            while True:
+                chunk = stdout.channel.recv(4096)
+                if not chunk:
+                    break
+                out_chunks.append(chunk)
+        except Exception:
+            pass
+        out = b"".join(out_chunks).decode("utf-8", errors="replace")
         return exit_code, out
 
     def fetch_file(self, remote_path: str, local_path: str, ip: Optional[str] = None, port: Optional[int] = None) -> bool:

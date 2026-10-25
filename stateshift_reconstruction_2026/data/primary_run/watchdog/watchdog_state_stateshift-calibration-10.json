@@ -1,0 +1,14 @@
+{
+  "experiment_id": "stateshift-calibration-10",
+  "pod_id": "czcqju6afvb3du",
+  "session_id": "exec_1792939233",
+  "state": "TERMINATION_CONFIRMED",
+  "lifecycle_state": "TERMINATION_CONFIRMED",
+  "termination_durable_state": "TERMINATION_CONFIRMED",
+  "reason": "Controller confirmed dead (Controller process 33140 is confirmed dead: [Errno 3] No such process)",
+  "watchdog_pid": 33141,
+  "termination_dispatched": true,
+  "termination_confirmed": true,
+  "timestamp_utc": 1792939278.264203,
+  "iso_time": "2026-10-25T14:41:18Z"
+}

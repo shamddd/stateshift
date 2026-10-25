@@ -87,7 +87,7 @@ class RemoteDeploymentVerifier:
         execution_id: str,
         ip: Optional[str] = None,
         port: int = 22,
-        heartbeat_timeout_seconds: float = 30.0
+        heartbeat_timeout_seconds: float = 120.0
     ) -> Tuple[bool, Optional[int], str]:
         """
         Launches detached runner, captures authentic OS PID, verifies in process table,
@@ -112,7 +112,7 @@ class RemoteDeploymentVerifier:
             f"--heartbeat {remote_hb} "
             f"--experiment-id {experiment_id} "
             f"--execution-id {execution_id} "
-            f"> {remote_log} 2>&1 & echo $! > {remote_pid_file}"
+            f"< /dev/null > {remote_log} 2>&1 & echo $! > {remote_pid_file}"
         )
         code, out = self.transport.execute(cmd, ip=ip, port=port)
         if code != 0:

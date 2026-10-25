@@ -1,0 +1,22 @@
+{
+  "pod_id": "czcqju6afvb3du",
+  "created_at_time": 1792939157.241365,
+  "initial_balance_usd": 9.1243222436,
+  "final_balance_usd": 9.1243222436,
+  "net_spend_usd": 0.0,
+  "elapsed_seconds": 119.15835785865784,
+  "final_pods_count": 0,
+  "final_volumes_count": 0,
+  "spend_within_ceiling": true,
+  "spend_within_trigger": true,
+  "balance_above_floor": true,
+  "hardware_info": {
+    "gpu_hardware": "NVIDIA GeForce RTX 4090, 24564 MiB, 595.91.07",
+    "workspace_disk": "overlay          40G   16M   40G   1% /",
+    "remote_python": "Python 3.10.12",
+    "torch_cuda": "CUDA: True, Device: NVIDIA GeForce RTX 4090, VRAM: 25.25 GB, PyTorch: 2.1.0+cu118",
+    "ssh_ip": "47.47.180.28",
+    "ssh_port": 23203,
+    "model_precache_seconds": 29.45082187652588
+  }
+}

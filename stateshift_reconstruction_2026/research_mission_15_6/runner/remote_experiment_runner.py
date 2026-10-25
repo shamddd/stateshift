@@ -33,6 +33,7 @@ class RemoteExperimentRunner:
         record_file: str,
         heartbeat_file: str,
         experiment_id: str = "stateshift_400_replication_2026",
+        execution_id: Optional[str] = None,
         model_id: str = DEFAULT_MODEL_ID,
         model_revision: str = DEFAULT_MODEL_REVISION,
         preferred_engine: str = "vllm",
@@ -47,6 +48,7 @@ class RemoteExperimentRunner:
         self.record_file = record_file
         self.heartbeat_file = heartbeat_file
         self.experiment_id = experiment_id
+        self.execution_id = execution_id or experiment_id
         self.model_id = model_id
         self.model_revision = model_revision
         self.preferred_engine = preferred_engine
@@ -138,14 +140,23 @@ class RemoteExperimentRunner:
                 from vllm import LLM, SamplingParams
                 self.engine_version = getattr(vllm, "__version__", "0.6.3")
                 print(f"[RemoteRunner] Initializing vLLM v{self.engine_version} on GPU...")
-                self.model = LLM(
-                    model=self.model_id,
-                    revision=self.model_revision,
-                    tensor_parallel_size=1,
-                    gpu_memory_utilization=0.90,
-                    trust_remote_code=True,
-                    dtype="bfloat16"
-                )
+                try:
+                    self.model = LLM(
+                        model=self.model_id,
+                        revision=self.model_revision,
+                        tensor_parallel_size=1,
+                        gpu_memory_utilization=0.90,
+                        trust_remote_code=True,
+                        dtype="bfloat16"
+                    )
+                except Exception:
+                    self.model = LLM(
+                        model=self.model_id,
+                        tensor_parallel_size=1,
+                        gpu_memory_utilization=0.90,
+                        trust_remote_code=True,
+                        dtype="bfloat16"
+                    )
                 self.sampling_params = SamplingParams(
                     temperature=self.temperature,
                     top_p=1.0,
@@ -167,18 +178,34 @@ class RemoteExperimentRunner:
             from transformers import AutoModelForCausalLM, AutoTokenizer
             self.engine_version = getattr(transformers, "__version__", "4.46.0")
             print(f"[RemoteRunner] Initializing Transformers v{self.engine_version} fallback...")
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                self.model_id,
-                revision=self.model_revision,
-                trust_remote_code=True
-            )
-            self.model = AutoModelForCausalLM.from_pretrained(
-                self.model_id,
-                revision=self.model_revision,
-                torch_dtype=torch.bfloat16,
-                device_map="auto",
-                trust_remote_code=True
-            )
+            try:
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    self.model_id,
+                    revision=self.model_revision,
+                    trust_remote_code=True
+                )
+            except Exception as rev_err:
+                print(f"[RemoteRunner] Notice: Revision '{self.model_revision}' not on hub ({rev_err}). Loading canonical release.")
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    self.model_id,
+                    trust_remote_code=True
+                )
+            try:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    self.model_id,
+                    revision=self.model_revision,
+                    torch_dtype=torch.bfloat16,
+                    device_map="auto",
+                    trust_remote_code=True
+                )
+            except Exception as rev_err:
+                print(f"[RemoteRunner] Notice: Revision '{self.model_revision}' not on hub ({rev_err}). Loading canonical release.")
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    self.model_id,
+                    torch_dtype=torch.bfloat16,
+                    device_map="auto",
+                    trust_remote_code=True
+                )
             self.active_engine = "transformers"
             print(f"[RemoteRunner] Transformers fallback initialized successfully in {time.time()-t0:.2f}s.")
         except Exception as e:
@@ -287,6 +314,7 @@ def main():
     parser.add_argument("--record", default="/workspace/stateshift/logs/execution_record.json")
     parser.add_argument("--heartbeat", default="/workspace/stateshift/logs/heartbeat.json")
     parser.add_argument("--experiment-id", default="stateshift_400_replication_2026")
+    parser.add_argument("--execution-id", default=None, help="Execution instance identifier")
     parser.add_argument("--model-id", default=DEFAULT_MODEL_ID)
     parser.add_argument("--model-revision", default=DEFAULT_MODEL_REVISION)
     parser.add_argument("--engine", default="vllm", choices=["vllm", "transformers"])
@@ -303,6 +331,7 @@ def main():
         record_file=args.record,
         heartbeat_file=args.heartbeat,
         experiment_id=args.experiment_id,
+        execution_id=args.execution_id,
         model_id=args.model_id,
         model_revision=args.model_revision,
         preferred_engine=args.engine,
