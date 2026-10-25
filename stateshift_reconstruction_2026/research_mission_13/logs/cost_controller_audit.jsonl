@@ -1,0 +1,2 @@
+{"timestamp": 1792913702.0239081, "iso_time": "2026-10-25T07:35:02Z", "event_type": "SESSION_START", "pod_id": "xydg2t4rzrx71d", "payload": {"pod_id": "xydg2t4rzrx71d", "max_cost_usd": 2.8, "max_runtime_minutes": 60.0, "gpu_hourly_rate": 0.89}}
+{"timestamp": 1792913978.429635, "iso_time": "2026-10-25T07:39:38Z", "event_type": "SESSION_START", "pod_id": "xydg2t4rzrx71d", "payload": {"pod_id": "xydg2t4rzrx71d", "max_cost_usd": 2.8, "max_runtime_minutes": 60.0, "gpu_hourly_rate": 0.89}}
