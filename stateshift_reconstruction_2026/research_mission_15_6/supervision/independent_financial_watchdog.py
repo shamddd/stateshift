@@ -99,6 +99,7 @@ class IndependentFinancialWatchdog:
         self.emergency_trigger_usd = emergency_trigger_usd
         self.account_preservation_floor_usd = account_preservation_floor_usd
         self.gpu_hourly_rate = gpu_hourly_rate
+        self.reported_gpu_hourly_rate: Optional[float] = None
         self.max_runtime_minutes = max_runtime_minutes
         self.poll_interval_seconds = poll_interval_seconds
         self.api_key = api_key or os.environ.get("RUNPOD_API_KEY", "")
@@ -111,6 +112,7 @@ class IndependentFinancialWatchdog:
         self.watchdog_pid_file = os.path.join(self.watchdog_dir, f"watchdog_{self.experiment_id}.pid")
         self.watchdog_heartbeat_file = os.path.join(self.watchdog_dir, f"watchdog_heartbeat_{self.experiment_id}.json")
         self.watchdog_state_file = os.path.join(self.watchdog_dir, f"watchdog_state_{self.experiment_id}.json")
+        self.readiness_receipt_path = os.path.join(self.watchdog_dir, f"watchdog_readiness_{self.experiment_id}_{self.session_id}.json")
         self.alert_dir = os.path.join(self.watchdog_dir, "termination_alerts")
         os.makedirs(self.alert_dir, exist_ok=True)
 
@@ -129,9 +131,19 @@ class IndependentFinancialWatchdog:
         if self.authorization_path:
             self._verify_authorization_independently()
 
+        # Defect 1: Establish verified financial baseline & check preservation floor
+        baseline_ok, baseline_msg = self.establish_financial_baseline()
+        if not baseline_ok:
+            self.lifecycle_state = WatchdogLifecycleState.CONTROLLER_FAILED
+            self._persist_watchdog_state("BASELINE_FAILED", baseline_msg)
+            raise PermissionError(f"[Watchdog Financial Baseline Refused] {baseline_msg}")
+
         self._write_pid_file()
         self.lifecycle_state = WatchdogLifecycleState.ACTIVE
         self._persist_watchdog_state("WATCHDOG_ACTIVE")
+
+        # Defect 2: Publish atomic readiness receipt for startup handshake
+        self.publish_readiness_receipt()
 
     def _verify_authorization_independently(self):
         """Issue E: Cryptographically verify authorization directly inside watchdog."""
@@ -215,6 +227,13 @@ class IndependentFinancialWatchdog:
         if pod.get("runtime"):
             uptime = float(pod["runtime"].get("uptimeInSeconds", 0.0))
 
+        cost_per_hr = pod.get("costPerHr")
+        if cost_per_hr is not None:
+            try:
+                self.reported_gpu_hourly_rate = float(cost_per_hr)
+            except (ValueError, TypeError):
+                pass
+
         if status_str in ["RUNNING"]:
             return ProviderResponseState.RUNNING, uptime, "Pod is actively running."
         elif status_str in ["STOPPING"]:
@@ -254,6 +273,7 @@ class IndependentFinancialWatchdog:
             pod(input: {podId: $podId}) {
                 id
                 desiredStatus
+                costPerHr
                 runtime {
                     uptimeInSeconds
                 }
@@ -263,6 +283,87 @@ class IndependentFinancialWatchdog:
         raw_resp, http_code = self._query_runpod_graphql(query, {"podId": self.pod_id})
         return self.classify_provider_pod_response(raw_resp, http_code=http_code)
 
+    def query_account_balance(self) -> Tuple[Optional[float], str]:
+        """Defect 1: Live query to RunPod account balance endpoint."""
+        if not self.api_key:
+            return None, "NO_API_KEY"
+        query = """
+        query AccountBalance {
+            myself {
+                id
+                clientBalance
+            }
+        }
+        """
+        raw_resp, http_code = self._query_runpod_graphql(query, {})
+        if http_code != 200:
+            return None, f"HTTP error {http_code}"
+        if "errors" in raw_resp and raw_resp["errors"]:
+            return None, f"GraphQL errors: {raw_resp['errors']}"
+        if "error" in raw_resp:
+            return None, f"API error: {raw_resp['error']}"
+        data = raw_resp.get("data")
+        if not data or "myself" not in data or data["myself"] is None:
+            return None, "Missing 'myself' in GraphQL response"
+        bal = data["myself"].get("clientBalance")
+        if bal is None:
+            return None, "Missing 'clientBalance' field in myself object"
+        try:
+            return float(bal), "Success"
+        except (ValueError, TypeError) as e:
+            return None, f"Malformed clientBalance value: {e}"
+
+    def establish_financial_baseline(self) -> Tuple[bool, str]:
+        """
+        Defect 1: Establishes initial financial baseline and enforces preservation floor ($7.00 USD).
+        """
+        if self.initial_account_balance is not None:
+            if self.initial_account_balance <= self.account_preservation_floor_usd:
+                return False, f"Initial balance ${self.initial_account_balance:.4f} <= preservation floor ${self.account_preservation_floor_usd:.4f}"
+            return True, f"Baseline established from initial balance: ${self.initial_account_balance:.4f}"
+
+        if not self.api_key:
+            return True, "Mock baseline established (no RunPod API key configured)"
+
+        bal, msg = self.query_account_balance()
+        if bal is not None:
+            self.initial_account_balance = bal
+            if bal <= self.account_preservation_floor_usd:
+                return False, f"Current balance ${bal:.4f} <= preservation floor ${self.account_preservation_floor_usd:.4f}"
+            return True, f"Live baseline established: ${bal:.4f}"
+
+        if self.allow_test_key_for_testing:
+            return True, f"Test mode baseline established without live balance: {msg}"
+
+        return False, f"Failed to retrieve account balance: {msg}"
+
+    def publish_readiness_receipt(self) -> str:
+        """Defect 2: Publish atomic readiness receipt for controller verification."""
+        receipt = {
+            "status": "READY",
+            "lifecycle_state": self.lifecycle_state.value,
+            "watchdog_pid": os.getpid(),
+            "experiment_id": self.experiment_id,
+            "pod_id": self.pod_id,
+            "session_id": self.session_id,
+            "timestamp_utc": time.time(),
+            "iso_time": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "max_authorized_usd": self.max_authorized_usd,
+            "emergency_trigger_usd": self.emergency_trigger_usd,
+            "account_preservation_floor_usd": self.account_preservation_floor_usd,
+            "initial_account_balance": self.initial_account_balance,
+            "pre_existing_uptime_seconds": self.pre_existing_uptime_seconds,
+            "gpu_hourly_rate": self.gpu_hourly_rate,
+            "reported_gpu_hourly_rate": self.reported_gpu_hourly_rate
+        }
+        tmp = self.readiness_receipt_path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(receipt, f, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, self.readiness_receipt_path)
+        return self.readiness_receipt_path
+
     def calculate_effective_spend(
         self,
         simulated_spend: Optional[float] = None,
@@ -270,23 +371,26 @@ class IndependentFinancialWatchdog:
         current_account_balance: Optional[float] = None
     ) -> float:
         """
-        Issue C: Reconciled, conservative financial baseline accounting:
+        Defect 1 & Issue C: Reconciled, conservative financial baseline accounting:
         effective_spend = max(provider_estimated_spend, verified_balance_delta, conservative_elapsed_estimate).
+        Uses max(configured_hourly_rate, reported_gpu_hourly_rate).
         Includes pre_existing_uptime_seconds so clock never restarts at zero.
         """
         if simulated_spend is not None:
             return float(simulated_spend)
 
+        effective_rate = max(self.gpu_hourly_rate, self.reported_gpu_hourly_rate or 0.0)
+
         # 1. Conservative elapsed time estimate
         now_mono = time.monotonic()
         watchdog_elapsed_sec = max(0.0, now_mono - self.start_monotonic)
         total_conservative_uptime_sec = self.pre_existing_uptime_seconds + watchdog_elapsed_sec
-        conservative_elapsed_estimate = (total_conservative_uptime_sec / 3600.0) * self.gpu_hourly_rate
+        conservative_elapsed_estimate = (total_conservative_uptime_sec / 3600.0) * effective_rate
 
         # 2. Provider estimated spend
         provider_estimated_spend = 0.0
         if provider_uptime_seconds is not None and provider_uptime_seconds > 0:
-            provider_estimated_spend = (provider_uptime_seconds / 3600.0) * self.gpu_hourly_rate
+            provider_estimated_spend = (provider_uptime_seconds / 3600.0) * effective_rate
 
         # 3. Verified account balance delta
         verified_balance_delta = 0.0
@@ -481,15 +585,16 @@ class IndependentFinancialWatchdog:
 
         self.write_heartbeat(effective_spend, watchdog_elapsed_min)
 
-        # Spend and runtime checks
+        # Spend, runtime, and preservation floor checks
         spend_breached = effective_spend >= self.emergency_trigger_usd
         runtime_breached = watchdog_elapsed_min >= self.max_runtime_minutes
+        floor_breached = (current_account_balance is not None and current_account_balance <= self.account_preservation_floor_usd)
         
         # Issue A: Controller death evaluation
         ctrl_status, ctrl_expl = self.evaluate_controller_status()
         controller_dead = (ctrl_status == "CONFIRMED_DEAD")
 
-        should_terminate = spend_breached or runtime_breached or controller_dead
+        should_terminate = spend_breached or runtime_breached or controller_dead or floor_breached
         action = "CONTINUE"
 
         if ctrl_status == "CLEAN_EXIT_CONFIRMED" and not self.termination_dispatched:
@@ -510,6 +615,8 @@ class IndependentFinancialWatchdog:
             if controller_dead:
                 self.lifecycle_state = WatchdogLifecycleState.CONTROLLER_FAILED
                 reasons.append(f"Controller confirmed dead ({ctrl_expl})")
+            if floor_breached:
+                reasons.append(f"Account preservation floor breached: balance ${current_account_balance:.4f} <= ${self.account_preservation_floor_usd:.4f}")
             if spend_breached:
                 reasons.append(f"Spend ${effective_spend:.4f} >= emergency trigger ${self.emergency_trigger_usd:.4f}")
             if runtime_breached:
@@ -551,6 +658,7 @@ def main():
     parser.add_argument("--controller-heartbeat", default=None)
     parser.add_argument("--controller-pid", type=int, default=None)
     parser.add_argument("--pre-existing-uptime", type=float, default=0.0)
+    parser.add_argument("--initial-balance", type=float, default=None)
     parser.add_argument("--simulate-spend", type=float, default=None)
     parser.add_argument("--single-tick", action="store_true")
     args = parser.parse_args()
@@ -570,7 +678,8 @@ def main():
         poll_interval_seconds=args.poll_interval,
         main_controller_heartbeat_path=args.controller_heartbeat,
         main_controller_pid=args.controller_pid,
-        pre_existing_uptime_seconds=args.pre_existing_uptime
+        pre_existing_uptime_seconds=args.pre_existing_uptime,
+        initial_account_balance=args.initial_balance
     )
 
     if args.single_tick:
@@ -580,10 +689,50 @@ def main():
 
     print(f"[Watchdog Daemon PID {os.getpid()}] Started for pod {args.pod_id} (Trigger: ${watchdog.emergency_trigger_usd:.2f}).")
     while not watchdog.stop_requested:
-        res = watchdog.run_supervision_tick(simulated_spend=args.simulate_spend)
-        if res["should_terminate"]:
-            print(f"[Watchdog Daemon] Termination dispatched. Final status: {res['action']}.")
+        # 1. Operator handoff check
+        handoff_path = os.path.join(watchdog.watchdog_dir, f"operator_handoff_{watchdog.pod_id}.json")
+        if os.path.exists(handoff_path):
+            print(f"[Watchdog Daemon] Operator handoff file detected at {handoff_path}. Relinquishing supervision.")
+            watchdog.lifecycle_state = WatchdogLifecycleState.WATCHDOG_EXITED
+            watchdog._persist_watchdog_state("OPERATOR_HANDOFF_ACCEPTED", "Operator assumed manual pod ownership")
             break
+
+        # 2. Live telemetry ingestion
+        live_uptime = None
+        live_balance = None
+        if args.simulate_spend is None and watchdog.api_key:
+            try:
+                st, up, _ = watchdog.query_provider_pod_state()
+                live_uptime = up
+                if watchdog.termination_state == TerminationDurableState.TERMINATION_UNCONFIRMED:
+                    if st in [ProviderResponseState.AUTHORITATIVE_NOT_FOUND, ProviderResponseState.TERMINATED, ProviderResponseState.DELETED]:
+                        print(f"[Watchdog Daemon] Reconciliation confirmed: Pod {watchdog.pod_id} destroyed ({st}).")
+                        watchdog.termination_confirmed = True
+                        watchdog.termination_state = TerminationDurableState.TERMINATION_CONFIRMED
+                        watchdog.lifecycle_state = WatchdogLifecycleState.TERMINATION_CONFIRMED
+                        watchdog._persist_final_receipt("Background reconciliation confirmed destruction", confirmed=True, attempts=1)
+                        watchdog._persist_watchdog_state("TERMINATION_CONFIRMED", "Reconciliation successful")
+                        break
+            except Exception:
+                pass
+
+            try:
+                bal, _ = watchdog.query_account_balance()
+                live_balance = bal
+            except Exception:
+                pass
+
+        res = watchdog.run_supervision_tick(
+            simulated_spend=args.simulate_spend,
+            provider_uptime_seconds=live_uptime,
+            current_account_balance=live_balance
+        )
+        if res["should_terminate"]:
+            if watchdog.termination_confirmed:
+                print(f"[Watchdog Daemon] Termination confirmed. Final status: {res['action']}.")
+                break
+            elif watchdog.termination_state == TerminationDurableState.TERMINATION_UNCONFIRMED:
+                print(f"[Watchdog Daemon] Termination UNCONFIRMED. Maintaining supervision for operator protection...")
         time.sleep(args.poll_interval)
 
 

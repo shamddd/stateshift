@@ -162,6 +162,7 @@ class StateshiftProductionRunnerV10:
         self.manifest_sha256: str = ""
         self.stop_requested: bool = False
         self.verified_auth_payload: Dict[str, Any] = {}
+        self.pre_existing_uptime_seconds: float = 0.0
 
         # Derived financial thresholds (Derived from authorization)
         self.effective_max_spend: float = self.max_cost_usd
@@ -381,6 +382,7 @@ class StateshiftProductionRunnerV10:
         if status != "RUNNING":
             raise ConnectionError(f"Pod {self.pod_id} status is '{status}', must be 'RUNNING'.")
 
+        self.pre_existing_uptime_seconds = float(meta.get("uptimeSeconds", 0.0) or 0.0)
         self.cost_controller.initialize_session(pod_metadata=meta)
         print(f"[Production Runner] Connected to RunPod pod {self.pod_id} (Status: RUNNING).")
         self.transition_to(ProductionState.PROVIDER_CONNECTED)
@@ -410,6 +412,8 @@ class StateshiftProductionRunnerV10:
         ]
         if self.simulate_spend_usd is not None:
             cmd.extend(["--simulate-spend", str(self.simulate_spend_usd)])
+        if self.pre_existing_uptime_seconds > 0.0:
+            cmd.extend(["--pre-existing-uptime", str(self.pre_existing_uptime_seconds)])
         if self.authorization_path and os.path.exists(self.authorization_path):
             cmd.extend(["--authorization", self.authorization_path])
         if self.trusted_public_key_b64:
@@ -438,6 +442,111 @@ class StateshiftProductionRunnerV10:
             if os.path.exists(hb_file):
                 os.remove(hb_file)
 
+        return True
+
+    def wait_for_watchdog_readiness(self, timeout_seconds: float = 15.0) -> bool:
+        """
+        Defect 2: Mandatory Watchdog Startup Handshake.
+        Awaiting and validating 12 distinct points on the atomic readiness receipt
+        before remote deployment or inference is authorized.
+        """
+        readiness_file = os.path.join(
+            self.watchdog_dir,
+            f"watchdog_readiness_{self.experiment_id}_{self.execution_id}.json"
+        )
+        start_t = time.time()
+        receipt_data = None
+        while (time.time() - start_t) < timeout_seconds:
+            # Check if watchdog process crashed before writing receipt
+            if self.watchdog_process and self.watchdog_process.poll() is not None:
+                print(f"[Watchdog Handshake Failure] Watchdog process died prematurely with exit code {self.watchdog_process.returncode}.")
+                return False
+
+            if os.path.exists(readiness_file):
+                try:
+                    with open(readiness_file, "r", encoding="utf-8") as f:
+                        receipt_data = json.load(f)
+                    break
+                except Exception:
+                    pass
+            time.sleep(0.1)
+
+        if not receipt_data:
+            print(f"[Watchdog Handshake Timeout] Readiness receipt not found after {timeout_seconds:.1f}s.")
+            return False
+
+        # 12-point validation check:
+        # 1. status == "READY"
+        if receipt_data.get("status") != "READY":
+            print(f"[Watchdog Handshake Validation Failure] Status '{receipt_data.get('status')}' != 'READY'")
+            return False
+
+        # 2. lifecycle_state in ["ACTIVE", "STARTING"]
+        if receipt_data.get("lifecycle_state") not in ["ACTIVE", "STARTING"]:
+            print(f"[Watchdog Handshake Validation Failure] Invalid lifecycle state: {receipt_data.get('lifecycle_state')}")
+            return False
+
+        # 3. watchdog_pid != os.getpid()
+        w_pid = receipt_data.get("watchdog_pid")
+        if not w_pid or w_pid == os.getpid():
+            print(f"[Watchdog Handshake Validation Failure] Invalid watchdog PID {w_pid} (matches controller {os.getpid()})")
+            return False
+
+        # 4. watchdog_pid is alive in OS process table
+        try:
+            os.kill(w_pid, 0)
+        except OSError as e:
+            print(f"[Watchdog Handshake Validation Failure] Watchdog PID {w_pid} is not alive: {e}")
+            return False
+
+        # 5. experiment_id matches
+        if receipt_data.get("experiment_id") != self.experiment_id:
+            print(f"[Watchdog Handshake Validation Failure] Experiment ID mismatch: {receipt_data.get('experiment_id')} != {self.experiment_id}")
+            return False
+
+        # 6. session_id matches
+        if receipt_data.get("session_id") != self.execution_id:
+            print(f"[Watchdog Handshake Validation Failure] Session ID mismatch: {receipt_data.get('session_id')} != {self.execution_id}")
+            return False
+
+        # 7. pod_id matches
+        expected_pod = self.pod_id or "simulated_pod"
+        if receipt_data.get("pod_id") != expected_pod:
+            print(f"[Watchdog Handshake Validation Failure] Pod ID mismatch: {receipt_data.get('pod_id')} != {expected_pod}")
+            return False
+
+        # 8. max_authorized_usd matches or is conservative
+        r_max = float(receipt_data.get("max_authorized_usd", 0.0))
+        if r_max > self.effective_max_spend + 1e-4:
+            print(f"[Watchdog Handshake Validation Failure] Max authorized spend ${r_max} exceeds runner limit ${self.effective_max_spend}")
+            return False
+
+        # 9. emergency_trigger_usd matches or is conservative
+        r_trig = float(receipt_data.get("emergency_trigger_usd", 0.0))
+        if r_trig > self.effective_emergency_trigger + 1e-4:
+            print(f"[Watchdog Handshake Validation Failure] Emergency trigger ${r_trig} exceeds runner limit ${self.effective_emergency_trigger}")
+            return False
+
+        # 10. Freshness check
+        receipt_ts = float(receipt_data.get("timestamp_utc", 0.0))
+        age = time.time() - receipt_ts
+        if age > (timeout_seconds + 5.0) or age < -5.0:
+            print(f"[Watchdog Handshake Validation Failure] Stale or future receipt timestamp (age: {age:.1f}s)")
+            return False
+
+        # 11. account_preservation_floor_usd verified
+        floor = float(receipt_data.get("account_preservation_floor_usd", 0.0))
+        if floor < 7.00 - 1e-4:
+            print(f"[Watchdog Handshake Validation Failure] Preservation floor ${floor} is below required $7.00 USD")
+            return False
+
+        # 12. Pre-existing uptime matches or is non-negative
+        r_uptime = float(receipt_data.get("pre_existing_uptime_seconds", 0.0))
+        if r_uptime < 0.0:
+            print(f"[Watchdog Handshake Validation Failure] Negative pre-existing uptime: {r_uptime}")
+            return False
+
+        print(f"[Production Runner] Watchdog readiness handshake verified successfully (Watchdog PID: {w_pid}, Session: {self.execution_id}).")
         return True
 
     # ==================== Step 5: Remote Deployment Verification & Launch ====================
@@ -711,15 +820,19 @@ class StateshiftProductionRunnerV10:
         # Priority-1: Persist receipt before anything else
         self._persist_termination_receipt(reason, confirmed=term_ok)
 
-        # Stop watchdog subprocess
-        if self.watchdog_process:
-            self.watchdog_process.terminate()
-
+        # Defect 3: Only shut down watchdog if provider destruction is confirmed!
         if term_ok:
+            if self.watchdog_process:
+                try:
+                    self.watchdog_process.terminate()
+                    self.watchdog_process.wait(timeout=5.0)
+                except Exception:
+                    pass
             self.transition_to(ProductionState.PROVIDER_TERMINATION_CONFIRMED)
             self.transition_to(ProductionState.FINISHED)
             return True
         else:
+            print(f"[Production Runner] WARNING: Termination unconfirmed by provider. Preserving independent watchdog PID {self.watchdog_pid} for background reconciliation and operator protection.")
             self.transition_to(ProductionState.TERMINATION_UNCONFIRMED)
             DurableEscalationManager.record_unconfirmed_termination(
                 pod_id=self.pod_id or "simulated_pod",
@@ -755,19 +868,23 @@ class StateshiftProductionRunnerV10:
         # Priority-1: Persist termination receipt
         self._persist_termination_receipt(reason, confirmed=term_ok)
 
-        # Stop watchdog subprocess
-        if self.watchdog_process:
-            self.watchdog_process.terminate()
-
         try:
             self.sync_checkpoint_transactional()
         except Exception:
             pass
 
+        # Defect 3: Only shut down watchdog if provider destruction is confirmed!
         if term_ok:
+            if self.watchdog_process:
+                try:
+                    self.watchdog_process.terminate()
+                    self.watchdog_process.wait(timeout=5.0)
+                except Exception:
+                    pass
             self.transition_to(ProductionState.PROVIDER_TERMINATION_CONFIRMED)
             return True
         else:
+            print(f"[Production Runner] WARNING: Termination unconfirmed by provider. Preserving independent watchdog PID {self.watchdog_pid} for background reconciliation and operator protection.")
             self.transition_to(ProductionState.TERMINATION_UNCONFIRMED)
             DurableEscalationManager.record_unconfirmed_termination(
                 pod_id=self.pod_id or "simulated_pod",
@@ -814,6 +931,12 @@ class StateshiftProductionRunnerV10:
 
         # Spawn independent watchdog process
         self.spawn_independent_watchdog()
+
+        # Defect 2: Mandatory Startup Handshake Gate
+        if not self.wait_for_watchdog_readiness():
+            self.transition_to(ProductionState.INTEGRITY_FAILURE)
+            self.terminate_emergency("Watchdog startup handshake failed or timed out")
+            return False
 
         pid = self.deploy_and_launch_remote()
         if self.simulate_deployment_failure:
