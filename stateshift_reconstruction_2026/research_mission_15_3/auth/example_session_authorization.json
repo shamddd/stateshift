@@ -1,0 +1,17 @@
+{
+  "_comment": "EXAMPLE SESSION AUTHORIZATION TEMPLATE - NOT VALID FOR LIVE GPU EXECUTION",
+  "approval_status": "UNSIGNED_TEMPLATE_NOT_VALID_FOR_EXECUTION",
+  "experiment_id": "stateshift_400_replication_2026",
+  "principal_investigator": "Sham Satish Thakare",
+  "created_at_utc": 1774329600.0,
+  "expires_at_utc": 1774336800.0,
+  "authorized_execution_modes": ["DRY_RUN", "PREFLIGHT"],
+  "manifest_sha256": "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d",
+  "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+  "model_revision": "c869d27376a8d6728795551322fe323b6",
+  "pod_id": "EXAMPLE_POD_ID_PENDING_PROVISIONING",
+  "max_authorized_incremental_usd": 2.00,
+  "min_account_balance_floor_usd": 7.00,
+  "max_runtime_minutes": 160.0,
+  "pi_signature_digest": "UNSIGNED_EXAMPLE"
+}
