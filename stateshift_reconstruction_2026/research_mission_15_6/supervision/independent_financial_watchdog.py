@@ -660,6 +660,7 @@ def main():
     parser.add_argument("--max-authorized", type=float, default=0.35)
     parser.add_argument("--emergency-trigger", type=float, default=0.25)
     parser.add_argument("--hourly-rate", type=float, default=0.89)
+    parser.add_argument("--preservation-floor", type=float, default=7.00, help="Account preservation floor in USD")
     parser.add_argument("--max-runtime", type=float, default=60.0)
     parser.add_argument("--poll-interval", type=float, default=1.0)
     parser.add_argument("--controller-heartbeat", default=None)
@@ -680,6 +681,7 @@ def main():
         allow_test_key_for_testing=args.allow_test_key,
         max_authorized_usd=args.max_authorized,
         emergency_trigger_usd=args.emergency_trigger,
+        account_preservation_floor_usd=args.preservation_floor,
         gpu_hourly_rate=args.hourly_rate,
         max_runtime_minutes=args.max_runtime,
         poll_interval_seconds=args.poll_interval,

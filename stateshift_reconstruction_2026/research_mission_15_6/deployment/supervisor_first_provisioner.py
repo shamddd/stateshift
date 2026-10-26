@@ -81,6 +81,7 @@ class SupervisorFirstProvisioner:
         active_mode: str = "CALIBRATION",
         manifest_sha256: str = FROZEN_MANIFEST_SHA256,
         authorization_doc: Optional[Dict[str, Any]] = None,
+        authorization_path: Optional[str] = None,
         authorizer: Optional[CryptographicAuthorizer] = None,
         trusted_public_key_b64: Optional[str] = None,
         transport: Optional[ProductionRunPodTransportV2] = None,
@@ -103,6 +104,7 @@ class SupervisorFirstProvisioner:
         self.manifest_sha256 = manifest_sha256
 
         self.authorization_doc = authorization_doc
+        self.authorization_path = authorization_path
         self.authorizer = authorizer
         self.trusted_public_key_b64 = trusted_public_key_b64
 
@@ -226,9 +228,22 @@ class SupervisorFirstProvisioner:
             "--max-authorized", str(self.max_cost_usd),
             "--emergency-trigger", str(self.emergency_trigger_usd),
             "--hourly-rate", str(self.gpu_hourly_rate),
+            "--preservation-floor", str(self.account_floor_usd),
             "--controller-pid", str(os.getpid()),
             "--poll-interval", "1.0"
         ]
+
+        # Pass authorization to watchdog so it can independently verify and adopt floor
+        if getattr(self, "authorization_path", None) and os.path.exists(self.authorization_path):
+            cmd.extend(["--authorization", self.authorization_path])
+        elif self.authorization_doc:
+            auth_tmp = os.path.join(self.watchdog_dir, f"session_auth_{self.session_id}.json")
+            with open(auth_tmp, "w", encoding="utf-8") as f:
+                json.dump(self.authorization_doc, f, indent=2)
+            cmd.extend(["--authorization", auth_tmp])
+
+        if self.trusted_public_key_b64:
+            cmd.extend(["--trusted-public-key", self.trusted_public_key_b64])
 
         self.watchdog_process = self.watchdog_starter(cmd)
         self.watchdog_pid = self.watchdog_process.pid
