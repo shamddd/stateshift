@@ -5,7 +5,7 @@ Author: Sham Satish Thakare (github.com/shamddd)
 Target: NeurIPS 2027 Main Conference (Secondary: TMLR)
 
 Executes the frozen 400-request mathematical reasoning experiment:
-- Model: Qwen/Qwen2.5-Math-7B-Instruct (revision: c869d27376a8d6728795551322fe323b6)
+- Model: Qwen/Qwen2.5-Math-7B-Instruct (revision: ef9926d75ab1d54532f6a30dd5e760355eb9aa4d)
 - Engine: vLLM (with automatic, documented fallback to HuggingFace Transformers)
 - Decoding: Greedy (temperature=0.0, max_tokens=768, seed=42, sampling_mode='greedy')
 - Incremental fsync checkpointing & resume support
@@ -22,7 +22,7 @@ from typing import Dict, Any, List, Set, Optional
 
 FROZEN_MANIFEST_SHA256 = "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d"
 DEFAULT_MODEL_ID = "Qwen/Qwen2.5-Math-7B-Instruct"
-DEFAULT_MODEL_REVISION = "c869d27376a8d6728795551322fe323b6"
+DEFAULT_MODEL_REVISION = "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d"
 
 
 class RemoteExperimentRunner:

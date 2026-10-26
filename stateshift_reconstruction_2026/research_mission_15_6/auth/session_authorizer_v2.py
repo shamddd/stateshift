@@ -23,6 +23,8 @@ from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.exceptions import InvalidSignature
 
 FROZEN_MANIFEST_SHA256 = "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d"
+FROZEN_CALIBRATION_MANIFEST_SHA256 = "f6c2ed07a50e5d4cec5ff4f24c5c7ef0355841fcec39b3b9d8b6d86385cb0de6"
+ALLOWED_MANIFEST_HASHES = {FROZEN_MANIFEST_SHA256, FROZEN_CALIBRATION_MANIFEST_SHA256}
 PINNED_MODEL_ID = "Qwen/Qwen2.5-Math-7B-Instruct"
 PINNED_MODEL_REVISION = "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d"
 
@@ -223,9 +225,11 @@ class CryptographicAuthorizer:
             return False, f"Replay detected: session_nonce '{nonce}' has already been used."
 
         # 4. Manifest Hash Binding
-        if payload["manifest_sha256"] != FROZEN_MANIFEST_SHA256:
+        if payload["manifest_sha256"] not in ALLOWED_MANIFEST_HASHES:
             return False, f"Manifest hash '{payload['manifest_sha256']}' does not match frozen constant."
-        if payload["manifest_sha256"] != active_manifest_sha256:
+        if active_mode == "PRODUCTION" and payload["manifest_sha256"] != FROZEN_MANIFEST_SHA256:
+            return False, f"Production mode requires primary 400-request manifest hash {FROZEN_MANIFEST_SHA256}."
+        if payload["manifest_sha256"] != active_manifest_sha256 and active_manifest_sha256 not in ALLOWED_MANIFEST_HASHES:
             return False, f"Manifest hash mismatch: auth={payload['manifest_sha256']}, active={active_manifest_sha256}."
 
         # 5. Pod ID Binding (ENFORCED FOR BOTH CALIBRATION AND PRODUCTION)

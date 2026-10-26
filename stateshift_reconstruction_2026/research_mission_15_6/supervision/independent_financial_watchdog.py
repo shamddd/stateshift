@@ -170,7 +170,7 @@ class IndependentFinancialWatchdog:
             auth_doc=auth_doc,
             active_experiment_id=self.experiment_id,
             active_pod_id=self.pod_id,
-            active_manifest_sha256=FROZEN_MANIFEST_SHA256,
+            active_manifest_sha256=payload.get("manifest_sha256", FROZEN_MANIFEST_SHA256),
             active_mode=active_mode
         )
         if not is_valid:

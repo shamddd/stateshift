@@ -281,7 +281,8 @@ class StateshiftProductionRunnerV10:
             nonce_registry_path=os.path.join(self.local_data_dir, "used_nonces.json"),
             allow_test_key_for_testing=self.allow_test_key_for_testing
         )
-        active_manifest = getattr(self, "parent_manifest_sha256", self.manifest_sha256)
+        auth_m_hash = auth_doc.get("payload", {}).get("manifest_sha256")
+        active_manifest = self.manifest_sha256 if (hasattr(self, "manifest_sha256") and auth_m_hash == self.manifest_sha256) else getattr(self, "parent_manifest_sha256", self.manifest_sha256)
         is_valid, reason = authorizer.verify_authorization(
             auth_doc=auth_doc,
             active_experiment_id=self.experiment_id,
