@@ -38,7 +38,7 @@ $$\text{Runtime at \$0.25} = \frac{\$0.25}{\$0.89/\text{hr}} \times 60\text{ min
 
 ## 3. Financial Thresholds Under Policy V2 Exception
 
-To ensure both scientific completion and guaranteed preservation of the $0.32 reserve floor, the following parameters are established:
+To balance scientific completion against the target preservation floor, the following parameters are established (the $0.32 remaining balance is a target reserve; provider billing delays or failed termination may reduce or eliminate it):
 
 ```text
 +-------------------------------------------------------------------------------+
@@ -70,7 +70,7 @@ To ensure both scientific completion and guaranteed preservation of the $0.32 re
    - If model download or initialization exceeds 45 minutes, the independent watchdog daemon halts the run and terminates the pod.
 3. **Safety Buffer: $0.3000 USD ($1.00 − $0.70)**
    - Corresponds to **20.2 minutes** of billing headroom.
-   - Even if RunPod billing updates lag by 2 minutes and API teardown takes 3 minutes, the total charges incurred cannot exceed $0.75 – $0.80, leaving the **$0.32 reserve floor intact**.
+   - Even if RunPod billing updates lag by 2 minutes and API teardown takes 3 minutes, the total charges incurred cannot exceed $0.75 – $0.80, leaving the target reserve intact under normal provider operations.
 4. **Hard Wall-Clock Runtime Deadline: 45.0 Minutes**
    - Local runner monotonic timer triggers emergency termination at $T + 45$ minutes regardless of provider telemetry.
    - At $0.89/hr, 45 minutes costs exactly **$0.6675 USD**.
@@ -85,6 +85,6 @@ To ensure both scientific completion and guaranteed preservation of the $0.32 re
 >
 > If RunPod experiences a severe datacenter infrastructure failure where the hypervisor ignores termination mutations and API queries fail, charges could theoretically continue until the remaining account balance ($1.3174) is fully exhausted to $0.00.
 >
-> **Maximum possible financial loss under any catastrophe:** Exactly **$1.3174 USD**.
+> The actual financial exposure depends on RunPod billing mechanics, account configuration, and payment arrangements. While RunPod operates primarily on prepaid credits, client-side software cannot provide an independently verified absolute guarantee against negative balances or provider-level invoicing policies if termination fails or provider telemetry is delayed. The $0.32 remaining balance is a target reserve. Provider billing delays or failed termination may reduce or eliminate it.
 >
-> Because RunPod prepaid accounts do not allow negative balances without a credit line, no debt or surprise external card charges can occur. The Principal Investigator explicitly accepts the risk of losing the entire $1.3174 balance in exchange for obtaining authentic GPU calibration evidence without depositing additional funds today.
+> The Principal Investigator explicitly accepts the financial risks of cloud execution in exchange for obtaining authentic GPU calibration evidence without depositing additional funds today.

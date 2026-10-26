@@ -22,7 +22,7 @@ FINANCIAL & SAFETY INVARIANTS:
 2. Compute: Exactly ONE RTX 4090 (24 GB VRAM). Zero replacement pods.
 3. Max Planned Expenditure: $1.0000 USD (Ceiling).
 4. Early Shutdown Trigger: $0.7000 USD (Monitored by independent watchdog).
-5. Target Reserve Floor: $0.3200 USD (Hard balance preservation floor).
+5. Target Reserve Floor: $0.3200 USD (Target reserve; provider billing delays or failed termination may reduce or eliminate it).
 6. Hard Runtime Deadline: 45.0 Minutes (Local wall-clock monotonic timeout).
 7. Single-Attempt Invariant: Exactly one provisioning attempt; zero automated retries.
 8. Protocol Limitation: Exactly 10 requests. Primary experiment STRICTLY PROHIBITED.
@@ -40,7 +40,7 @@ Before removing the execution lock or generating tokens:
 2. **Verify Resources:**
    Confirm active pods = 0, stopped pods = 0, network volumes = 0.
 3. **Verify Git Tree:**
-   Confirm HEAD commit is `225517b` and working tree is clean.
+   Confirm HEAD commit matches current authorized commit and working tree is clean.
 4. **Verify Manifest Hash:**
    ```bash
    openssl dgst -sha256 research_mission_15_6/manifests/calibration_10_manifest.json

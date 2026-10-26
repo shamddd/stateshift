@@ -66,7 +66,7 @@ Awaiting: Formal Cryptographic Authorization Token from Principal Investigator.
 
 | Dimension | Specification | Verification Status |
 |---|---|---|
-| **Repository Commit** | [`225517b`](file:///Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/calibration_readiness/13_FINAL_EXECUTION_GATE.md) | Clean working tree; all tests pass |
+| **Repository Commit** | [`00edc6a`](file:///Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/calibration_readiness/13_FINAL_EXECUTION_GATE.md) (or subsequent preflight commit) | Clean working tree; all tests pass |
 | **Execution Lock** | `STATE_SHIFT_CLOUD_EXECUTION_DISABLED=1` | ACTIVE (Fail-Closed) |
 | **Current Live Balance** | $1.317414 USD | Verified via RunPod API |
 | **Planned Spend Ceiling** | $1.0000 USD | Under Policy V2 Exception |
