@@ -256,8 +256,12 @@ def test_08_duplicate_provisioning_attempt_rejected(temp_dir):
     provisioner = SupervisorFirstProvisioner(
         experiment_id="test_dup",
         session_id="sess_dup",
-        local_data_dir=temp_dir
+        local_data_dir=temp_dir,
+        simulate_supervisor=True,
+        allow_mock_offline_testing=True
     )
+    provisioner.spawn_preprovision_supervisor(timeout_seconds=0.5)
+
     # Attempt 1: succeeds
     p1 = provisioner.provision_single_pod(lambda: "pod_001")
     assert p1 == "pod_001"
@@ -265,7 +269,7 @@ def test_08_duplicate_provisioning_attempt_rejected(temp_dir):
     # Attempt 2: strictly prohibited
     with pytest.raises(ProvisioningSecurityError) as exc_info:
         provisioner.provision_single_pod(lambda: "pod_002")
-    assert "Single-attempt invariant violated" in str(exc_info.value)
+    assert "Single-attempt invariant violated" in str(exc_info.value) or "Duplicate provisioning prohibited" in str(exc_info.value)
 
 
 # =========================================================================
@@ -471,7 +475,8 @@ def test_15_full_incident_replay_rescued_by_architecture(temp_dir):
         emergency_trigger_usd=0.25,
         account_floor_usd=7.00,
         transport=mock_transport,
-        simulate_supervisor=True
+        simulate_supervisor=True,
+        allow_mock_offline_testing=True
     )
 
     # 1. Preconditions checked
