@@ -1,0 +1,20 @@
+{
+  "payload": {
+    "schema_version": "1.0",
+    "experiment_id": "stateshift-calibration-10",
+    "manifest_sha256": "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d",
+    "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+    "model_revision": "c869d27376a8d6728795551322fe323b6",
+    "pod_id": "czcqju6afvb3du",
+    "max_incremental_spend_usd": 0.35,
+    "emergency_trigger_usd": 0.25,
+    "minimum_account_balance_usd": 7.0,
+    "maximum_runtime_minutes": 15,
+    "authorized_mode": "CALIBRATION",
+    "issued_at_utc": 1792939233.553086,
+    "expires_at_utc": 1792942833.553086,
+    "session_nonce": "fTh4yZOhWHk095VGSQpydA=="
+  },
+  "signature_ed25519_b64": "1NcgsDEmSHVojJOfOYOIHGKh30GK98irmZZF8V9uHNLymzD5lnS+PX69h1Q+6822mxKckHMrXuCBxq6dOxZFDQ==",
+  "public_key_ed25519_b64": "7+FtrDz+xgBlecS2CiwN0kBDIygc+eN2fGAkYkdDtFM="
+}

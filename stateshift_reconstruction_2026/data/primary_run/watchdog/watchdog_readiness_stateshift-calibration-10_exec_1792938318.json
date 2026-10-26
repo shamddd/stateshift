@@ -1,0 +1,17 @@
+{
+  "status": "READY",
+  "lifecycle_state": "ACTIVE",
+  "watchdog_pid": 32902,
+  "experiment_id": "stateshift-calibration-10",
+  "pod_id": "n6mr7h6n8i8p0l",
+  "session_id": "exec_1792938318",
+  "timestamp_utc": 1792938321.3454971,
+  "iso_time": "2026-10-25T14:25:21Z",
+  "max_authorized_usd": 0.35,
+  "emergency_trigger_usd": 0.25,
+  "account_preservation_floor_usd": 7.0,
+  "initial_account_balance": 9.1994779622,
+  "pre_existing_uptime_seconds": 147.0,
+  "gpu_hourly_rate": 0.89,
+  "reported_gpu_hourly_rate": null
+}

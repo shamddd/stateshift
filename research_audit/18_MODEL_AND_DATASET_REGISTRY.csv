@@ -1,0 +1,12 @@
+Artifact_Category,Entity_Name,Identifier_or_Path,Training_Step,Role,License,Access_URL
+Model,Qwen2.5-7B (Base),Qwen/Qwen2.5-7B,0,Baseline Model (t=0),Apache 2.0,https://huggingface.co/Qwen/Qwen2.5-7B
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 32),UWNSL/Qwen2.5-7B-deepscaler_4k_step_32,32,Earliest Intermediate RL Checkpoint,MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 64),UWNSL/Qwen2.5-7B-deepscaler_4k_step_64,64,Intermediate RL Checkpoint,MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 96),UWNSL/Qwen2.5-7B-deepscaler_4k_step_96,96,Intermediate RL Checkpoint,MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 128),UWNSL/Qwen2.5-7B-deepscaler_4k_step_128,128,Intermediate RL Checkpoint,MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 160),UWNSL/Qwen2.5-7B-deepscaler_4k_step_160,160,Intermediate RL Checkpoint (Local Dip),MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 192),UWNSL/Qwen2.5-7B-deepscaler_4k_step_192,192,Intermediate RL Checkpoint,MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 224),UWNSL/Qwen2.5-7B-deepscaler_4k_step_224,224,Intermediate RL Checkpoint (Local Dip),MIT,https://huggingface.co/UWNSL
+Model,DeepScaleR-1.5B-Preview (Qwen-2.5-7B Checkpoint 256),UWNSL/Qwen2.5-7B-deepscaler_4k_step_256,256,Terminal RLVR Checkpoint (t=256),MIT,https://huggingface.co/UWNSL
+Dataset,MATH-500,HuggingFaceH4/MATH-500,N/A,Source Benchmark for Problem Selection,MIT,https://huggingface.co/datasets/HuggingFaceH4/MATH-500
+Dataset,StateShift Confirmatory Registry,confirmatory_problem_registry.json,N/A,454 Decontaminated Problems with Matched Prefixes,MIT,Local Artifact

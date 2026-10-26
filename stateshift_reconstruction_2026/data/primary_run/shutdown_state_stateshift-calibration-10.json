@@ -1,0 +1,9 @@
+{
+  "experiment_id": "stateshift-calibration-10",
+  "shutdown_state": "NOT_REQUESTED",
+  "shutdown_attempts": 0,
+  "last_attempt_time": 0.0,
+  "last_error_message": null,
+  "timestamp_utc": 1792936755.253556,
+  "iso_time": "2026-10-25T13:59:15.253563+00:00"
+}

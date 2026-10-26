@@ -1,0 +1,44 @@
+{
+  "research_mission_09/logs/stage_a_master_generations.jsonl": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_09/logs/stage_a_master_generations.jsonl",
+    "sha256": "4118514dce00515878e09b07b06901422d1212b4f67ec17dd2d47276d7ca3e4f",
+    "size_bytes": 534129,
+    "status": "VERIFIED_PRESENT"
+  },
+  "research_mission_09/benchmarks/stateshift_bench_with_answers.json": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_09/benchmarks/stateshift_bench_with_answers.json",
+    "sha256": "2d82394ef0faab74a197c51caa7b2100396c94416ac9b1f8b246355cfaab7524",
+    "size_bytes": 810429,
+    "status": "VERIFIED_PRESENT"
+  },
+  "research_mission_10/data/real_recovery_restart_generations.jsonl": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_10/data/real_recovery_restart_generations.jsonl",
+    "sha256": "7e794b5d0a958ccb7ae2e6d85d9170756eb139d8e0ef417a92392890d264411d",
+    "size_bytes": 175687,
+    "status": "VERIFIED_PRESENT"
+  },
+  "research_mission_10/data/token_budget_generations.jsonl": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_10/data/token_budget_generations.jsonl",
+    "sha256": "44c0ab43336193a6ccfc3501a0ff1a9b889649b8edb254a1c38bdf2ccd491cef",
+    "size_bytes": 66834,
+    "status": "VERIFIED_PRESENT"
+  },
+  "research_mission_11/03_REFERENCE_ANNOTATION_DATASET.jsonl": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_11/03_REFERENCE_ANNOTATION_DATASET.jsonl",
+    "sha256": "36a2bad3d927b9a161db50f4f9f1a631b9f3b331a2e3630c8ceaa35205d2b7c4",
+    "size_bytes": 78441,
+    "status": "VERIFIED_PRESENT"
+  },
+  "research_mission_11/data/mission10_reclassified_generations.jsonl": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_11/data/mission10_reclassified_generations.jsonl",
+    "sha256": "995a1fe8bbb093df4f0bf18cefd8682322170cdaa3d5eb1e1b2d28b43503f20b",
+    "size_bytes": 183829,
+    "status": "VERIFIED_PRESENT"
+  },
+  "research_mission_11/data/new_local_validation_generations.jsonl": {
+    "absolute_path": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_11/data/new_local_validation_generations.jsonl",
+    "sha256": "735c890c82d4b2f5a597a5e50811c567c4f34a16c0a8c8517199ed74eb19c91a",
+    "size_bytes": 32952,
+    "status": "VERIFIED_PRESENT"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "manifest_file": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_14/../research_mission_13/manifests/primary_100_manifest.json",
+  "manifest_sha256": "",
+  "total_manifest_requests": 400,
+  "total_recovered_records": 6,
+  "records": [
+    {
+      "request_id": "primary_100_req_0001",
+      "problem_id": "math500_001",
+      "condition_code": "Condition_A_Zero_Shot",
+      "condition_name": "neutral",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "model_revision": "main",
+      "manifest_found": true,
+      "gold_answer_matched": true,
+      "prompt_sha256": "7b282914d5e21a79700905c75ae8d3e69c05a1fdb96ea6d99a47f99dcb2e5b5e",
+      "generated_tokens": 728,
+      "latency_seconds": 18.24,
+      "tokens_per_second": 39.91,
+      "stop_reason": "eos",
+      "final_answer_correctness": "VERIFIED_TRUE",
+      "genuine_local_repair": "VERIFIED_FALSE",
+      "is_restart": false,
+      "overall_status": "LUCKY_GUESS_OR_ALTERNATIVE_PATH",
+      "has_raw_output": true,
+      "raw_output_length": 1603
+    },
+    {
+      "request_id": "primary_100_req_0002",
+      "problem_id": "math500_001",
+      "condition_code": "Condition_D_Forced_Restart",
+      "condition_name": "explicit_restart",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "model_revision": "main",
+      "manifest_found": true,
+      "gold_answer_matched": true,
+      "prompt_sha256": "42e1c79869cfe420e60a095e78d13907396a9afe69833404be46ff4651388e77",
+      "generated_tokens": 553,
+      "latency_seconds": 13.48,
+      "tokens_per_second": 41.02,
+      "stop_reason": "eos",
+      "final_answer_correctness": "VERIFIED_TRUE",
+      "genuine_local_repair": "VERIFIED_FALSE",
+      "is_restart": true,
+      "overall_status": "RESTART_SUCCESS",
+      "has_raw_output": true,
+      "raw_output_length": 1260
+    },
+    {
+      "request_id": "primary_100_req_0003",
+      "problem_id": "math500_001",
+      "condition_code": "Condition_E_Explicit_Repair",
+      "condition_name": "explicit_local_repair",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "model_revision": "main",
+      "manifest_found": true,
+      "gold_answer_matched": true,
+      "prompt_sha256": "d529ff032f54e28c21028c75764e668ba4dcee47bb55b2e0465ecded1b5db908",
+      "generated_tokens": 549,
+      "latency_seconds": 13.458,
+      "tokens_per_second": 40.79,
+      "stop_reason": "eos",
+      "final_answer_correctness": "VERIFIED_TRUE",
+      "genuine_local_repair": "VERIFIED_FALSE",
+      "is_restart": false,
+      "overall_status": "LUCKY_GUESS_OR_ALTERNATIVE_PATH",
+      "has_raw_output": true,
+      "raw_output_length": 1229
+    },
+    {
+      "request_id": "primary_100_req_0004",
+      "problem_id": "math500_001",
+      "condition_code": "Condition_F_State_Preserving",
+      "condition_name": "state_preserving_repair",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "model_revision": "main",
+      "manifest_found": true,
+      "gold_answer_matched": true,
+      "prompt_sha256": "d36a8d5693c7b3ae7d69ae3ee820f5b823b085bba4f0da2f0ed39b21b577b55b",
+      "generated_tokens": 558,
+      "latency_seconds": 13.674,
+      "tokens_per_second": 40.81,
+      "stop_reason": "eos",
+      "final_answer_correctness": "VERIFIED_TRUE",
+      "genuine_local_repair": "VERIFIED_FALSE",
+      "is_restart": true,
+      "overall_status": "RESTART_SUCCESS",
+      "has_raw_output": true,
+      "raw_output_length": 1307
+    },
+    {
+      "request_id": "primary_100_req_0131",
+      "problem_id": "math500_026",
+      "condition_code": "Condition_E_Explicit_Repair",
+      "condition_name": "explicit_local_repair",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "model_revision": "main",
+      "manifest_found": true,
+      "gold_answer_matched": true,
+      "prompt_sha256": "e93b904e64d599e8ca0e1f7560435d5f90e34913f0ba88f5bbf4ad9996e9ca12",
+      "generated_tokens": 465,
+      "latency_seconds": 11.346,
+      "tokens_per_second": 40.99,
+      "stop_reason": "eos",
+      "final_answer_correctness": "VERIFIED_TRUE",
+      "genuine_local_repair": "VERIFIED_FALSE",
+      "is_restart": true,
+      "overall_status": "RESTART_SUCCESS",
+      "has_raw_output": true,
+      "raw_output_length": 1819
+    },
+    {
+      "request_id": "primary_100_req_0143",
+      "problem_id": "math500_061",
+      "condition_code": "Condition_E_Explicit_Repair",
+      "condition_name": "explicit_local_repair",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "model_revision": "main",
+      "manifest_found": true,
+      "gold_answer_matched": true,
+      "prompt_sha256": "94b99df73bcb09e95efb0b7ae249f75cc953d3b4b646f220a1fc0a4e10989dd7",
+      "generated_tokens": 558,
+      "latency_seconds": 13.543,
+      "tokens_per_second": 41.2,
+      "stop_reason": "eos",
+      "final_answer_correctness": "VERIFIED_TRUE",
+      "genuine_local_repair": "VERIFIED_FALSE",
+      "is_restart": true,
+      "overall_status": "RESTART_SUCCESS",
+      "has_raw_output": true,
+      "raw_output_length": 1428
+    }
+  ],
+  "problem_block_completeness": {
+    "math500_001": {
+      "conditions_present": [
+        "Condition_A_Zero_Shot",
+        "Condition_D_Forced_Restart",
+        "Condition_E_Explicit_Repair",
+        "Condition_F_State_Preserving"
+      ],
+      "is_complete_4_block": true
+    },
+    "math500_026": {
+      "conditions_present": [
+        "Condition_E_Explicit_Repair"
+      ],
+      "is_complete_4_block": false
+    },
+    "math500_061": {
+      "conditions_present": [
+        "Condition_E_Explicit_Repair"
+      ],
+      "is_complete_4_block": false
+    }
+  }
+}

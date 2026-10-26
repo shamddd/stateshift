@@ -18,7 +18,8 @@ dependencies = [
   "scipy>=1.7.0",
   "pyyaml>=5.4.1",
   "matplotlib>=3.4.0",
-  "reportlab>=3.6.0"
+  "reportlab>=3.6.0",
+  "sympy>=1.10.0"
 ]
 
 [project.optional-dependencies]
@@ -30,3 +31,7 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["stateshift*"]

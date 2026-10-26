@@ -1,0 +1,33 @@
+{
+  "audit_target": "29056_rollouts_deepscaler_lineage",
+  "source_file": "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_04/11_REPRODUCIBILITY_PACKAGE/data/controlled_endpoint_outcomes.csv",
+  "sha256": "49549bbd73349bb0e1879603bdbeb04c4a8617ab85d0b31323cfeb188a5c6139",
+  "row_count": 29056,
+  "unique_pairs": 454,
+  "checkpoints": [
+    0,
+    256
+  ],
+  "state_types": [
+    "control",
+    "recovery"
+  ],
+  "replications_per_cell": 16,
+  "raw_text_completions_present": false,
+  "classification": "Tier 2 (Derived Outcome-Level Evaluation Table)",
+  "verdict": "PARTIALLY VERIFIED (Outcome table reproducible; raw text traces unavailable)",
+  "reproduced_metrics": {
+    "mu_R_0": 0.383397577092511,
+    "mu_R_256": 0.7038821585903083,
+    "mu_C_0": 0.3891795154185022,
+    "mu_C_256": 0.5920980176211453,
+    "gamma_256": 0.11756607929515418,
+    "clustered_se": 0.01136767490394377,
+    "t_stat": 10.342139469027845,
+    "p_val": 0.0,
+    "bootstrap_ci_95": [
+      0.09608686674008811,
+      0.1395959526431718
+    ]
+  }
+}

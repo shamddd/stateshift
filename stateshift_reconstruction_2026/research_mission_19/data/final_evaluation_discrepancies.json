@@ -1,0 +1,36 @@
+{
+  "total_unit_discrepancies": 3,
+  "discrepancies": [
+    {
+      "request_id": "primary_100_req_0202",
+      "problem_id": "math500_007",
+      "condition_code": "Condition_D_Forced_Restart",
+      "gold_answer": "90^\\circ",
+      "extracted_pred": "90",
+      "strict_correct": false,
+      "flex_correct": true,
+      "reason": "Degree unit specification (^\\circ vs number)"
+    },
+    {
+      "request_id": "primary_100_req_0203",
+      "problem_id": "math500_007",
+      "condition_code": "Condition_E_Explicit_Repair",
+      "gold_answer": "90^\\circ",
+      "extracted_pred": "90",
+      "strict_correct": false,
+      "flex_correct": true,
+      "reason": "Degree unit specification (^\\circ vs number)"
+    },
+    {
+      "request_id": "primary_100_req_0204",
+      "problem_id": "math500_007",
+      "condition_code": "Condition_F_State_Preserving",
+      "gold_answer": "90^\\circ",
+      "extracted_pred": "90",
+      "strict_correct": false,
+      "flex_correct": true,
+      "reason": "Degree unit specification (^\\circ vs number)"
+    }
+  ],
+  "invariance_proof": "Under strict evaluation, D=67, F=73 (tau = +6.00%). Under unit-flexible evaluation, math500_007 gives +1 to D and +1 to F, yielding D=68, F=74 (tau = +6.00%). The effect size and discordant pairs (b=8, c=2) are 100% invariant."
+}

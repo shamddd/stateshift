@@ -1,0 +1,21 @@
+{
+  "payload": {
+    "schema_version": "1.0",
+    "experiment_id": "stateshift_calib_b1_01",
+    "manifest_sha256": "f6c2ed07a50e5d4cec5ff4f24c5c7ef0355841fcec39b3b9d8b6d86385cb0de6",
+    "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+    "model_revision": "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d",
+    "pod_id": "PRE_PROVISION",
+    "max_incremental_spend_usd": 1.0,
+    "emergency_trigger_usd": 0.7,
+    "minimum_account_balance_usd": 0.32,
+    "maximum_runtime_minutes": 45,
+    "authorized_mode": "CALIBRATION",
+    "financial_policy_version": "POLICY_V2_TEMPORARY_BUDGET1_EXCEPTION",
+    "issued_at_utc": 1792980212.0972311,
+    "expires_at_utc": 1792987412.0972311,
+    "session_nonce": "AEh1gUhxSAQcBqZNxLGotg=="
+  },
+  "signature_ed25519_b64": "8pmnsdP1drC0G2lFljtdTF6fWGTU/cNHmc/r78G57rJwPuG6RF4ITC5uxTTFFEqM9VAYTKLTTG9UmKZ94n+vDw==",
+  "public_key_ed25519_b64": "IaQok2nQchG5qvIaMsLKHLe2zXqkarD7U7RLjO1H+bk="
+}

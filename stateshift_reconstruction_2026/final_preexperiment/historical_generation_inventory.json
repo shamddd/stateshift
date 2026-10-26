@@ -1,0 +1,101 @@
+{
+  "inventory_metadata": {
+    "project": "StateShift",
+    "generated_at_utc": "2026-10-26T00:20:00Z",
+    "principal_investigator": "Sham Satish Thakare",
+    "target_venue": "NeurIPS 2027 Main Conference"
+  },
+  "datasets": [
+    {
+      "path": "research_mission_15_6/data/recovered_smoke_test_generations.jsonl",
+      "mission": "Mission 15.6 / 13",
+      "hardware": "RunPod Cloud GPU (NVIDIA RTX 4090, 24GB)",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "precision": "bfloat16 / vLLM",
+      "status": "AUTHENTIC_GPU_SMOKE_TEST",
+      "usability": "System Smoke Validation Only (Not Main Experiment Cohort)",
+      "description": "Four authentic Qwen-7B generations on math500_001 across Conditions A, D, E, F.",
+      "sha256": "7d3be0fd81afcd8832a05335e201902bfd97c1d0df1dc62f4f59ed70327364be",
+      "record_count": 4,
+      "file_size_bytes": 13083
+    },
+    {
+      "path": "research_mission_15_6/data/recovered_live_traces.jsonl",
+      "mission": "Mission 15.6 / 15",
+      "hardware": "RunPod Cloud GPU (NVIDIA RTX 4090, 24GB)",
+      "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "precision": "bfloat16 / vLLM",
+      "status": "AUTHENTIC_GPU_PARTIAL_TRACES",
+      "usability": "Exploratory Trace Analysis Only (2 requests from Condition E)",
+      "description": "Two authentic partial generation traces recovered from RunPod execution.",
+      "sha256": "53cac6a3106cbb17d8e0df5ea39c7daa0dea4a5e10e66613022e99953e63cac1",
+      "record_count": 2,
+      "file_size_bytes": 6974
+    },
+    {
+      "path": "research_mission_10/data/real_recovery_restart_generations.jsonl",
+      "mission": "Mission 10",
+      "hardware": "Apple Silicon M1 Local Unified Memory (MLX)",
+      "model_id": "mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit",
+      "precision": "4-bit quantized MLX",
+      "status": "AUTHENTIC_LOCAL_MLX_PILOT",
+      "usability": "Pilot Exploratory Evidence (100 requests on 1.5B model)",
+      "description": "100 local 1.5B model generations comparing recovery vs restart behavior.",
+      "sha256": "7e794b5d0a958ccb7ae2e6d85d9170756eb139d8e0ef417a92392890d264411d",
+      "record_count": 100,
+      "file_size_bytes": 175687
+    },
+    {
+      "path": "research_mission_10/data/token_budget_generations.jsonl",
+      "mission": "Mission 10",
+      "hardware": "Apple Silicon M1 Local Unified Memory (MLX)",
+      "model_id": "mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit",
+      "precision": "4-bit quantized MLX",
+      "status": "TOKEN_BUDGET_BENCHMARK",
+      "usability": "Compute Scaling & Latency Baseline",
+      "description": "40 local benchmark rollouts measuring latency, tokens/sec, and peak memory.",
+      "sha256": "44c0ab43336193a6ccfc3501a0ff1a9b889649b8edb254a1c38bdf2ccd491cef",
+      "record_count": 40,
+      "file_size_bytes": 66834
+    },
+    {
+      "path": "research_mission_11/data/mission10_reclassified_generations.jsonl",
+      "mission": "Mission 11",
+      "hardware": "N/A (Derived Annotation)",
+      "model_id": "mlx-community/Qwen2.5-Math-1.5B-Instruct-4bit",
+      "precision": "4-bit quantized MLX",
+      "status": "RECLASSIFIED_ANNOTATION",
+      "usability": "Taxonomy & Qualitative Error Classification",
+      "description": "100 re-annotated records evaluating restart vs surgical repair.",
+      "sha256": "995a1fe8bbb093df4f0bf18cefd8682322170cdaa3d5eb1e1b2d28b43503f20b",
+      "record_count": 100,
+      "file_size_bytes": 183829
+    },
+    {
+      "path": "research_mission_09/logs/stage_a_master_generations.jsonl",
+      "mission": "Mission 09",
+      "hardware": "Apple Silicon M1 Local Unified Memory (MLX)",
+      "model_id": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+      "precision": "4-bit quantized MLX",
+      "status": "PRELIMINARY_FEASIBILITY_PILOT",
+      "usability": "Proof-of-Concept Only (0.5B model)",
+      "description": "301 rollouts on 0.5B model testing preliminary state corruption.",
+      "sha256": "4118514dce00515878e09b07b06901422d1212b4f67ec17dd2d47276d7ca3e4f",
+      "record_count": 301,
+      "file_size_bytes": 534129
+    },
+    {
+      "path": "research_mission_05/10_FINAL_REPRODUCIBILITY_PACKAGE/data/natural_recovery_3200_rollouts.jsonl",
+      "mission": "Mission 05",
+      "hardware": "Simulated Rollout Engine",
+      "model_id": "Synthetic / Simulated Checkpoints",
+      "precision": "N/A",
+      "status": "SYNTHETIC_SIMULATION_ROLLOUTS",
+      "usability": "Statistical Framework Testing Only",
+      "description": "3,200 simulated rollouts across checkpoint steps 32-224.",
+      "sha256": "6519e56730b4eef2c985325a4632798bc9bb85851c4a7f4ad5c95e001328d479",
+      "record_count": 3200,
+      "file_size_bytes": 2133518
+    }
+  ]
+}

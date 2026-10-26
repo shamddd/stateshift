@@ -1,7 +1,7 @@
 # STATESHIFT EXPERIMENTAL METHODOLOGY
 
-**Project**: StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training  
-**Author**: Sham Satish Thakare (Independent Researcher, Pune, Maharashtra, India)  
+**Project**: StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training
+**Author**: Sham Satish Thakare (Independent Researcher, Pune, Maharashtra, India)
 
 ---
 

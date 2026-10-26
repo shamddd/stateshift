@@ -1,0 +1,28 @@
+================================================================================
+  STATESHIFT GATE B: PHYSICAL RUNPOD GPU CALIBRATION
+================================================================================
+User ID: user_3I6YRPDHqf2wE2KnD9pT9cq8iFm
+Live Balance: $9.1243 USD
+Existing Pods: 0
+Existing Network Volumes: 0
+Available Above Floor: $2.1243 USD (Ceiling: $0.35, Trigger: $0.25)
+
+[Step 2] Provisioning ONE Secure Cloud RTX 4090 pod...
+Provisioning initiated! Pod ID: wets1b0dsnpzif
+Waiting for pod to become RUNNING and assign SSH IP/Port...
+  Attempt 1: Status=RUNNING, Ports=0
+  Attempt 2: Status=RUNNING, Ports=0
+  Attempt 3: Status=RUNNING, Ports=0
+  Attempt 4: Status=RUNNING, Ports=2
+Pod is RUNNING! SSH Endpoint: 47.47.180.28:16084
+
+[Step 3] Performing Hardware Audit & Staging Environment over SSH...
+SSH connection established successfully!
+transport.py        :1786 2026-10-25 20:30:29,579 Oops, unhandled type 3 ('unimplemented')
+GPU Hardware: NVIDIA GeForce RTX 4090, 24564 MiB, 595.91.07
+Workspace Disk: overlay          40G   16M   40G   1% /
+Remote Python: Python 3.10.12
+PyTorch CUDA: CUDA: True, Device: NVIDIA GeForce RTX 4090, VRAM: 25.25 GB, PyTorch: 2.1.0+cu118
+Ensuring dependencies (transformers<4.47, accelerate, sentencepiece)...
+Uploading calibration manifest and runner script...
+Pre-caching Qwen/Qwen2.5-Math-7B-Instruct weights into container cache...

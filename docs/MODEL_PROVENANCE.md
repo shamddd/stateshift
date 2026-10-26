@@ -1,8 +1,8 @@
 # MODEL PROVENANCE & WEIGHT IDENTITY LEDGER
 
-**Project**: StateShift  
-**Base Pretrained Model ($t=0$)**: `Qwen/Qwen2.5-7B`  
-**RL Training Model Lineage**: `UWNSL/Qwen2.5-7B-deepscaler_4k_step_X`  
+**Project**: StateShift
+**Base Pretrained Model ($t=0$)**: `Qwen/Qwen2.5-7B`
+**RL Training Model Lineage**: `UWNSL/Qwen2.5-7B-deepscaler_4k_step_X`
 
 ---
 

@@ -1,0 +1,9 @@
+{
+  "experiment_id": "exp_scen_I",
+  "shutdown_state": "NOT_REQUESTED",
+  "shutdown_attempts": 0,
+  "last_attempt_time": 0.0,
+  "last_error_message": null,
+  "timestamp_utc": 1792926512.500153,
+  "iso_time": "2026-10-25T11:08:32.500161+00:00"
+}

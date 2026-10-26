@@ -1,0 +1,8 @@
+{
+  "timestamp_utc": 1792924931.109233,
+  "elapsed_minutes": 0.17,
+  "effective_spend_usd": 0.0025,
+  "emergency_trigger_usd": 1.65,
+  "pod_id": "pod_test",
+  "status": "WATCHING"
+}

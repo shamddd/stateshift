@@ -1,0 +1,4 @@
+{"timestamp": 1792913585.080781, "iso_time": "2026-10-25T07:33:05Z", "event_type": "SESSION_START", "pod_id": "test-pod-001", "payload": {"pod_id": "test-pod-001", "max_cost_usd": 3.0, "max_runtime_minutes": 30.0, "gpu_hourly_rate": 0.74}}
+{"timestamp": 1792913585.081685, "iso_time": "2026-10-25T07:33:05Z", "event_type": "SESSION_START", "pod_id": "test-pod-001", "payload": {"pod_id": "test-pod-001", "max_cost_usd": 1.0, "max_runtime_minutes": 120.0, "gpu_hourly_rate": 1.0}}
+{"timestamp": 1792913585.082096, "iso_time": "2026-10-25T07:33:05Z", "event_type": "SESSION_START", "pod_id": "test-pod-001", "payload": {"pod_id": "test-pod-001", "max_cost_usd": 50.0, "max_runtime_minutes": 30.0, "gpu_hourly_rate": 0.5}}
+{"timestamp": 1792913585.082618, "iso_time": "2026-10-25T07:33:05Z", "event_type": "SESSION_START", "pod_id": "test-pod-001", "payload": {"pod_id": "test-pod-001", "max_cost_usd": 10.0, "max_runtime_minutes": 60.0, "gpu_hourly_rate": 0.5}}

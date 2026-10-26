@@ -1,0 +1,10 @@
+{
+  "locked": true,
+  "incident_date": "2026-10-25/2026-10-26",
+  "reason": "RunPod financial preservation floor overrun ($7.7982 USD spent in Attempt 4; balance depleted to $1.3261 USD).",
+  "lock_timestamp_utc": "2026-10-25T23:45:00Z",
+  "lock_timestamp_ist": "2026-10-26T05:15:00+05:30",
+  "authorized_cloud_spend_usd": 0.00,
+  "enforcement_mechanism": "Fail-closed check across all entrypoints (stateshift_launch, production_runner_v10, runpod_transport_v2, execute_physical_calibration).",
+  "unlock_condition": "Requires explicit written Principal Investigator authorization, security re-certification, and fresh authorized token."
+}

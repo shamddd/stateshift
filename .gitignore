@@ -9,27 +9,49 @@ htmlcov/
 *.egg-info/
 .dist/
 build/
+*.pyc
 
-# IDE / OS
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / OS Metadata
 .DS_Store
 .idea/
 .vscode/
 *.swp
 __MACOSX/
 ._*
+*.tmp
 
-# Environment / Credentials
+# Environment / Credentials / Secrets (NEVER COMMIT)
 .env
 .env.*
+!.env.example
 secrets.yaml
 *.pem
 *.key
 credentials/
+runpod_credentials*
+*secret*
+*token*
+*.id_rsa
+*.id_ed25519
 
 # Large model artifacts / checkpoints (Do not commit 15GB+ weights)
 *.safetensors
 *.bin
 *.pt
+*.pth
+*.ckpt
 *.onnx
 models/cache/
 wandb/
+huggingface_cache/
+.cache/
+
+# Cloud logs and scratch
+*.log
+scratch/

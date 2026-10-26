@@ -1,0 +1,390 @@
+=== [PRE-FLIGHT CHECK] Verifying Environment & Account Balance ===
+Verified RunPod Account Balance: $9.9210 USD
+[Pre-Flight] Found existing StateShift pod xydg2t4rzrx71d ($0.89/hr). Adopting it.
+Pre-flight checks passed: Single-pod invariant verified, balance sufficient.
+
+=== [STAGE 1 PROVISIONING] Selecting GPU & Launching Pod ===
+Using already adopted StateShift Pod ID: xydg2t4rzrx71d ($0.89/hr)
+
+Waiting for Pod xydg2t4rzrx71d to enter RUNNING state...
+  [Status: RUNNING] IP: 69.145.85.89 | SSH Port: 16644
+[Orchestrator] Pod is active at 69.145.85.89:16644
+
+Establishing SSH connection to 69.145.85.89:16644...
+[Orchestrator] SSH connection established on attempt 1.
+
+Deploying code and manifests to pod...
+[Orchestrator] Created code bundle: /tmp/stateshift_m13_bundle.tar.gz (200.1 KB)
+
+[Remote EXEC] mkdir -p /workspace/stateshift /workspace/stateshift/data /workspace/stateshift/logs
+[Orchestrator] Uploaded code bundle to /workspace/stateshift_bundle.tar.gz
+
+[Remote EXEC] tar -xzf /workspace/stateshift_bundle.tar.gz -C /workspace/stateshift && rm -f /workspace/stateshift_bundle.tar.gz
+
+Installing cloud dependencies (sympy, transformers, accelerate, vllm)...
+
+[Remote EXEC] pip install -q sympy transformers accelerate && pip install -q vllm || true
+
+==========================================================
+ STAGE 1: GPU SMOKE TEST (1 Problem x 4 Conditions = 4 Reqs)
+==========================================================
+
+[Remote EXEC] python3 /workspace/stateshift/runner/cloud_experiment_runner.py --manifest /workspace/stateshift/manifests/primary_100_manifest.json --output /workspace/stateshift/data/smoke_test_results.jsonl --checkpoint /workspace/stateshift/data/smoke_test_checkpoint.json --heartbeat /workspace/stateshift/logs/heartbeat.json --max_requests 4
+  [pod] [CloudRunner] Loading model: Qwen/Qwen2.5-Math-7B-Instruct (Revision: main) via backend: vllm
+  [pod] (MainProcess pid=188) INFO 10-25 07:44:14 [api_utils.py:286] non-default args: {'trust_remote_code': True, 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'revision': 'main', 'model': 'Qwen/Qwen2.5-Math-7B-Instruct'}
+  [pod] (MainProcess pid=188) INFO 10-25 07:44:24 [model.py:733] Resolved architecture: Qwen2ForCausalLM
+  [pod] (MainProcess pid=188) INFO 10-25 07:44:24 [model.py:2152] Using max model len 4096
+  [pod] (MainProcess pid=188) INFO 10-25 07:44:24 [scheduler.py:307] Chunked prefill is enabled with max_num_batched_tokens=8192.
+  [pod] (MainProcess pid=188) INFO 10-25 07:44:24 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:27 [core.py:133] Initializing a V1 LLM engine (v0.32.0) with config: model='Qwen/Qwen2.5-Math-7B-Instruct', speculative_config=None, tokenizer='Qwen/Qwen2.5-Math-7B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=Qwen/Qwen2.5-Math-7B-Instruct, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::qwen4_exp_qsa_prepare_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:29 [parallel_state.py:1906] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_a6b625388dcf48bebaffec7e6c8777d2 backend=nccl
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:29 [parallel_state.py:2350] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:29 [gpu_worker.py:518] Using V2 Model Runner
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:29 [model_runner.py:392] Loading model from scratch...
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:30 [cuda.py:506] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:30 [flash_attn.py:1117] Using FlashAttention version 2
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:31 [base_loader.py:82] Initializing model took 1.455915 seconds
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:59 [weight_utils.py:532] Time spent downloading weights for Qwen/Qwen2.5-Math-7B-Instruct: 27.873942 seconds
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:59 [weight_utils.py:1108] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 14.19 GiB. Available RAM: 1.11 GiB.
+  [pod] (EngineCore pid=539) INFO 10-25 07:44:59 [weight_utils.py:1138] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre) and the checkpoint size (14.19 GiB) exceeds 90% of available RAM (1.11 GiB).
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:02 [default_loader.py:501] Loading weights took 3.12 seconds
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:03 [model_runner.py:424] Model loading took 14.28 GiB memory and 34.306378 seconds
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:03 [topk_topp_sampler.py:124] Using FlashInfer for top-p & top-k sampling.
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:03 [torch_utils.py:295] Reducing Torch threads from 10 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:03 [utils.py:347] Using LBNHC KV cache layout.
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:04 [monitor.py:40] [backbone] Starting torch.compile
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:09 [backends.py:1104] [backbone] Using cache directory: /root/.cache/vllm/torch_compile_cache/760080c9e2/rank_0_0/backbone for vLLM's torch.compile
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:09 [backends.py:1166] [backbone] Dynamo bytecode transform time: 5.02 s
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:17 [backends.py:398] [backbone] Compiling a graph for compile range (1, 8192) takes 7.95 s
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:21 [backends.py:927] collected artifacts: 29 entries, 3 artifacts, 4633574 bytes total
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:21 [decorators.py:743] [backbone] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/f5a9565d37693c39cccd9007bb6c6ee80fb0228605d8355af59f1467c88644d9/rank_0_0/model
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:21 [monitor.py:62] [backbone] torch.compile took 16.89 s in total
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:21 [monitor.py:91] [backbone] Initial profiling/warmup run took 0.16 s
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:28 [model_runner.py:1127] Graph capturing finished in 4 secs, took 0.33 GiB
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:28 [gpu_worker.py:759] Available KV cache memory: 5.1 GiB
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:28 [gpu_worker.py:774] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.9000 is equivalent to --gpu-memory-utilization=0.8829 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.9171. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:28 [kv_cache_utils.py:2327] GPU KV cache size: 95,424 tokens, Maximum concurrency for 4,096 tokens per request: 23.30x
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:28 [kernel_warmup.py:176] JIT kernel warmup starting.
+  [pod] (EngineCore pid=539) INFO 10-25 07:45:28 [kernel_warmup.py:189] JIT kernel warmup finished in 0.00s.
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] EngineCore failed to start.
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] Traceback (most recent call last):
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/cpp_ext.py", line 406, in run_ninja
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     subprocess.run(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/lib/python3.11/subprocess.py", line 571, in run
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     raise CalledProcessError(retcode, process.args,
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] subprocess.CalledProcessError: Command '['ninja', '-v', '-C', '/root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling', '-f', '/root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/build.ninja']' returned non-zero exit status 1.
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] The above exception was the direct cause of the following exception:
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] Traceback (most recent call last):
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 1482, in run_engine_core
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 1194, in __init__
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     super().__init__(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 157, in __init__
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 379, in _initialize_kv_caches
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     self.model_executor.compile_or_warm_up_model()
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/executor/abstract.py", line 141, in compile_or_warm_up_model
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     compilation_times: list[CompilationTimes] = self.collective_rpc(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                                                 ^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     result = run_method(self.driver_worker, method, args, kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/serial_utils.py", line 508, in run_method
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu_worker.py", line 955, in compile_or_warm_up_model
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     warmup_kernels(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/warmup.py", line 240, in warmup_kernels
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     _warmup_kernels(model_runner, worker_execute_model, worker_sample_tokens)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/warmup.py", line 381, in _warmup_kernels
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     worker_sample_tokens(grammar_output)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu_worker.py", line 1298, in sample_tokens
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return self.model_runner.sample_tokens(grammar_output)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/eplb_utils.py", line 52, in wrapper
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     result = fn(self, *args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 2137, in sample_tokens
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     sampler_output, num_sampled, num_rejected = self.sample(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                                                 ^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 1642, in sample
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     sampler_output = self.sampler(logits, input_batch)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/sample/sampler.py", line 154, in __call__
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     sampled, processed_logits = self.sample(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                                 ^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/sample/sampler.py", line 317, in sample
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return self._sample_random(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/sample/sampler.py", line 339, in _sample_random
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     sampled = flashinfer_sample(processed_logits, top_k, top_p).to(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/sample/ops/topk_topp_sampler.py", line 613, in flashinfer_sample
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     next_token_ids = flashinfer.sampling.top_k_top_p_sampling_from_logits(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/api_logging.py", line 2348, in _auto_dump_wrapper
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return _inner(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/sampling.py", line 1547, in top_k_top_p_sampling_from_logits
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     masked_logits = top_k_mask_logits(logits, top_k)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/api_logging.py", line 2348, in _auto_dump_wrapper
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return _inner(*args, **kwargs)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/sampling.py", line 1974, in top_k_mask_logits
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     return get_sampling_module().top_k_mask_logits(
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/sampling.py", line 68, in get_sampling_module
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     module = gen_sampling_module().build_and_load()
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/core.py", line 335, in build_and_load
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     self.build()
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/core.py", line 569, in build
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     run_ninja(self.build_dir, self.ninja_path, verbose)
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/cpp_ext.py", line 418, in run_ninja
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]     raise RuntimeError(msg) from e
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] RuntimeError: Ninja build failed. Ninja output:
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] ninja: Entering directory `/root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling'
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] [1/4]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/sampling.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] FAILED: [code=1] /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/sampling.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] nvcc fatal   : Unknown option '--compress-mode=size'
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] [2/4]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/renorm.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] FAILED: [code=1] /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/renorm.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] nvcc fatal   : Unknown option '--compress-mode=size'
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] [3/4]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/flashinfer_sampling_binding.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] FAILED: [code=1] /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/flashinfer_sampling_binding.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] nvcc fatal   : Unknown option '--compress-mode=size'
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510] ninja: build stopped: subcommand failed.
+  [pod] (EngineCore pid=539) ERROR 10-25 07:45:30 [core.py:1510]
+  [pod] (MainProcess pid=188) INFO 10-25 07:45:31 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+  [pod] [CloudRunner] vLLM initialization failed (Engine core initialization failed. See root cause above. Failed core proc(s): {}). Falling back to Transformers.
+  [pod] [CloudRunner] Transformers loaded successfully in 89.72s.
+  [pod] [CloudRunner] Executing manifest: /workspace/stateshift/manifests/primary_100_manifest.json
+  [pod] [CloudRunner] Total: 4 | Completed: 0 | Pending: 4
+  [pod] [1/4] primary_100_req_0001   | Ans: VERIFIED_TRUE  | Status: LUCKY_GUESS_OR_ALTERNATIVE_PATH | Toks: 728 (18.24s, 39.9 t/s)
+  [pod] [2/4] primary_100_req_0002   | Ans: VERIFIED_TRUE  | Status: RESTART_SUCCESS              | Toks: 553 (13.48s, 41.0 t/s)
+  [pod] [3/4] primary_100_req_0003   | Ans: VERIFIED_TRUE  | Status: LUCKY_GUESS_OR_ALTERNATIVE_PATH | Toks: 549 (13.46s, 40.8 t/s)
+  [pod] [4/4] primary_100_req_0004   | Ans: VERIFIED_TRUE  | Status: RESTART_SUCCESS              | Toks: 558 (13.67s, 40.8 t/s)
+  [pod] [CloudRunner] Manifest execution finished. Total written: 4 rollouts.
+
+[Smoke Test PASSED] Generated 2388 tokens across 4 conditions in 154.3s (40.6 tok/s)
+
+==========================================================
+ STAGE 3: PRIMARY 100-PROBLEM EXPERIMENT (400 Requests)
+==========================================================
+
+[Remote EXEC] python3 /workspace/stateshift/runner/cloud_experiment_runner.py --manifest /workspace/stateshift/manifests/primary_100_manifest.json --output /workspace/stateshift/data/primary_7b_results.jsonl --checkpoint /workspace/stateshift/data/primary_7b_checkpoint.json --heartbeat /workspace/stateshift/logs/heartbeat.json
+  [pod] [CloudRunner] Loading model: Qwen/Qwen2.5-Math-7B-Instruct (Revision: main) via backend: vllm
+  [pod] (MainProcess pid=782) INFO 10-25 07:46:50 [api_utils.py:286] non-default args: {'trust_remote_code': True, 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'revision': 'main', 'model': 'Qwen/Qwen2.5-Math-7B-Instruct'}
+  [pod] (MainProcess pid=782) INFO 10-25 07:46:51 [model.py:733] Resolved architecture: Qwen2ForCausalLM
+  [pod] (MainProcess pid=782) INFO 10-25 07:46:51 [model.py:2152] Using max model len 4096
+  [pod] (MainProcess pid=782) INFO 10-25 07:46:51 [scheduler.py:307] Chunked prefill is enabled with max_num_batched_tokens=8192.
+  [pod] (MainProcess pid=782) INFO 10-25 07:46:51 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:53 [core.py:133] Initializing a V1 LLM engine (v0.32.0) with config: model='Qwen/Qwen2.5-Math-7B-Instruct', speculative_config=None, tokenizer='Qwen/Qwen2.5-Math-7B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=Qwen/Qwen2.5-Math-7B-Instruct, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::qwen4_exp_qsa_prepare_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:55 [parallel_state.py:1906] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_da48e46f6c624f70a02f67bfc9baefb8 backend=nccl
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:55 [parallel_state.py:2350] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:55 [gpu_worker.py:518] Using V2 Model Runner
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:55 [model_runner.py:392] Loading model from scratch...
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:56 [cuda.py:506] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:56 [flash_attn.py:1117] Using FlashAttention version 2
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:57 [base_loader.py:82] Initializing model took 1.391262 seconds
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:57 [weight_utils.py:1108] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 14.19 GiB. Available RAM: 1.25 GiB.
+  [pod] (EngineCore pid=967) INFO 10-25 07:46:57 [weight_utils.py:1138] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre) and the checkpoint size (14.19 GiB) exceeds 90% of available RAM (1.25 GiB).
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:00 [default_loader.py:501] Loading weights took 3.11 seconds
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:01 [model_runner.py:424] Model loading took 14.28 GiB memory and 6.354221 seconds
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:01 [topk_topp_sampler.py:124] Using FlashInfer for top-p & top-k sampling.
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:01 [torch_utils.py:295] Reducing Torch threads from 10 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:01 [utils.py:347] Using LBNHC KV cache layout.
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:03 [caching.py:342] reconstructed serializable fn from standalone compile artifacts. num_artifacts=3 num_submods=29
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:03 [decorators.py:319] [backbone] Directly load AOT compilation from path /root/.cache/vllm/torch_compile_cache/torch_aot_compile/f5a9565d37693c39cccd9007bb6c6ee80fb0228605d8355af59f1467c88644d9/rank_0_0/model
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:03 [monitor.py:62] [backbone] torch.compile took 0.30 s in total
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:03 [monitor.py:91] [backbone] Initial profiling/warmup run took 0.18 s
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:09 [model_runner.py:1127] Graph capturing finished in 4 secs, took 0.33 GiB
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:09 [gpu_worker.py:759] Available KV cache memory: 5.17 GiB
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:09 [gpu_worker.py:774] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.9000 is equivalent to --gpu-memory-utilization=0.8829 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.9171. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:09 [kv_cache_utils.py:2327] GPU KV cache size: 96,736 tokens, Maximum concurrency for 4,096 tokens per request: 23.62x
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:09 [kernel_warmup.py:176] JIT kernel warmup starting.
+  [pod] (EngineCore pid=967) INFO 10-25 07:47:09 [kernel_warmup.py:189] JIT kernel warmup finished in 0.00s.
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] EngineCore failed to start.
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] Traceback (most recent call last):
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/cpp_ext.py", line 406, in run_ninja
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     subprocess.run(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/lib/python3.11/subprocess.py", line 571, in run
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     raise CalledProcessError(retcode, process.args,
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] subprocess.CalledProcessError: Command '['ninja', '-v', '-C', '/root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling', '-f', '/root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/build.ninja']' returned non-zero exit status 1.
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] The above exception was the direct cause of the following exception:
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] Traceback (most recent call last):
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 1482, in run_engine_core
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 1194, in __init__
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     super().__init__(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 157, in __init__
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/engine/core.py", line 379, in _initialize_kv_caches
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     self.model_executor.compile_or_warm_up_model()
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/executor/abstract.py", line 141, in compile_or_warm_up_model
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     compilation_times: list[CompilationTimes] = self.collective_rpc(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                                                 ^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     result = run_method(self.driver_worker, method, args, kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/serial_utils.py", line 508, in run_method
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu_worker.py", line 955, in compile_or_warm_up_model
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     warmup_kernels(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/warmup.py", line 240, in warmup_kernels
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     _warmup_kernels(model_runner, worker_execute_model, worker_sample_tokens)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/warmup.py", line 381, in _warmup_kernels
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     worker_sample_tokens(grammar_output)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu_worker.py", line 1298, in sample_tokens
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return self.model_runner.sample_tokens(grammar_output)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return func(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/eplb_utils.py", line 52, in wrapper
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     result = fn(self, *args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 2137, in sample_tokens
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     sampler_output, num_sampled, num_rejected = self.sample(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                                                 ^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 1642, in sample
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     sampler_output = self.sampler(logits, input_batch)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/sample/sampler.py", line 154, in __call__
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     sampled, processed_logits = self.sample(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                                 ^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/sample/sampler.py", line 317, in sample
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return self._sample_random(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/worker/gpu/sample/sampler.py", line 339, in _sample_random
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     sampled = flashinfer_sample(processed_logits, top_k, top_p).to(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/vllm/v1/sample/ops/topk_topp_sampler.py", line 613, in flashinfer_sample
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     next_token_ids = flashinfer.sampling.top_k_top_p_sampling_from_logits(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/api_logging.py", line 2348, in _auto_dump_wrapper
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return _inner(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/sampling.py", line 1547, in top_k_top_p_sampling_from_logits
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     masked_logits = top_k_mask_logits(logits, top_k)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/api_logging.py", line 2348, in _auto_dump_wrapper
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return _inner(*args, **kwargs)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/sampling.py", line 1974, in top_k_mask_logits
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     return get_sampling_module().top_k_mask_logits(
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]            ^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/sampling.py", line 68, in get_sampling_module
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     module = gen_sampling_module().build_and_load()
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/core.py", line 335, in build_and_load
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     self.build()
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/core.py", line 569, in build
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     run_ninja(self.build_dir, self.ninja_path, verbose)
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]   File "/usr/local/lib/python3.11/dist-packages/flashinfer/jit/cpp_ext.py", line 418, in run_ninja
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]     raise RuntimeError(msg) from e
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] RuntimeError: Ninja build failed. Ninja output:
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] ninja: Entering directory `/root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling'
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] [1/4]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/sampling.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] FAILED: [code=1] /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/sampling.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_sampling.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] nvcc fatal   : Unknown option '--compress-mode=size'
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] [2/4]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/flashinfer_sampling_binding.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] FAILED: [code=1] /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/flashinfer_sampling_binding.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_flashinfer_sampling_binding.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] nvcc fatal   : Unknown option '--compress-mode=size'
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] [3/4]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/renorm.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] FAILED: [code=1] /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]  /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile -MF /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o.d -DPy_LIMITED_API=0x03090000 -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/cub -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/libcudacxx/include -I/usr/local/lib/python3.11/dist-packages/flashinfer/data/cccl/thrust -isystem /usr/include/python3.11 -isystem /usr/local/cuda/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/tvm_ffi/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/cutlass/tools/util/include -isystem /usr/local/lib/python3.11/dist-packages/flashinfer/data/spdlog/include --compiler-options=-fPIC --expt-relaxed-constexpr -gencode=arch=compute_89,code=sm_89 -DFLASHINFER_ENABLE_FP8_E8M0 -DFLASHINFER_ENABLE_FP4_E2M1 -std=c++17 --threads=1 -use_fast_math -Xfatbin=-compress-all --compress-mode=size -DFLASHINFER_ENABLE_F16 -DFLASHINFER_ENABLE_BF16 -DFLASHINFER_ENABLE_FP8_E4M3 -DFLASHINFER_ENABLE_FP8_E5M2 -DNDEBUG -O3 -c /usr/local/lib/python3.11/dist-packages/flashinfer/data/csrc/renorm.cu -o /root/.cache/flashinfer/0.7.0.post1/89/cached_ops/sampling/csrc_renorm.cuda.o
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] nvcc fatal   : Unknown option '--compress-mode=size'
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510] ninja: build stopped: subcommand failed.
+  [pod] (EngineCore pid=967) ERROR 10-25 07:47:11 [core.py:1510]
+  [pod] (MainProcess pid=782) INFO 10-25 07:47:12 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+  [pod] [CloudRunner] vLLM initialization failed (Engine core initialization failed. See root cause above. Failed core proc(s): {}). Falling back to Transformers.
+
+[CRITICAL ORCHESTRATION EXCEPTION] 
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.13/site-packages/paramiko/channel.py", line 697, in recv
+    out = self.in_buffer.read(nbytes, self.timeout)
+  File "/opt/anaconda3/lib/python3.13/site-packages/paramiko/buffered_pipe.py", line 154, in read
+    raise PipeTimeout()
+paramiko.buffered_pipe.PipeTimeout
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_13/runner/orchestrator_mission13.py", line 487, in execute_mission13_campaign
+    primary_res = orch.run_primary_experiment()
+  File "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_13/runner/orchestrator_mission13.py", line 344, in run_primary_experiment
+    exit_code, _ = self.execute_remote_cmd(cmd, timeout=1800)
+                   ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/shamthakare/.gemini/antigravity/scratch/stateshift_reconstruction_2026/research_mission_13/runner/orchestrator_mission13.py", line 248, in execute_remote_cmd
+    for line in iter(stdout.readline, ""):
+                ~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/paramiko/file.py", line 275, in readline
+    new_data = self._read(n)
+  File "/opt/anaconda3/lib/python3.13/site-packages/paramiko/channel.py", line 1359, in _read
+    return self.channel.recv(size)
+           ~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/paramiko/channel.py", line 699, in recv
+    raise socket.timeout()
+TimeoutError
+
+Ensuring cleanup and provider resource termination...
+
+==========================================================
+ STAGE 5: IMMEDIATE RESOURCE TERMINATION (Pod xydg2t4rzrx71d)
+==========================================================
+Issuing provider termination for Pod ID: xydg2t4rzrx71d...
+[SUCCESS] Pod xydg2t4rzrx71d is completely terminated. Active pods = 0.
+
+Final Billing Reconciliation:
+  Initial Balance: $9.9210
+  Final Balance:   $9.3220
+  Actual Spend:    $0.5990 USD

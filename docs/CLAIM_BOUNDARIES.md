@@ -1,6 +1,6 @@
 # SCIENTIFIC CLAIM BOUNDARIES & DISCLAIMS
 
-**Project**: StateShift  
+**Project**: StateShift
 
 ---
 

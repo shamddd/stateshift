@@ -1,0 +1,166 @@
+{
+  "contrasts": {
+    "Primary Estimand (F vs D)": {
+      "cond1": "Condition_F_State_Preserving",
+      "cond2": "Condition_D_Forced_Restart",
+      "contingency": {
+        "a": 65,
+        "b": 8,
+        "c": 2,
+        "d": 25,
+        "n": 100,
+        "n_disc": 10
+      },
+      "point_estimate_pct": 6.0,
+      "exact_mcnemar_two_sided_p": 0.109375,
+      "exact_mcnemar_one_sided_p": 0.0546875,
+      "asymptotic_mcnemar_p": 0.11384629800665808,
+      "permutation_p": 0.1099,
+      "odds_ratio": 4.0,
+      "confidence_intervals_95": {
+        "percentile_bootstrap": [
+          0.0,
+          12.0
+        ],
+        "basic_bootstrap": [
+          -0.0,
+          12.0
+        ],
+        "bca_bootstrap": [
+          -1.0,
+          12.0
+        ],
+        "newcombe_score": [
+          -0.12,
+          12.18
+        ],
+        "agresti_min": [
+          -0.68,
+          12.44
+        ],
+        "wald_asymptotic": [
+          -0.09,
+          12.09
+        ]
+      }
+    },
+    "Secondary Contrast (E vs D)": {
+      "cond1": "Condition_E_Explicit_Repair",
+      "cond2": "Condition_D_Forced_Restart",
+      "contingency": {
+        "a": 63,
+        "b": 8,
+        "c": 4,
+        "d": 25,
+        "n": 100,
+        "n_disc": 12
+      },
+      "point_estimate_pct": 4.0,
+      "exact_mcnemar_two_sided_p": 0.3876953125,
+      "exact_mcnemar_one_sided_p": 0.19384765625,
+      "asymptotic_mcnemar_p": 0.3864762307712325,
+      "permutation_p": 0.3893,
+      "odds_ratio": 2.0,
+      "confidence_intervals_95": {
+        "percentile_bootstrap": [
+          -3.0,
+          11.0
+        ],
+        "basic_bootstrap": [
+          -3.0,
+          11.0
+        ],
+        "bca_bootstrap": [
+          -3.0,
+          10.0
+        ],
+        "newcombe_score": [
+          -2.77,
+          10.77
+        ],
+        "agresti_min": [
+          -3.23,
+          11.07
+        ],
+        "wald_asymptotic": [
+          -2.74,
+          10.74
+        ]
+      }
+    },
+    "Baseline Recovery (F vs A)": {
+      "cond1": "Condition_F_State_Preserving",
+      "cond2": "Condition_A_Zero_Shot",
+      "contingency": {
+        "a": 63,
+        "b": 10,
+        "c": 1,
+        "d": 26,
+        "n": 100,
+        "n_disc": 11
+      },
+      "point_estimate_pct": 9.0,
+      "exact_mcnemar_two_sided_p": 0.01171875,
+      "exact_mcnemar_one_sided_p": 0.005859375,
+      "asymptotic_mcnemar_p": 0.015861332739773033,
+      "permutation_p": 0.0117,
+      "odds_ratio": 10.0,
+      "confidence_intervals_95": {
+        "percentile_bootstrap": [
+          3.0,
+          16.0
+        ],
+        "basic_bootstrap": [
+          2.0,
+          15.0
+        ],
+        "bca_bootstrap": [
+          3.0,
+          15.0
+        ],
+        "newcombe_score": [
+          2.73,
+          15.31
+        ],
+        "agresti_min": [
+          2.11,
+          15.54
+        ],
+        "wald_asymptotic": [
+          2.74,
+          15.26
+        ]
+      }
+    }
+  },
+  "holm_bonferroni": [
+    {
+      "rank": 1,
+      "contrast": "Baseline Recovery (F vs A)",
+      "raw_p_two_sided": 0.01171875,
+      "holm_threshold": 0.016666666666666666,
+      "is_significant_fwer": true
+    },
+    {
+      "rank": 2,
+      "contrast": "Primary Estimand (F vs D)",
+      "raw_p_two_sided": 0.109375,
+      "holm_threshold": 0.025,
+      "is_significant_fwer": false
+    },
+    {
+      "rank": 3,
+      "contrast": "Secondary Contrast (E vs D)",
+      "raw_p_two_sided": 0.3876953125,
+      "holm_threshold": 0.05,
+      "is_significant_fwer": false
+    }
+  ],
+  "audit_conclusion": {
+    "primary_contrast": "F vs D",
+    "tau_hat": "+6.00 pp",
+    "two_sided_p": 0.109375,
+    "significant_at_alpha_0_05_two_sided": false,
+    "scientific_status": "Directional empirical trend (b=8, c=2, odds ratio 4:1, one-sided p=0.0547). Does not cross two-sided alpha=0.05 threshold due to N=100 sample size power limitation. Baseline contrast F vs A (+9.00 pp) is statistically significant at p=0.0117."
+  }
+}

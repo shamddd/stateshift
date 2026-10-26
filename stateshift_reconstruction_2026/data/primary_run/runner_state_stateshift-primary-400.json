@@ -1,0 +1,13 @@
+{
+  "experiment_id": "stateshift-primary-400",
+  "execution_id": "exec_1792927434",
+  "state": "INTEGRITY_FAILURE",
+  "mode": "CALIBRATION",
+  "pod_id": null,
+  "remote_pid": null,
+  "manifest_sha256": "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d",
+  "completed_rollouts": 0,
+  "total_expected_requests": 400,
+  "timestamp_utc": 1792927434.129448,
+  "iso_time": "2026-10-25T11:23:54Z"
+}

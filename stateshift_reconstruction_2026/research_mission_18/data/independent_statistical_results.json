@@ -1,0 +1,95 @@
+{
+  "contrasts": {
+    "Primary Estimand (F vs D)": {
+      "cond1": "Condition_F_State_Preserving",
+      "cond2": "Condition_D_Forced_Restart",
+      "table": {
+        "a_both_correct": 65,
+        "b_cond1_only": 8,
+        "c_cond2_only": 2,
+        "d_both_incorrect": 25
+      },
+      "point_estimate_pct": 6.0,
+      "bootstrap_95_ci": [
+        0.0,
+        12.0
+      ],
+      "exact_mcnemar_two_sided_p": 0.109375,
+      "exact_mcnemar_one_sided_p": 0.0546875,
+      "asymptotic_mcnemar_p": 0.11384629800665808,
+      "permutation_p": 0.1099,
+      "odds_ratio": 4.0
+    },
+    "Secondary Contrast (E vs D)": {
+      "cond1": "Condition_E_Explicit_Repair",
+      "cond2": "Condition_D_Forced_Restart",
+      "table": {
+        "a_both_correct": 63,
+        "b_cond1_only": 8,
+        "c_cond2_only": 4,
+        "d_both_incorrect": 25
+      },
+      "point_estimate_pct": 4.0,
+      "bootstrap_95_ci": [
+        -3.0,
+        11.0
+      ],
+      "exact_mcnemar_two_sided_p": 0.3876953125,
+      "exact_mcnemar_one_sided_p": 0.19384765625,
+      "asymptotic_mcnemar_p": 0.3864762307712325,
+      "permutation_p": 0.3893,
+      "odds_ratio": 2.0
+    },
+    "Baseline Recovery (F vs A)": {
+      "cond1": "Condition_F_State_Preserving",
+      "cond2": "Condition_A_Zero_Shot",
+      "table": {
+        "a_both_correct": 63,
+        "b_cond1_only": 10,
+        "c_cond2_only": 1,
+        "d_both_incorrect": 26
+      },
+      "point_estimate_pct": 9.0,
+      "bootstrap_95_ci": [
+        3.0,
+        16.0
+      ],
+      "exact_mcnemar_two_sided_p": 0.01171875,
+      "exact_mcnemar_one_sided_p": 0.005859375,
+      "asymptotic_mcnemar_p": 0.015861332739773033,
+      "permutation_p": 0.0117,
+      "odds_ratio": 10.0
+    }
+  },
+  "holm_bonferroni": [
+    {
+      "rank": 1,
+      "contrast_name": "Baseline Recovery (F vs A)",
+      "p_value": 0.01171875,
+      "alpha_threshold": 0.016666666666666666,
+      "statistically_significant_after_correction": true
+    },
+    {
+      "rank": 2,
+      "contrast_name": "Primary Estimand (F vs D)",
+      "p_value": 0.109375,
+      "alpha_threshold": 0.025,
+      "statistically_significant_after_correction": false
+    },
+    {
+      "rank": 3,
+      "contrast_name": "Secondary Contrast (E vs D)",
+      "p_value": 0.3876953125,
+      "alpha_threshold": 0.05,
+      "statistically_significant_after_correction": false
+    }
+  ],
+  "scientific_interpretation": {
+    "primary_contrast": "F vs D",
+    "point_estimate_pct": 6.0,
+    "exact_mcnemar_two_sided_p": 0.109375,
+    "statistically_significant_at_alpha_0_05_two_sided": false,
+    "verdict": "DIRECTIONAL_TREND_NOT_STATISTICALLY_SIGNIFICANT_AT_ALPHA_0_05",
+    "recommendation_for_manuscript": "Accurately frame tau_{F-D} = +6.00% as a positive empirical trend under N=100 (two-sided p = 0.1094, one-sided p = 0.0547, odds ratio 4:1) that requires N >= 250 for definitive 80% power, while highlighting that baseline recovery tau_{F-A} = +9.00% is statistically significant (p = 0.0117)."
+  }
+}

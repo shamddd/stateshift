@@ -1,0 +1,10 @@
+{
+  "experiment_id": "stateshift_primary_400_01",
+  "session_id": "sess_primary_1792987837",
+  "pod_id": "pyau7qtpjfzx5e",
+  "termination_state": "TERMINATION_CONFIRMED",
+  "reason": "Destruction confirmed by provider: Primary experiment completed or terminated",
+  "last_provider_response": null,
+  "timestamp_utc": 1792992706.46656,
+  "iso_time": "2026-10-26T05:31:46Z"
+}

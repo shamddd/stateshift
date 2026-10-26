@@ -6,3 +6,6 @@
 *.jpg binary
 *.pdf binary
 *.zip binary
+
+# Research datasets: preserve exact byte representations across platforms
+data/** binary

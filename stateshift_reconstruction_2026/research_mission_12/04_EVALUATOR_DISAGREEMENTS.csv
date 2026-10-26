@@ -1,0 +1,7 @@
+record_id,problem_id,condition,v2_correct,v4_correct,v2_repair,v4_repair,v4_status,disagreement_reason
+M10_003_math500_058,math500_058,Condition_E_Explicit_Repair,True,True,True,False,RESTART_SUCCESS,v2 false positive repair (implicit restart or keyword false alarm)
+M10_061_math500_073,math500_073,Condition_D_Forced_Restart,False,True,False,False,RESTART_SUCCESS,v4 verified non-trivial symbolic equivalence
+M10_062_math500_073,math500_073,Condition_F_State_Preserving,False,True,False,False,LUCKY_GUESS_OR_ALTERNATIVE_PATH,v4 verified non-trivial symbolic equivalence
+M10_063_math500_073,math500_073,Condition_E_Explicit_Repair,False,True,False,False,RESTART_SUCCESS,v4 verified non-trivial symbolic equivalence
+M10_064_math500_073,math500_073,Condition_A_Zero_Shot,False,True,False,False,LUCKY_GUESS_OR_ALTERNATIVE_PATH,v4 verified non-trivial symbolic equivalence
+M10_095_math500_083,math500_083,Condition_E_Explicit_Repair,True,True,True,False,RESTART_SUCCESS,v2 false positive repair (implicit restart or keyword false alarm)

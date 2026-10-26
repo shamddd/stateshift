@@ -1,0 +1,15 @@
+{
+  "experiment_id": "exp_scen_F",
+  "execution_id": "exec_1792932750",
+  "state": "INTEGRITY_FAILURE",
+  "mode": "CALIBRATION",
+  "pod_id": "pod_F",
+  "controller_pid": 30639,
+  "watchdog_pid": null,
+  "remote_pid": null,
+  "manifest_sha256": "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d",
+  "completed_rollouts": 0,
+  "total_expected_requests": 400,
+  "timestamp_utc": 1792932750.4269161,
+  "iso_time": "2026-10-25T12:52:30Z"
+}

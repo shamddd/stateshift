@@ -1,0 +1,14 @@
+{
+  "experiment_id": "stateshift_calib_b1_01",
+  "pod_id": "PRE_PROVISION",
+  "session_id": "sess_b1_1792980363",
+  "state": "WATCHDOG_ACTIVE",
+  "lifecycle_state": "ACTIVE",
+  "termination_durable_state": "TERMINATION_NOT_REQUESTED",
+  "reason": null,
+  "watchdog_pid": 39418,
+  "termination_dispatched": false,
+  "termination_confirmed": false,
+  "timestamp_utc": 1792980365.306464,
+  "iso_time": "2026-10-26T02:06:05Z"
+}

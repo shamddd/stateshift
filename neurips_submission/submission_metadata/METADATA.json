@@ -1,0 +1,24 @@
+{
+  "title": "StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training",
+  "target_conference": "NeurIPS 2027",
+  "target_track": "Datasets and Benchmarks Track (Primary) / Main Track (Alternative)",
+  "subject_areas": [
+    "Datasets and Benchmarks: LLM Evaluation and Benchmarking",
+    "Reinforcement Learning: Post-Training and Reasoning Dynamics",
+    "Trustworthy AI: Agent Reliability and Robustness"
+  ],
+  "keywords": [
+    "Reinforcement Learning from Verifiable Rewards",
+    "Mathematical Reasoning",
+    "State-Conditioned Evaluation",
+    "Reasoning Recovery",
+    "Counterfactual Benchmarking"
+  ],
+  "authors": [
+    {
+      "name": "Sham Satish Thakare",
+      "status": "Anonymized for Double-Blind Review"
+    }
+  ],
+  "abstract": "Standard evaluations of reinforcement-learning post-training in large language models emphasize aggregate benchmark accuracy, potentially obscuring behavioral changes conditional on local reasoning states. We introduce StateShift, a controlled evaluation framework and benchmark protocol for measuring target-transition recovery under matched counterfactual reasoning states..."
+}

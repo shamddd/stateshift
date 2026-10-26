@@ -1,131 +1,181 @@
-# StateShift
+# StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training
 
-State-conditioned evaluation of reasoning recovery across reinforcement learning post-training checkpoints.
-
-[![CI](https://github.com/shamddd/stateshift/actions/workflows/ci.yml/badge.svg)](https://github.com/shamddd/stateshift/actions/workflows/ci.yml)
+[![Research CI](https://github.com/shamddd/stateshift/actions/workflows/research-ci.yml/badge.svg)](https://github.com/shamddd/stateshift/actions/workflows/research-ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](pyproject.toml)
+[![arXiv Release Candidate](https://img.shields.io/badge/arXiv-Release--Candidate-green.svg)](paper/STATESHIFT_ARXIV_RELEASE_CANDIDATE.pdf)
 
-**Research Status**: Working Paper / Ongoing Manuscript Revision  
-**Historical Submission**: *Artificial Intelligence* (Elsevier), manuscript ARTINT-D-26-01491
-
----
-
-## Overview
-
-Standard evaluations of reinforcement-learning (RL) post-training in large language models emphasize aggregate benchmark accuracy, which can mask behavioral changes conditional on local reasoning state. StateShift is an experimental framework designed to measure target-transition recovery conditional on intermediate reasoning state.
-
-By comparing model completion success under matched Recovery (invalid intermediate step) and Control (baseline step) conditions, StateShift isolates the state-dependent transition capability acquired during post-training.
+**Principal Investigator**: Sham Satish Thakare (`github.com/shamddd`)
+**Research Status**: arXiv Preprint Release Candidate | Target: NeurIPS 2027 Main Track | Secondary: TMLR
 
 ---
 
-## Main Results
+## 1. Research Overview
 
-* **Controlled Endpoint Interaction ($\Gamma_{256}$)**: Between base ($t=0$) and step-256 checkpoints, we observe an 11.76-percentage-point interaction ($\Gamma_{256} = +0.1176$, $95\%$ problem-blocked bootstrap CI $[+0.0955, +0.1400]$).
-* **Strict Decontamination Subgroup**: Under strict decontamination filtering ($N_{\text{Strict}}=388$), the interaction remains robust ($\Gamma_{256,\text{Strict}} = +0.1160$, $95\%$ CI $[+0.0913, +0.1408]$).
-* **Early Checkpoint Contrast at $t=32$**: The checkpoint-32 contrast was positive under unadjusted inference ($\Gamma_{32} = +0.0333$, unadjusted $95\%$ bootstrap CI $[+0.0023, +0.0677]$, $p=0.019$), but did not survive family-wise Bonferroni correction (Bonferroni-adjusted $95\%$ CI $[-0.0100, +0.0789]$, $p_{\text{adj}}=0.076$).
+Standard evaluations of reinforcement learning (RL) post-training in large language models emphasize aggregate benchmark accuracy (e.g., pass@1 on MATH or GSM8K). However, aggregate metrics can obscure whether post-training genuinely expands a model's latent capacity to recover from flawed intermediate reasoning states or merely reinforces rigid memorized generation paths.
 
----
-
-## Method
-
-StateShift compares model behavior across two counterfactual states for each problem:
-
-1. **Recovery Condition ($R$)**: An intermediate reasoning state containing a verifier-confirmed invalid step.
-2. **Control Condition ($C$)**: A matched baseline state matched for length and context.
-
-The difference-in-differences interaction contrast $\Gamma_t$ at checkpoint step $t$ is calculated as:
-
-$$\Gamma_t = (\mu_{R,t} - \mu_{R,0}) - (\mu_{C,t} - \mu_{C,0})$$
-
-where $\mu_{R,t}$ and $\mu_{C,t}$ denote target-transition success rates in the Recovery and Control conditions, respectively.
+**StateShift** investigates whether post-trained reasoning models possess latent, recoverable reasoning trajectories when prompted to revisit intermediate states. The research evaluates two complementary investigations:
+1. **Study 1 (Exploratory Checkpoint Lineage)**: Analyzing the DeepScaleR-7B checkpoint progression ($N=454$ problem pairs, 29,056 rollout evaluations) to measure state-dependent interaction gains across RL training steps.
+2. **Study 2 (Physical GPU Reasoning Recovery)**: A pre-registered prompt-scaffolding experiment on `Qwen/Qwen2.5-Math-7B-Instruct` executed on an NVIDIA RTX 4090 ($N=100$ matched problems, 400 authentic neural generations) assessing whether operational state restoration recovers correct mathematical solutions after chain truncation.
 
 ---
 
-## Training Trajectory
+## 2. Key Contributions
 
-Evaluating intermediate checkpoints ($t \in \{0, 32, 64, 96, 128, 160, 192, 224, 256\}$) yields the nine-point empirical interaction vector:
-
-$$\mathbf{\Gamma} = [0.0000,\ +0.0333,\ +0.0337,\ +0.0774,\ +0.0748,\ +0.0598,\ +0.0976,\ +0.0950,\ +0.1176]$$
-
-![StateShift Trajectory](figures/figure2_trajectory.png)
-
-Across nine empirically evaluated checkpoints, the interaction was consistent with a non-decreasing trajectory under prespecified order-restricted analysis (Pooled Adjacent Violators Algorithm, PAVA) despite local variation in unconstrained estimates.
-
-**Claim Boundaries**:
-* Strict monotonicity across all adjacent checkpoints is **not established** due to sampling variation at intermediate checkpoints.
-* The exact training step at which the interaction emerged is **not identifiable** because checkpoints between $t=0$ and $t=32$ are unavailable.
-* Checkpoint $t=32$ represents the **earliest evaluated intermediate checkpoint** in the evaluated lineage; the checkpoint-32 contrast was positive under unadjusted inference but did not survive family-wise Bonferroni correction.
+* **Formal State Restoration Framework**: Defined an operational prompt-level state intervention package ($do(F)$) providing structured lemma anchors and execution headroom for truncated chains of thought.
+* **Authentic Neural Validation**: Executed 400 authentic neural generations on physical NVIDIA RTX 4090 hardware with strict zero-cost-overrun supervisory guardrails, logging complete input prompts and output tokens.
+* **Exact Discrete Paired Inference**: Replaced asymptotic normal approximations with exact discrete binomial McNemar tests ($B(10, 0.5)$) and discrete unconditional power formulations.
+* **Transparent Two-Study Architecture**: Explicitly distinguished outcome-level checkpoint datasets (Tier 2) from physical generation-level executions (Tier 1).
 
 ---
 
-## Natural Recovery
+## 3. Main Empirical Results
 
-In a separate study of 3,200 unperturbed rollouts across 200 problems (Study B):
+### Study 2: Physical GPU Experiment (`Qwen2.5-Math-7B-Instruct`, $N = 100$)
 
-* **Natural Error Incidence ($\text{NEI}$)**: $18.19\%$ of rollouts contained a verifier-confirmed natural reasoning error ($582/3200$).
-* **Conditional Natural Post-Error Recovery Rate ($\text{NRR}$)**: Among 582 qualifying error episodes, 180 subsequently satisfied the autonomous recovery criterion ($30.93\%$, $95\%$ problem-blocked bootstrap CI $[27.19\%, 34.82\%]$).
+| Condition | Experimental Setup | Successes / Total | Verified Accuracy |
+| :---: | :--- | :---: | :---: |
+| **A** | Zero-Shot Direct Problem Prompt | $64 / 100$ | **$64.0\%$** |
+| **D** | Truncated Reasoning Chain (No Intervention Control) | $67 / 100$ | **$67.0\%$** |
+| **E** | Truncated Chain + Intermediate Lemmas Only | $71 / 100$ | **$71.0\%$** |
+| **F** | Full Structured State Restoration Scaffold | $73 / 100$ | **$73.0\%$** |
+
+#### Paired Statistical Contrasts:
+* **Primary Contrast ($\hat{\tau}_{F-D}$)**: $+6.00\text{ percentage points}$ ($73.0\%$ vs. $67.0\%$).
+* **Paired Contingency Matrix**: $a=65$ (both pass), $b=8$ ($F$ passes, $D$ fails), $c=2$ ($D$ passes, $F$ fails), $d=25$ (both fail).
+* **Off-Diagonal Recovery Odds Ratio**: **$4:1$** ($b/c = 4.00$, four favorable recoveries for every one failure).
+* **Exact McNemar Significance**:
+  * **Two-Sided $p$-value**: **$p = 0.109375$**
+  * **One-Sided $p$-value**: **$p = 0.054688$**
+  * *Statistical Interpretation*: Under the conventional two-sided threshold $\alpha = 0.05$, the primary contrast $F$ vs. $D$ is **not statistically significant**. Study 2 represents a promising discovery pilot ($36.20\%$ power); an adequately powered confirmatory trial ($N \ge 231$) is recommended.
+* **Baseline Recovery Contrast ($\hat{\tau}_{F-A}$)**: $+9.00\text{ percentage points}$ ($73.0\%$ vs. $64.0\%$, exact two-sided $p = 0.0117$, statistically significant at $\alpha = 0.05$).
 
 ---
 
-## Reproducing the Analysis
+### Study 1: Checkpoint-Lineage Analysis (`DeepScaleR-7B`, $N = 454$)
 
-To run statistical reproduction, artifact verification, and unit tests:
-
-```bash
-python -m pip install -e .
-python scripts/reproduce_analysis.py
-python scripts/verify_artifacts.py
-PYTHONPATH=. pytest tests/
-```
+* **Step-256 Recovery Interaction**: $\Gamma_{256} = +11.76\text{ percentage points}$ ($p = 1.05 \times 10^{-22}$, clustered $SE = 0.0114$, $t = 10.34$).
+* **Strict Decontaminated Subset ($N = 388$)**: $\Gamma_{\text{Strict}} = +11.60\text{ percentage points}$ ($95\%$ bootstrap CI $[+9.61, +13.96]\text{ pp}$).
+* **Length Equivalence (TOST)**: Confirmed token length equivalence within $[-5, +5]$ token band ($p = 0.0256$), ruling out verbosity bias.
 
 ---
 
-## Repository Structure
+## 4. Statistical Power & Sample Size Determination
 
-```
+Using exact discrete binomial probability sums over $n_d$ discordant pairs:
+* **Current Study ($N = 100$)**: Exact unconditional power is **$36.20\%$** ($\beta = 63.80\%$).
+* **Confirmatory Target ($80\%$ Power)**: Minimum required sample size is **$N = 231$** ($80.07\%$ power at $q=0.10, \delta=+0.06$).
+* **Confirmatory Target ($90\%$ Power)**: Minimum required sample size is **$N = 299$** ($90.02\%$ power).
+* **Winner's Curse Sensitivity**: If the true effect shrinks to $+5.0\%$ at $q=0.10$, required sample size is **$N = 337$** for $80\%$ power.
+
+---
+
+## 5. Repository Structure
+
+```text
 stateshift/
-├── README.md
-├── LICENSE
-├── CITATION.cff
-├── CITATION.bib
-├── pyproject.toml
-├── requirements.txt
-├── .gitignore
-├── .gitattributes
-├── .github/
-│   └── workflows/ci.yml
-├── stateshift/
-├── configs/
-├── scripts/
-├── tests/
-├── figures/
-├── docs/
-├── artifacts/
-└── paper/
+├── README.md                                  # This documentation
+├── LICENSE                                    # MIT License
+├── CITATION.cff                               # Citation metadata
+├── CITATION.bib                               # BibTeX citation entry
+├── pyproject.toml                             # Package configuration
+│
+├── paper/                                     # Publication candidate manuscript
+│   ├── STATESHIFT_ARXIV_RELEASE_CANDIDATE.pdf # Compiled 14-page PDF
+│   ├── STATESHIFT_ARXIV_RELEASE_CANDIDATE.tex # Complete LaTeX source
+│   ├── references.bib                         # Verified BibTeX citations
+│   ├── figures/                               # Vector PDF and raster PNG figures
+│   └── source/                                # Cleanroom arXiv upload ZIP
+│
+├── data/                                      # Empirical experimental datasets
+│   ├── README.md                              # Data registry & provenance guide
+│   ├── study1/                                # Study 1: 29,056 rollout outcomes
+│   └── study2/                                # Study 2: 400 raw GPU generations
+│
+├── experiments/                               # Standalone reproduction scripts
+│   ├── study1_checkpoint_lineage/             # Study 1 reproduction code
+│   └── study2_reasoning_recovery/             # Study 2 reproduction & power scripts
+│
+├── docs/                                      # Scientific governance & audit reports
+│   ├── RESEARCH_HISTORY.md                    # Detailed research evolution
+│   ├── SCIENTIFIC_CLAIMS.md                   # Claim-by-claim traceability matrix
+│   ├── EXPERIMENTAL_PROTOCOLS.md              # Hardware & inference runbooks
+│   ├── STATISTICAL_METHODS.md                 # Mathematical derivations & estimators
+│   ├── DATA_PROVENANCE.md                     # Provenance tier definitions
+│   ├── REPRODUCIBILITY.md                     # Complete replication runbook
+│   ├── LIMITATIONS.md                         # Methodological & sample boundaries
+│   ├── ETHICS_AND_DISCLOSURES.md              # Financial & safety statement
+│   ├── ARXIV_SUBMISSION_GUIDE.md              # Pre-print upload instructions
+│   └── internal_review/                       # Simulated internal stress-tests
+│
+└── .github/
+    └── workflows/
+        └── research-ci.yml                    # Automated scientific reproducibility CI
 ```
 
 ---
 
-## Model Provenance
+## 6. Quickstart & Reproducibility
 
-Detailed checkpoint commit SHAs, weight identity proofs, and Hugging Face repository mappings are documented in [`docs/MODEL_PROVENANCE.md`](docs/MODEL_PROVENANCE.md).
+### Installation
+```bash
+git clone https://github.com/shamddd/stateshift.git
+cd stateshift
+python3 -m venv venv
+source venv/bin/activate
+pip install numpy pandas scipy pytest
+```
+
+### Reproduce Study 1 (CPU-Only)
+```bash
+python experiments/study1_checkpoint_lineage/reproduce_study1.py
+```
+
+### Reproduce Study 2 (CPU-Only)
+```bash
+python experiments/study2_reasoning_recovery/reproduce_study2.py
+```
+
+### Run Exact Discrete Power Analysis
+```bash
+python experiments/study2_reasoning_recovery/exact_power_analysis.py
+```
+
+### Compile Manuscript PDF
+```bash
+cd paper
+tectonic STATESHIFT_ARXIV_RELEASE_CANDIDATE.tex
+```
 
 ---
 
-## Citation
+## 7. Known Scientific Limitations
+
+1. **Discovery Sample Size**: Study 2 ($N=100$) yields $p = 0.1094$, which is not statistically significant at $\alpha = 0.05$. An independent confirmatory replication ($N=231$) is recommended.
+2. **Study 1 Generation Logs**: The 29,056 evaluations in Study 1 are archived as an outcome-level tabular dataset; individual raw text outputs were not preserved.
+3. **Model Generalization**: Physical experiments were conducted on `Qwen2.5-Math-7B-Instruct`; cross-family generalization (e.g., Llama-3, DeepSeek-R1) remains an empirical hypothesis.
+
+---
+
+## 8. Citation
+
+If you build upon this work or utilize the reproducibility datasets, please cite:
 
 ```bibtex
-@unpublished{thakare2026stateshift,
-  author = {Thakare, Sham Satish},
-  title = {StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training},
-  year = {2026},
-  note = {Working Paper, 2026 — Ongoing Manuscript Revision; Historical Submission: Artificial Intelligence (Elsevier), manuscript ARTINT-D-26-01491}
+@misc{thakare2026stateshift,
+  author       = {Sham Satish Thakare},
+  title        = {StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training},
+  year         = {2026},
+  howpublished = {Preprint / Research Artifact Release},
+  url          = {https://github.com/shamddd/stateshift},
+  note         = {Working paper and reproducibility repository}
 }
 ```
 
 ---
 
-## License
+## 9. License & Contact
 
-Distributed under the [MIT License](LICENSE).
+* **License**: Open-source under the [MIT License](LICENSE).
+* **Principal Investigator**: Sham Satish Thakare ([shamthakare3000@gmail.com](mailto:shamthakare3000@gmail.com)).
+* **Repository**: [https://github.com/shamddd/stateshift](https://github.com/shamddd/stateshift).

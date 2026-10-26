@@ -1,0 +1,12 @@
+{
+  "experiment_id": "stateshift_primary_400_01",
+  "pod_id": "PRE_PROVISION",
+  "session_id": "sess_primary_1792987837",
+  "watchdog_pid": 42618,
+  "reason": "Runtime 60.0m >= max allowed 60.0m",
+  "confirmed_by_provider": true,
+  "termination_durable_state": "TERMINATION_CONFIRMED",
+  "verification_attempts": 1,
+  "timestamp_utc": 1792991446.0587862,
+  "iso_time": "2026-10-26T05:10:46Z"
+}

@@ -1,0 +1,10 @@
+{
+  "experiment_id": "stateshift_calib_b1_01",
+  "session_id": "sess_b1_1792980363",
+  "pod_id": "wbwkiso0t9mkjc",
+  "termination_state": "TERMINATION_CONFIRMED",
+  "reason": "Destruction confirmed by provider: Calibration completed or terminated",
+  "last_provider_response": null,
+  "timestamp_utc": 1792980618.933813,
+  "iso_time": "2026-10-26T02:10:18Z"
+}

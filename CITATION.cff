@@ -6,8 +6,17 @@ authors:
     email: shamthakare3000@gmail.com
     affiliation: Independent Researcher
 title: "StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training"
-version: 0.1.0
-date-released: 2026-08-20
+version: 1.0.0
+date-released: 2026-10-26
 repository-code: "https://github.com/shamddd/stateshift"
 license: MIT
-notes: "Working Paper, 2026 — Ongoing Manuscript Revision; Historical Submission: Artificial Intelligence (Elsevier), manuscript ARTINT-D-26-01491."
+type: software
+abstract: "StateShift investigates whether post-training reasoning models possess latent, recoverable reasoning trajectories when prompted to revisit intermediate mathematical states. Combining historical checkpoint analysis on DeepScaleR-7B (29,056 rollouts) and a pre-registered physical GPU trial on Qwen2.5-Math-7B-Instruct (400 generations on NVIDIA RTX 4090), this repository provides end-to-end reproducibility code, exact discrete statistical power engines, and complete generation ledgers."
+keywords:
+  - large-language-models
+  - reasoning-recovery
+  - reinforcement-learning
+  - post-training
+  - mathematical-reasoning
+  - mcnemar-test
+  - discrete-power

@@ -1,0 +1,12 @@
+claim_id,manuscript_location,exact_claim_text,evidence_source_file,script_or_analysis,statistical_test_or_table,reproduction_status,verdict
+CLM-01,Abstract / Table 1,Gamma_256 = +0.1176 (+11.76 pp interaction contrast),controlled_endpoint_outcomes.csv,reproduce.py,"Table 1 (p < 0.0001, OLS t=10.26)",REPRODUCED,VERIFIED
+CLM-02,Abstract / Table 1,"Strict decontamination interaction Gamma_256,Strict = +0.1160",strict_decontamination_subset.csv,reproduce.py,"Table 1 (N=388, 95% CI [0.0913, 0.1408])",REPRODUCED,VERIFIED
+CLM-03,Section 5.1,"Recovery gain is uncorrelated with clean gain (r=0.0794, R^2=0.63%)",controlled_endpoint_outcomes.csv,bivariate_variance_decomp.py,Pearson r & Spearman rho (p > 0.05),REPRODUCED,VERIFIED
+CLM-04,Section 6 / Table 2,Early emergence at Step 32: Gamma_32 = +0.0333,nine_checkpoint_trajectory.csv,reproduce.py,"Table 2 (unadj p=0.019, Bonf p=0.076)",REPRODUCED,VERIFIED
+CLM-05,Section 6 / Figure 2,Trajectory follows monotonic envelope under PAVA despite dips,nine_checkpoint_trajectory.csv,order_restricted.py,PAVA isotonic fit (p < 0.001),REPRODUCED,VERIFIED
+CLM-06,Section 7.1 / Table 4,Constant (+14.32 pp) & Sign (+12.33 pp) recover more than Fraction (+5.13 pp),confirmatory_problem_registry.json,operator_stratification.py,Table 4 bootstrap CIs,REPRODUCED,VERIFIED
+CLM-07,Section 7.2 / Table 5,Recovery gain Delta_R is constant (~+31% to +33%) across difficulty L2..L5,controlled_endpoint_outcomes.csv,difficulty_stratification.py,Table 5 stratified cell means,REPRODUCED,VERIFIED
+CLM-08,Section 7.3,Generated token count is invariant: 482.47 -> 482.50 tokens (Delta = +0.03 tokens),controlled_endpoint_outcomes.csv,token_length_audit.py,"Descriptive statistics across 29,056 rows",REPRODUCED,VERIFIED
+CLM-09,Section 8 / Table 3,Natural Error Incidence NEI = 18.19% (582/3200),natural_error_episodes.csv,reproduce.py,"Table 3 (95% CI [16.84%, 19.50%])",REPRODUCED,VERIFIED
+CLM-10,Section 8 / Table 3,Natural Recovery Rate NRR = 30.93% (180/582),natural_recovery_episodes.csv,reproduce.py,"Table 3 (95% CI [27.19%, 34.82%])",REPRODUCED,VERIFIED
+CLM-11,Section 9,Persistent terminal failure regime is 29.61%,controlled_endpoint_outcomes.csv,reproduce.py,"1 - mu_R,256 = 1 - 0.703882 = 29.61%",REPRODUCED,VERIFIED

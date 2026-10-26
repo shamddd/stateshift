@@ -1,0 +1,10 @@
+{
+  "experiment_id": "stateshift-calibration-10",
+  "pod_id": "a0i83qckyx4nth",
+  "reason": "Watchdog startup handshake failed or timed out",
+  "confirmed_by_provider": true,
+  "final_state": "TERMINATION_REQUESTED",
+  "completed_rollouts": 0,
+  "timestamp_utc": 1792936759.1767108,
+  "iso_time": "2026-10-25T13:59:19Z"
+}

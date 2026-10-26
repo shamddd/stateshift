@@ -1,0 +1,82 @@
+{
+  "accuracy_by_condition": {
+    "Condition_A_Zero_Shot": {
+      "n": 1,
+      "correct": 1,
+      "point_accuracy": 1.0,
+      "clopper_pearson_2sided_95": [
+        0.025,
+        1.0
+      ]
+    },
+    "Condition_D_Forced_Restart": {
+      "n": 1,
+      "correct": 1,
+      "point_accuracy": 1.0,
+      "clopper_pearson_2sided_95": [
+        0.025,
+        1.0
+      ]
+    },
+    "Condition_E_Explicit_Repair": {
+      "n": 3,
+      "correct": 3,
+      "point_accuracy": 1.0,
+      "clopper_pearson_2sided_95": [
+        0.2924,
+        1.0
+      ]
+    },
+    "Condition_F_State_Preserving": {
+      "n": 1,
+      "correct": 1,
+      "point_accuracy": 1.0,
+      "clopper_pearson_2sided_95": [
+        0.025,
+        1.0
+      ]
+    }
+  },
+  "local_repair_audit": {
+    "eligible_attempts": 4,
+    "verified_local_repairs": 0,
+    "point_estimate": 0.0,
+    "two_sided_95_ci": [
+      0.0,
+      0.6024
+    ],
+    "one_sided_95_upper_bound": 0.5271,
+    "zero_repair_claim_verified": true
+  },
+  "paired_analysis": {
+    "n_matched_problem_pairs": 1,
+    "problem_id": "math500_001",
+    "condition_D_tokens": 553,
+    "condition_F_tokens": 558,
+    "token_difference_D_minus_F": -5,
+    "mcnemar_exact": {
+      "n00": 0,
+      "n01": 0,
+      "n10": 0,
+      "n11": 1,
+      "discordant_pairs": 0,
+      "exact_binomial_p_value": 1.0,
+      "asymptotic_chi2_stat": 0.0,
+      "is_valid_asymptotic": false
+    },
+    "tost_equivalence": {
+      "status": "INSUFFICIENT_SAMPLE_SIZE",
+      "mean_diff": 0.0,
+      "se_diff": null,
+      "margin": 0.05,
+      "is_equivalent": false,
+      "reason": "TOST requires at least N >= 2 paired observations"
+    },
+    "bootstrap_clustered": {
+      "status": "INSUFFICIENT_CLUSTERS",
+      "point_estimate": 5.0,
+      "ci_lower": null,
+      "ci_upper": null
+    }
+  }
+}

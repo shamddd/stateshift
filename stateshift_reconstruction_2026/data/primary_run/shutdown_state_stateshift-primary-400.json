@@ -1,0 +1,9 @@
+{
+  "experiment_id": "stateshift-primary-400",
+  "shutdown_state": "NOT_REQUESTED",
+  "shutdown_attempts": 0,
+  "last_attempt_time": 0.0,
+  "last_error_message": null,
+  "timestamp_utc": 1792924921.0843441,
+  "iso_time": "2026-10-25T10:42:01.084363+00:00"
+}
