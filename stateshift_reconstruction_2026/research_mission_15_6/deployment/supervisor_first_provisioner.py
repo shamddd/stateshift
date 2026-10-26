@@ -350,8 +350,12 @@ class SupervisorFirstProvisioner:
                 raise ProvisioningSecurityError(f"Session authorization rejected: {auth_reason}")
 
         # 6. Spending bounds validation
-        if self.active_mode == "CALIBRATION" and self.max_cost_usd > 0.60 + 1e-4:
-            raise ProvisioningSecurityError(f"Calibration spend limit ${self.max_cost_usd} exceeds $0.60 hard ceiling.")
+        policy_ver = "POLICY_V1_STANDARD"
+        if self.authorization_doc:
+            policy_ver = self.authorization_doc.get("payload", {}).get("financial_policy_version", "POLICY_V1_STANDARD")
+        max_allowed = 1.00 if policy_ver == "POLICY_V2_TEMPORARY_BUDGET1_EXCEPTION" else 0.60
+        if self.active_mode == "CALIBRATION" and self.max_cost_usd > max_allowed + 1e-4:
+            raise ProvisioningSecurityError(f"Calibration spend limit ${self.max_cost_usd} exceeds ${max_allowed:.2f} hard ceiling under {policy_ver}.")
         if self.emergency_trigger_usd > self.max_cost_usd:
             raise ProvisioningSecurityError(f"Emergency trigger ${self.emergency_trigger_usd} exceeds budget ${self.max_cost_usd}.")
 

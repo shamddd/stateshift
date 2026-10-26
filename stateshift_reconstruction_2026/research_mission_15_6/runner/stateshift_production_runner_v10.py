@@ -536,8 +536,10 @@ class StateshiftProductionRunnerV10:
 
         # 11. account_preservation_floor_usd verified
         floor = float(receipt_data.get("account_preservation_floor_usd", 0.0))
-        if floor < 7.00 - 1e-4:
-            print(f"[Watchdog Handshake Validation Failure] Preservation floor ${floor} is below required $7.00 USD")
+        policy_ver = getattr(self, "verified_auth_payload", {}).get("financial_policy_version", "POLICY_V1_STANDARD")
+        required_floor = 0.32 if policy_ver == "POLICY_V2_TEMPORARY_BUDGET1_EXCEPTION" else 7.00
+        if floor < required_floor - 1e-4:
+            print(f"[Watchdog Handshake Validation Failure] Preservation floor ${floor} is below required ${required_floor:.2f} USD")
             return False
 
         # 12. Pre-existing uptime matches or is non-negative

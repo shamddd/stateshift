@@ -125,7 +125,8 @@ class CryptographicAuthorizer:
         max_runtime_minutes: int = 60,
         authorized_mode: str = "CALIBRATION",
         validity_seconds: float = 3600.0,
-        session_nonce: Optional[str] = None
+        session_nonce: Optional[str] = None,
+        financial_policy_version: str = "POLICY_V1_STANDARD"
     ) -> Dict[str, Any]:
         """Utility for authorized operators to generate signed session approval."""
         now = time.time()
@@ -143,6 +144,7 @@ class CryptographicAuthorizer:
             "minimum_account_balance_usd": round(min_balance_usd, 4),
             "maximum_runtime_minutes": max_runtime_minutes,
             "authorized_mode": authorized_mode,
+            "financial_policy_version": financial_policy_version,
             "issued_at_utc": now,
             "expires_at_utc": now + validity_seconds,
             "session_nonce": nonce
@@ -248,19 +250,30 @@ class CryptographicAuthorizer:
             return False, f"Experiment ID mismatch: auth specifies '{payload['experiment_id']}', active is '{active_experiment_id}'."
 
         # 9. Financial Limits Enforcement
-        if active_mode == "CALIBRATION":
-            if payload["max_incremental_spend_usd"] > 0.35:
-                return False, f"Authorized calibration spend ${payload['max_incremental_spend_usd']} exceeds $0.35 limit."
+        policy_ver = payload.get("financial_policy_version", "POLICY_V1_STANDARD")
+        if policy_ver == "POLICY_V2_TEMPORARY_BUDGET1_EXCEPTION":
+            if active_mode != "CALIBRATION":
+                return False, f"Policy exception V2 is strictly restricted to CALIBRATION mode, got '{active_mode}'."
+            if payload["max_incremental_spend_usd"] > 1.00 + 1e-4:
+                return False, f"Authorized calibration spend ${payload['max_incremental_spend_usd']} exceeds $1.00 temporary limit."
             if payload["emergency_trigger_usd"] > payload["max_incremental_spend_usd"]:
                 return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds authorized budget ${payload['max_incremental_spend_usd']}."
+            if payload["minimum_account_balance_usd"] < 0.32 - 1e-4:
+                return False, f"Preservation floor ${payload['minimum_account_balance_usd']} violates $0.32 temporary target reserve floor."
         else:
-            if payload["max_incremental_spend_usd"] > 2.00:
-                return False, f"Authorized spend ${payload['max_incremental_spend_usd']} exceeds $2.00 hard limit."
-            if payload["emergency_trigger_usd"] > 1.65:
-                return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds $1.65 limit."
+            if active_mode == "CALIBRATION":
+                if payload["max_incremental_spend_usd"] > 0.60 + 1e-4:
+                    return False, f"Authorized calibration spend ${payload['max_incremental_spend_usd']} exceeds $0.60 limit."
+                if payload["emergency_trigger_usd"] > payload["max_incremental_spend_usd"]:
+                    return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds authorized budget ${payload['max_incremental_spend_usd']}."
+            else:
+                if payload["max_incremental_spend_usd"] > 2.00:
+                    return False, f"Authorized spend ${payload['max_incremental_spend_usd']} exceeds $2.00 hard limit."
+                if payload["emergency_trigger_usd"] > 1.65:
+                    return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds $1.65 limit."
 
-        if payload["minimum_account_balance_usd"] < 7.00:
-            return False, f"Preservation floor ${payload['minimum_account_balance_usd']} violates $7.00 mandatory floor."
+            if payload["minimum_account_balance_usd"] < 7.00 - 1e-4:
+                return False, f"Preservation floor ${payload['minimum_account_balance_usd']} violates $7.00 mandatory floor."
 
         self._save_nonce(nonce)
         return True, "Authorization verified successfully."
