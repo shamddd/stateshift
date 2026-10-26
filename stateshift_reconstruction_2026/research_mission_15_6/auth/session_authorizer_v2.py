@@ -24,7 +24,7 @@ from cryptography.exceptions import InvalidSignature
 
 FROZEN_MANIFEST_SHA256 = "3a8caf3b26b69cd2d9e3ce3efed1231755edebb0cb2b4067b47a6b019014307d"
 PINNED_MODEL_ID = "Qwen/Qwen2.5-Math-7B-Instruct"
-PINNED_MODEL_REVISION = "c869d27376a8d6728795551322fe323b6"
+PINNED_MODEL_REVISION = "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d"
 
 # Known repository test seed / key (Prohibited from authorizing real cloud execution)
 KNOWN_TEST_SEED = b"stateshift_pi_test_key_seed_32b_"
