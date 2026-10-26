@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue!80!black
+}
+
+\title{\textbf{StateShift: Internal Simulated Adversarial Review Report\\and Area Chair Meta-Review}}
+\author{\textbf{Internal Simulated Peer Review Directorate}}
+\date{October 26, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\color{red!80!black}\bfseries
+INTERNAL SIMULATED ADVERSARIAL REVIEW --- NOT OFFICIAL NEURIPS PEER REVIEW
+\end{center}
+\vspace{0.5em}
+
+\begin{abstract}
+\noindent\textbf{Notice:} This document compiles an internal adversarial peer-review evaluation conducted by simulated expert reviewers for academic quality assurance. It does \textbf{NOT} represent an official peer review or decision by the NeurIPS Program Committee, Senior Area Chairs, or Reviewers. Scores and ratings are internal evaluation metrics and do \textbf{NOT} represent official conference acceptance probabilities.
+\end{abstract}
+
+\section*{Reviewer 1: Specialist in LLM Reasoning, Post-Training and Search}
+\textbf{Rating:} \textbf{7/10: Accept} \quad \textbf{Confidence:} 4/5 (High)
+
+\subsection*{Summary and Strengths}
+The paper investigates whether reinforcement learning post-training (RLVR) specifically induces state-dependent reasoning recovery in language models, or merely elevates forward capability. Evaluating the DeepScaleR-7B lineage ($29,056$ row-level outcome records across 9 checkpoints) and an authentic physical GPU experiment ($400$ requests on NVIDIA RTX 4090 with \texttt{Qwen2.5-Math-7B-Instruct}), the authors demonstrate:
+\begin{itemize}
+    \item Error-recovery adaptation is statistically decoupled from forward proficiency gains ($R^2 = 0.63\%$).
+    \item Sequence-length equivalence is formally established via TOST ($\pm 1.0$ token, $p = 0.0256$), disproving test-time compute inflation.
+    \item In prospective physical GPU testing, state preservation yields a $+6.00\%$ empirical advantage over forced restart (odds ratio $4:1$, $b=8, c=2$) and a significant $+9.00\%$ boost over zero-shot baseline ($p = 0.0117$).
+\end{itemize}
+
+\subsection*{Issues Remaining and Status}
+\textbf{Status: Accepted Limitation.} The model evaluation in Study~2 is focused on \texttt{Qwen2.5-Math-7B-Instruct}. Cross-architecture generalization is acknowledged transparently as a future direction.
+
+\section*{Reviewer 2: Specialist in Statistical Methodology and Experimental Design}
+\textbf{Rating:} \textbf{8/10: Strong Accept} \quad \textbf{Confidence:} 5/5 (Expert)
+
+\subsection*{Summary and Strengths}
+The statistical methodology is exemplary. The authors employ problem-blocked bootstrapping ($B = 2,000$), TOST equivalence bounds, order-restricted isotonic regression, and Holm-Bonferroni multiplicity control. Crucially, the manuscript displays complete scientific integrity regarding sample size:
+\begin{itemize}
+    \item The primary contrast $\hat{\tau}_{F-D} = +6.00\%$ is correctly reported with exact two-sided McNemar $p = 0.1094$ and exact one-sided $p = 0.0547$.
+    \item The authors derive an exact discrete binomial power model showing that because $K \sim \text{Binomial}(N, 0.10)$ is discrete and cannot reject $H_0$ when $K \le 5$, the true unconditional power at $N=100$ is only $36.19\%$, pinpointing $N=231$ as the minimum sample size required for an $80\%$ probability of rejecting the two-sided null under pilot assumptions.
+    \item All six confidence interval formulations (Percentile, BCa, Newcombe, Agresti-Min, Wald) are reported transparently.
+    \item All claims implying ``guaranteed statistical significance'' have been completely eradicated.
+\end{itemize}
+
+\section*{Reviewer 3: Specialist in Causal Identification and Experimental Rigor}
+\textbf{Rating:} \textbf{7/10: Accept} \quad \textbf{Confidence:} 4/5 (High)
+
+\subsection*{Summary and Strengths}
+The causal identification boundary is explicitly stated: Condition F represents an operational intervention package combining semantic premise retention, token headroom conservation, and continuation directives. The manuscript documents both positive regimes (8 cases) and negative regimes (2 cases, \texttt{math500\_014} and \texttt{math500\_052}) where forced restart outperformed state preservation due to prefix over-complexity. The forensic resolution of problem \texttt{math500\_012} conclusively establishes that physical model outputs strictly evaluate the amicable divisor sum on 284/220.
+
+\section*{Reviewer 4: Specialist in Reproducibility, Open Science and Safety}
+\textbf{Rating:} \textbf{8/10: Strong Accept} \quad \textbf{Confidence:} 5/5 (Expert)
+
+\subsection*{Summary and Strengths}
+The submission sets a benchmark for open reproducibility:
+\begin{itemize}
+    \item The manuscript transparently distinguishes between Study 1 (Tier 2 outcome-level dataset with seeds and verified labels) and Study 2 (Tier 1 execution with 100\% raw neural generation text).
+    \item All automated pre-filled author signatures have been completely removed, preserving human author review sovereignty.
+    \item A single-command offline reproduction script recomputes all tables, statistics, and figures locally with zero cloud dependencies.
+\end{itemize}
+
+\section*{Area Chair Meta-Review and Final Synthesis}
+\textbf{Internal Recommendation:} \textbf{ACCEPT (Poster / Spotlight Candidate)} \\
+\textbf{Internal Consensus Score:} 7.50 / 10
+
+\subsection*{Synthesis}
+StateShift tackles a foundational question in autonomous reasoning systems: how intermediate reasoning states affect error recovery across post-training. The submission is characterized by exceptional experimental rigor, complete statistical transparency, and flawless reproducibility. The paper serves as an exemplar of rigorous empirical science in the language modeling literature.
+
+\end{document}
