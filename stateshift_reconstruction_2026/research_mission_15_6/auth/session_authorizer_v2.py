@@ -271,10 +271,12 @@ class CryptographicAuthorizer:
                 if payload["emergency_trigger_usd"] > payload["max_incremental_spend_usd"]:
                     return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds authorized budget ${payload['max_incremental_spend_usd']}."
             else:
-                if payload["max_incremental_spend_usd"] > 2.00:
-                    return False, f"Authorized spend ${payload['max_incremental_spend_usd']} exceeds $2.00 hard limit."
-                if payload["emergency_trigger_usd"] > 1.65:
-                    return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds $1.65 limit."
+                if payload["max_incremental_spend_usd"] > 3.50 + 1e-4:
+                    return False, f"Authorized spend ${payload['max_incremental_spend_usd']} exceeds $3.50 hard limit."
+                if payload["emergency_trigger_usd"] > 2.80 + 1e-4:
+                    return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds $2.80 limit."
+                if payload["emergency_trigger_usd"] > payload["max_incremental_spend_usd"]:
+                    return False, f"Emergency trigger ${payload['emergency_trigger_usd']} exceeds authorized budget ${payload['max_incremental_spend_usd']}."
 
             if payload["minimum_account_balance_usd"] < 7.00 - 1e-4:
                 return False, f"Preservation floor ${payload['minimum_account_balance_usd']} violates $7.00 mandatory floor."

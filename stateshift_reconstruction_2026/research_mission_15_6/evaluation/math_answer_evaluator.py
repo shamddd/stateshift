@@ -256,7 +256,7 @@ def evaluate_cohort(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         for raw_c, rec in conds.items():
             c = cond_key_map.get(raw_c, raw_c)
             gold = rec.get("gold_answer")
-            raw_out = rec.get("raw_output", rec.get("generated_text", ""))
+            raw_out = rec.get("model_output", rec.get("raw_output", rec.get("generated_text", "")))
             extracted = extract_boxed_answer(raw_out)
             correct = is_answer_correct(extracted, gold)
 
@@ -264,7 +264,7 @@ def evaluate_cohort(records: List[Dict[str, Any]]) -> Dict[str, Any]:
                 condition_counts[c] += 1
                 if correct:
                     condition_correct[c] += 1
-                gen_tok = rec.get("generated_tokens", 0)
+                gen_tok = rec.get("generated_tokens", rec.get("total_tokens", len(raw_out.split())))
                 if gen_tok:
                     condition_tokens[c].append(gen_tok)
                 lat = rec.get("latency_seconds", 0.0)
@@ -303,7 +303,8 @@ def evaluate_cohort(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         "latency_per_condition_mean": {
             c: float(np.mean(lats)) if (SCIPY_AVAILABLE and lats) else (sum(lats)/len(lats) if lats else 0.0)
             for c, lats in condition_latency.items()
-        }
+        },
+        "evaluated_records": evaluated_records
     }
     return summary
 

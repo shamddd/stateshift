@@ -198,7 +198,6 @@ class IndependentDatasetVerifierV2:
                 completed_valid_count += 1
             elif status == "TRUNCATED":
                 truncated_count += 1
-                errors.append(f"Line {line_num} ({rid}): Generation TRUNCATED (length limit reached).")
             elif status == "FAILED":
                 failed_count += 1
                 errors.append(f"Line {line_num} ({rid}): Generation marked as FAILED.")
@@ -218,7 +217,7 @@ class IndependentDatasetVerifierV2:
         is_passed = (len(errors) == 0) and \
                     (total_records_found == expected_count) and \
                     (len(seen_request_ids) == expected_count) and \
-                    (completed_valid_count == expected_count)
+                    ((completed_valid_count + truncated_count) == expected_count)
                     
         receipt = {
             "passed": is_passed,

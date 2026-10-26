@@ -1,0 +1,26 @@
+{
+  "experiment_id": "stateshift_primary_400_01",
+  "session_id": "sess_primary_1792987837",
+  "pod_id": "pyau7qtpjfzx5e",
+  "gpu_hardware": "NVIDIA GeForce RTX 4090, 24564 MiB, 595.91.07",
+  "initial_balance_usd": 11.2541107823,
+  "final_balance_usd": 10.1065312128,
+  "net_spend_usd": 1.1475795694999995,
+  "elapsed_seconds": 4844.863126039505,
+  "elapsed_minutes": 80.74771876732508,
+  "completed_generations": 400,
+  "spend_within_ceiling": true,
+  "spend_within_trigger": true,
+  "preservation_floor_respected": true,
+  "final_pods_count": 0,
+  "final_volumes_count": 0,
+  "destruction_confirmed": true,
+  "hardware_info": {
+    "gpu_hardware": "NVIDIA GeForce RTX 4090, 24564 MiB, 595.91.07",
+    "workspace_disk": "overlay          40G   16M   40G   1% /",
+    "remote_python": "Python 3.10.12",
+    "ssh_ip": "103.196.86.68",
+    "ssh_port": 39740,
+    "cache_duration_sec": 18.868974924087524
+  }
+}
