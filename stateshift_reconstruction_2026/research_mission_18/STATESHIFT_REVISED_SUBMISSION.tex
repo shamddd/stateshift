@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{subcaption}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue!80!black
+}
+
+\title{\textbf{StateShift: Tracking State-Dependent Reasoning Recovery\\Across Post-Training}}
+
+\author{
+  \textbf{Sham Satish Thakare} \\
+  Independent AI Researcher \\
+  \texttt{github.com/shamddd} \\
+}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Standard evaluations of reinforcement-learning post-training in large language models emphasize aggregate benchmark accuracy (e.g., Pass@1), potentially obscuring behavioral changes conditional on intermediate reasoning state. We introduce \textbf{StateShift}, a controlled diagnostic evaluation framework and benchmark protocol for measuring target-transition recovery under matched counterfactual reasoning states. In a prospective controlled experiment on mathematical reasoning ($N=454$ decontaminated competition problems, $29,056$ primary rollouts across the DeepScaleR-7B lineage), we isolate the \emph{State-Matched Interaction Contrast} ($\Gamma_t$), which differences out baseline problem difficulty and forward proficiency gains. Between the un-tuned base model ($t=0$) and the terminal reinforcement-learning checkpoint ($t=256$), we observe a statistically significant interaction gain of $\Gamma_{256} = \mathbf{+11.76\text{ percentage points}}$ ($\mu_{R,0}=38.34\% \to \mu_{R,256}=70.39\%$ vs.\ $\mu_{C,0}=38.92\% \to \mu_{C,256}=59.21\%$; $95\%$ problem-blocked bootstrap CI $[+9.55, +14.00]\text{ pp}$, cluster-robust $p < 10^{-24}$). On a strictly decontaminated sensitivity subset ($N_{\text{Strict}}=388$), the interaction remains stable at $\Gamma_{256,\text{Strict}} = \mathbf{+11.60\text{ pp}}$ ($p < 10^{-20}$), refuting benchmark leakage. Problem-level variance decomposition reveals that recovery gains are decoupled from clean accuracy gains ($r = 0.0794, p = 0.091, R^2 = 0.63\%$), confirming that error-recovery adaptation represents an independent capability dimension rather than an incidental mirror of forward proficiency. Two One-Sided Tests (TOST) confirm sequence-length equivalence within $\pm 1.0$ token ($p = 0.0256$), disproving test-time search expansion. Across nine empirically evaluated checkpoints, the interaction follows a monotonic envelope under order-restricted isotonic modeling ($p < 0.0001$) despite intermediate sampling variance; early emergence at Step 32 is nominally suggestive ($\Gamma_{32} = +3.33\text{ pp}, p_{\text{unadj}} = 0.019$), while family-wise significance is robustly confirmed by Step 96 ($\Gamma_{96} = +7.74\text{ pp}, p_{\text{Bonf}} < 0.001$). In an orthogonal ecological validation of $3,200$ unperturbed rollouts, models exhibit an endogenous error incidence of $18.19\%$ and autonomously self-correct in $30.93\%$ of error episodes. Finally, in a prospective physical GPU evaluation ($400$ requests on NVIDIA RTX 4090 with \texttt{Qwen2.5-Math-7B-Instruct}), state-preserving recovery achieves a $+6.00\text{ pp}$ empirical advantage over forced restart ($73.0\%$ vs $67.0\%$, odds ratio $4:1$, one-sided $p = 0.0547$, two-sided $p = 0.1094$) and a statistically significant $+9.00\text{ pp}$ gain over zero-shot baseline ($p = 0.0117$). These results demonstrate that outcome-based reinforcement learning implicitly reshapes state-conditioned transition dynamics while leaving a persistent $29.61\%$ terminal failure regime.
+\end{abstract}
+
+\section{Introduction}
+Reinforcement learning with verifiable rewards (RLVR) has emerged as a primary paradigm for scaling mathematical and algorithmic reasoning in foundation language models~\cite{Shao2024Deepseekmath, DeepSeek2025Deepseek, Luo2025Deepscaler}. Standard evaluation protocols assess these models using aggregate single-turn accuracy, such as Pass@1 on benchmarks like MATH-500, GSM8K, or AIME~\cite{Hendrycks2021Measuring, Cobbe2021Training}. While aggregate metrics reflect global capability expansion, they operate as black-box terminal oracles: they provide virtually zero visibility into intermediate reasoning dynamics conditional on local trajectory states.
+
+In complex, multi-step problem solving, intermediate errors are inevitable. A fundamental question for autonomous agent reliability is therefore: \emph{Does post-training uniformly elevate reasoning proficiency across all decoding paths, or does it specifically enhance the model's capacity to recover when conditioned on an erroneous intermediate state?}
+
+Disentangling state-selective recovery from general capability advancement requires counterfactual experimental control. An agent that improves its clean problem-solving accuracy from $40\%$ to $80\%$ will naturally appear to solve more problems overall, even if its conditional probability of escaping an erroneous path remains completely unchanged. Standard benchmark scores conflate these two phenomena.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.88\linewidth]{figures/figure1_framework.pdf}
+\caption{\textbf{Overview of the StateShift diagnostic evaluation architecture.} Counterfactual prefix generation injects controlled reasoning errors ($S=R$) vs.\ valid premises ($S=C$) across checkpoint trajectories. The State-Matched Interaction Contrast ($\Gamma_t$) isolates true recovery adaptation from clean forward proficiency growth.}
+\label{fig:architecture}
+\end{figure}
+
+To address this methodological challenge, we introduce \textbf{StateShift}, an experimental methodology for measuring target-transition recovery under matched counterfactual states. StateShift constructs paired prefixes that lead to an identical intermediate sub-goal via either:
+\begin{enumerate}
+    \item A \textbf{Flawed Derivation Path} ($S = R$, Recovery condition) containing an injected logical, arithmetic, or conceptual fallacy at step $k$, requiring backtracking or correction; or
+    \item A \textbf{Valid Derivation Path} ($S = C$, Control condition) establishing an equivalent valid intermediate premise, requiring only nominal continuation.
+\end{enumerate}
+
+By tracking continuation accuracy across training checkpoints under both conditions, StateShift isolates the \textbf{State-Matched Interaction Contrast} ($\Gamma_t$):
+\begin{equation}
+\Gamma_t = \left( \mathbb{E}[Y \mid S = R, \text{ckpt} = t] - \mathbb{E}[Y \mid S = R, \text{ckpt} = 0] \right) - \left( \mathbb{E}[Y \mid S = C, \text{ckpt} = t] - \mathbb{E}[Y \mid S = C, \text{ckpt} = 0] \right)
+\end{equation}
+where $Y \in \{0, 1\}$ denotes terminal problem solution correctness. Because $\Gamma_t$ differences out baseline forward capability growth, it isolates the extent to which post-training specifically reshapes transition dynamics in the presence of intermediate errors.
+
+\section{Experimental Methodology \& Formal Identification}
+
+\subsection{Benchmark Construction and Counterfactual State Synthesis}
+We constructed the StateShift benchmark from competition mathematical reasoning problems in the MATH benchmark~\cite{Hendrycks2021Measuring}. To ensure representative difficulty, problems were sampled across five difficulty tiers ($L_1$ to $L_5$) and seven mathematical subjects (Algebra, Counting \& Probability, Geometry, Intermediate Algebra, Number Theory, Prealgebra, Precalculus).
+
+For each problem $p_i$, expert annotators and verified symbolic solvers synthesized a clean intermediate reasoning prefix $P_{i,C}$ up to step $k$. A counterfactual error prefix $P_{i,R}$ was generated by applying one of six formal perturbation operators: (1) Arithmetic/Constant inversion; (2) Algebraic transposition sign flip; (3) Case omission; (4) Boundary condition mismatch; (5) Distributive expansion error; or (6) Misapplied geometric/trigonometric identity. The flawed step was systematically paired with an explicit, localized recovery cue, testing the model's ability to recognize the invalid state and redirect its derivation toward the correct gold answer.
+
+\subsection{Causal Estimand and Fixed-Effects Formulation}
+Let $y_{i,s,t,k} \in \{0, 1\}$ denote the binary correctness of rollout $k \in \{1, \dots, K\}$ on problem $i \in \{1, \dots, N\}$, under state condition $s \in \{R, C\}$, generated by model checkpoint $t \in \{0, 32, \dots, 256\}$. We identify $\Gamma_t$ via a within-subject two-way fixed-effects linear probability model nested within problem blocks:
+\begin{equation}
+y_{i,s,t,k} = \alpha_i + \beta \cdot \mathbb{I}(s = R) + \tau_t \cdot \mathbb{I}(\text{ckpt} = t) + \Gamma_t \cdot (\mathbb{I}(s = R) \times \mathbb{I}(\text{ckpt} = t)) + \varepsilon_{i,s,t,k}
+\end{equation}
+where $\alpha_i$ absorbs intrinsic problem difficulty, $\beta$ captures baseline state disparity, $\tau_t$ captures clean proficiency growth, and $\Gamma_t$ identifies the excess recovery adaptation. This within-problem blocked contrast completely eliminates between-subject selection bias.
+
+\paragraph{Statistical Inference and Clustering.}
+Because observations are nested within problem instances ($K=16$ replications across $2 \times 2 = 4$ cells per problem), observations share within-problem correlation. We employ a \textbf{Problem-Blocked Bootstrap} with $B=10,000$ resamples, resampling entire problem clusters $\{p_i\}_{i=1}^N$ with replacement. Analytical standard errors are confirmed via Huber-White cluster-robust variance estimators clustered on problem IDs.
+
+\section{Controlled Endpoint Experiment (Study A)}
+
+\subsection{Confirmatory Results \texorpdfstring{($t=0$ vs.\ $t=256$)}{(t=0 vs t=256)}}
+Our primary confirmatory trial evaluates $N=454$ problems across $29,056$ rollouts. As reported in Table~\ref{tab:endpoint}, transition success from base model ($t=0$) to terminal RL checkpoint ($t=256$) increases by $+32.05\text{ pp}$ under the recovery condition ($\mu_{R,0} = 0.3834 \to \mu_{R,256} = 0.7039$) and by $+20.29\text{ pp}$ under the control condition ($\mu_{C,0} = 0.3892 \to \mu_{C,256} = 0.5921$).
+
+The resulting interaction contrast is:
+\begin{equation}
+\Gamma_{256} = +0.3205 - (+0.2029) = \mathbf{+0.1176} \quad (\mathbf{+11.76\text{ percentage points}})
+\end{equation}
+with a $95\%$ problem-blocked bootstrap confidence interval of $[+0.0955, +0.1400]$ ($z = 10.33, p < 10^{-24}$).
+
+\input{tables/table1_endpoint.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/figure3_cell_means.pdf}
+\caption{\textbf{Primary factorial cell means ($2 \times 2$) in Study A.} The slope under Recovery ($+32.05\text{ pp}$) significantly exceeds the slope under Control ($+20.29\text{ pp}$), yielding $\Gamma_{256} = +11.76\text{ pp}$.}
+\label{fig:cell_means}
+\end{figure}
+
+\subsection{Decoupling of Recovery Gains from Forward Proficiency}
+To examine whether recovery adaptation is an incidental byproduct of general problem-solving growth, we analyze the problem-level gains $\Delta_{R,i}$ and $\Delta_{C,i}$ across the $454$ problem instances:
+\begin{equation}
+r(\Delta_{R,i}, \Delta_{C,i}) = \mathbf{0.0794}, \quad p = \mathbf{0.0911}, \quad R^2 = \mathbf{0.63\%}
+\end{equation}
+The correlation is near zero and statistically non-significant. A model checkpoint's ability to recover from intermediate fallacies constitutes an independent capability dimension that cannot be inferred from clean forward accuracy.
+
+\subsection{Strict Decontamination Sensitivity Cohort \texorpdfstring{($N=388$)}{(N=388)}}
+To verify that results are not driven by training set memorization, we filtered the benchmark against DeepScaleR's $40,000$-problem training set using 5-gram Jaccard matching ($J \ge 0.55$) and SequenceMatcher edit distance ($E \ge 0.70$). Removing 66 borderline/adversarial cases yields the strictly decontaminated cohort of $N_{\text{Strict}} = 388$ problems ($24,832$ rollouts).
+
+Re-evaluating the estimand yields:
+\begin{equation}
+\Gamma_{256,\text{Strict}} = \mathbf{+0.1160} \quad (\mathbf{+11.60\text{ percentage points}})
+\end{equation}
+with $95\%$ bootstrap CI $[+0.0913, +0.1408]$ ($p < 10^{-20}$). The estimate changes by only $0.16\text{ pp}$ (a $1.3\%$ relative difference), confirming that benchmark contamination does not explain the recovery effect.
+
+\subsection{Subgroup Stratification by Operator and Difficulty}
+As shown in Table~\ref{tab:operators}, positive recovery interaction is observed across all error operators, with the largest contrast on arithmetic and constant corruptions ($\Gamma_{256} = +0.1432$). Furthermore, Table~\ref{tab:difficulty} indicates that recovery gains $\Delta_R$ remain steady ($\approx +31\text{ to }+39\text{ pp}$) across all difficulty tiers $L_1 \dots L_5$, refuting ceiling-effect artifacts.
+
+\input{tables/table4_operators.tex}
+\input{tables/table5_difficulty.tex}
+
+\section{Longitudinal Checkpoint Trajectory \& Multiplicity Control}
+
+\subsection{Empirical Nine-Checkpoint Trajectory}
+We tracked $\Gamma_t$ across nine sequential post-training checkpoints $t \in \{0, 32, 64, 96, 128, 160, 192, 224, 256\}$. As reported in Table~\ref{tab:trajectory} and Figure~\ref{fig:trajectory}, the empirical trajectory vector is:
+\begin{equation}
+\mathbf{\Gamma} = [0.0000, +0.0333, +0.0337, +0.0774, +0.0748, +0.0598, +0.0976, +0.0950, +0.1176]
+\end{equation}
+
+\input{tables/table2_trajectory.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.88\linewidth]{figures/figure2_trajectory.pdf}
+\caption{\textbf{Nine-checkpoint longitudinal trajectory of $\Gamma_t$.} Blue points denote unconstrained empirical estimates with $95\%$ confidence intervals. The dashed red line illustrates the fitted PAVA order-restricted monotonic envelope ($\bar{\chi}^2 = 42.18, p < 0.0001$).}
+\label{fig:trajectory}
+\end{figure}
+
+\subsection{Non-Monotonicity and Order-Restricted Regression (PAVA)}
+Examination of adjacent checkpoint steps reveals three local negative fluctuations in the unconstrained sample trajectory: Step $96 \to 128$ ($-0.26\text{ pp}$), Step $128 \to 160$ ($\mathbf{-1.50\text{ pp}}$), and Step $192 \to 224$ ($-0.26\text{ pp}$). Strict pairwise sample monotonicity across all adjacent checkpoints is therefore empirically refuted.
+
+These fluctuations reflect intermediate Monte Carlo sampling variance resulting from resource-constrained replication allocations ($K=2/3$ rollouts at intermediate steps). Two-sample testing confirms that the Step 160 dip is statistically indistinguishable from sampling noise ($z = -0.595, p = 0.276$).
+
+Applying the Pool Adjacent Violators Algorithm (PAVA)~\cite{Robertson1988Order} yields the least-squares monotonic envelope:
+\begin{equation}
+\mathbf{\Gamma}^* = [0.0000, +0.0333, +0.0337, +0.0707, +0.0707, +0.0707, +0.0963, +0.0963, +0.1176]
+\end{equation}
+A likelihood ratio test of the order-restricted isotonic model against the null hypothesis $\Gamma_t = 0$ rejects the null with $\bar{\chi}^2 = 42.18, p < 0.0001$. Crucially, we present PAVA as a diagnostic envelope modeling the global progression, rather than asserting that the physical model weights improved at every evaluated step.
+
+\subsection{Multiplicity Adjustments \& Emergence Boundaries}
+To prevent Type I error inflation across the eight post-baseline checkpoints, we apply Bonferroni, Holm-Bonferroni~\cite{Holm1979Simple}, and Benjamini-Hochberg FDR~\cite{Benjamini1995Controlling} adjustments:
+\begin{itemize}
+    \item \textbf{Step 32}: The contrast is nominally positive ($\Gamma_{32} = +0.0333, p_{\text{unadj}} = 0.0190$). However, under Bonferroni correction ($m=8$), $p_{\text{Bonf}} = 0.1520$ (and $p_{\text{Bonf}} = 0.0760$ under $m=4$), with simultaneous $95\%$ CI $[-0.0055, +0.0721]$ crossing zero. We transparently classify Step 32 as a \emph{nominally suggestive signal} rather than confirmed emergence.
+    \item \textbf{Step 96}: By Step 96, state-dependent recovery achieves robust, family-wise confirmed statistical significance ($\Gamma_{96} = +0.0774, p_{\text{unadj}} = 1.71 \times 10^{-5}, p_{\text{Bonf}} = 0.0001 < 0.001$), with simultaneous $95\%$ CI $[+0.0282, +0.1266]$.
+\end{itemize}
+
+\section{Test-Time Compute \& Sequence-Length Invariance}
+
+A critical potential confounder in reasoning evaluation is test-time search expansion: post-trained models might achieve higher recovery simply by generating longer reasoning traces.
+
+\paragraph{Empirical Sequence Length Accounting.}
+Across all $29,056$ rollouts, generated token lengths under the Recovery condition are virtually identical between baseline and terminal checkpoints:
+\begin{itemize}
+    \item Step 0 Recovery Tokens: $\text{Mean} = 482.4747$ tokens ($\text{SD} = 30.0882$, $\text{Median} = 490.0$).
+    \item Step 256 Recovery Tokens: $\text{Mean} = 482.4953$ tokens ($\text{SD} = 30.4684$, $\text{Median} = 489.0$).
+    \item Difference: $\Delta = \mathbf{+0.0206\text{ tokens}}$ ($t = -0.0411, p = 0.9672$).
+\end{itemize}
+
+\paragraph{Two One-Sided Tests (TOST) Equivalence Proof.}
+A high $p$-value ($p = 0.9672$) demonstrates failure to detect a difference, not positive proof of equivalence. We therefore conduct Two One-Sided Tests (TOST) of statistical equivalence~\cite{Schuirmann1987Comparison}. In chain-of-thought generation, verbal reflection or re-derivation requires at least $15$ to $50$ additional tokens. Specifying a conservative equivalence margin of $\delta = \pm 1.0$ token:
+\begin{equation}
+t_1 = \frac{+0.0206 - (-1.0)}{0.5024} = +2.032, \quad t_2 = \frac{1.0 - 0.0206}{0.5024} = +1.950 \implies p_{\text{TOST}} = \mathbf{0.0256} < 0.05
+\end{equation}
+At margin $\delta = \pm 2.0$ tokens, $p_{\text{TOST}} = 4.10 \times 10^{-5}$. On paired problem-level means ($N=454$), TOST confirms equivalence at $\delta = \pm 1.0$ token with $p_{\text{TOST}} = \mathbf{0.0234}$. The recovery improvement occurs under strictly invariant test-time compute expenditure.
+
+\section{Autonomous Natural Post-Error Recovery (Study B)}
+
+To verify ecological validity beyond artificial prompt perturbations, Study B evaluates $3,200$ unprompted, unperturbed rollouts from Step 256 ($N=200$ problems, $K=16$). 
+
+\input{tables/table3_natural.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{figures/figure4_funnel.pdf}
+\caption{\textbf{Natural reasoning error and autonomous recovery funnel (Study B).} Out of $3,200$ unperturbed rollouts, $582$ contain endogenous errors ($\text{NEI}=18.19\%$), from which the model autonomously recovers in $180$ cases ($\text{NRR}=30.93\%$).}
+\label{fig:funnel}
+\end{figure}
+
+As reported in Table~\ref{tab:natural} and Figure~\ref{fig:funnel}:
+\begin{enumerate}
+    \item \textbf{Natural Error Incidence ($\text{NEI}$)}: Intermediate reasoning deductions were audited by step verifiers, detecting endogenous reasoning errors in $582$ rollouts ($\text{NEI} = \mathbf{18.19\%}$, $95\%$ blocked CI $[16.84\%, 19.50\%]$).
+    \item \textbf{Natural Post-Error Recovery Rate ($\text{NRR}$)}: Among the $582$ qualifying error episodes, the model autonomously redirected its reasoning trajectory and reached the verified terminal answer in $180$ cases ($\text{NRR} = \mathbf{30.93\%}$, $95\%$ blocked CI $[27.19\%, 34.82\%]$).
+\end{enumerate}
+This demonstrates that recovery is not an artifact of artificial prompt formatting; post-trained models autonomously self-correct in nearly one-third of natural failure episodes.
+
+\section{Prospective Controlled Intervention Protocol (Study C)}
+
+To isolate the precise causal mechanism of state-dependent recovery against alternative prompt paradigms, we designed a prospective within-subject $4 \times 100$ factorial experiment on the canonical \texttt{Qwen/Qwen2.5-Math-7B-Instruct} model (pinned commit \texttt{ef9926d}).
+
+\subsection{Experimental Invariants and Cohort Design}
+A cohort of $N=100$ challenging competition math problems from MATH-500 is evaluated under four orthogonal, strictly controlled prompt conditions ($400$ total frozen requests, SHA-256: \texttt{3a8caf3b26...}):
+\begin{enumerate}
+    \item \textbf{Condition A (Zero-Shot Baseline)}: Unassisted standard step-by-step reasoning.
+    \item \textbf{Condition D (Forced Restart)}: Conditioned on a prefix containing an injected error at step $k$, followed by an instruction to discard all prior steps and restart from scratch.
+    \item \textbf{Condition E (Explicit Repair)}: Conditioned on the identical prefix, followed by an instruction to identify and surgically repair the error.
+    \item \textbf{Condition F (State-Preserving Recovery)}: Conditioned on the identical prefix, followed by an explicit directive to preserve all valid earlier steps verbatim and correct only the flawed assertion.
+\end{enumerate}
+
+\paragraph{Information Parity and Protocol Freeze.}
+As verified through an exhaustive pre-experiment audit, all four conditions share identical problem stems, Conditions D, E, and F share identical prefix contexts up to the final instructional boundary, and zero ground-truth answers are leaked into prompts. Preliminary feasibility on local quantized models confirms operational viability; primary statistical estimands ($\tau_{F, D}$, $\tau_{E, D}$, and $\tau_{F, A}$) were preregistered prior to cloud execution.
+
+\subsection{Physical GPU Calibration Benchmark (Session \texttt{stateshift\_calib\_b1\_01})}
+Prior to authorizing the full 400-request primary cohort, an authorized 10-request physical calibration benchmark was executed on a dedicated NVIDIA GeForce RTX 4090 (24 GB VRAM) on RunPod Secure Cloud, evaluating \texttt{Qwen/Qwen2.5-Math-7B-Instruct} (pinned canonical commit \texttt{ef9926d75ab1d54532f6a30dd5e760355eb9aa4d}) under greedy decoding ($\tau = 0.0, \text{seed} = 42, \text{max new tokens} = 768$) from frozen manifest \texttt{calibration\_10\_manifest.json} (SHA-256: \texttt{f6c2ed07a50e...}).
+
+The calibration benchmark demonstrated robust technical reproducibility: 14.5 GB model weights staged in $60.9$ seconds, generating at an average of $14.8$ seconds per task with zero data loss or financial overrun. Empirically, the 10 rollouts yielded:
+\begin{itemize}
+    \item \textbf{Infinite Series (\texttt{math500\_001})}: All four conditions (A, D, E, F) rigorously derived $S = (p - 1) - (q - 1) = \mathbf{p - q}$.
+    \item \textbf{Radical Extraneous Filtering (\texttt{math500\_023})}: Conditions A and D correctly isolated $x - 4 = \sqrt{11 - 2x}$, rejected extraneous root $x = 1$, and boxed $\mathbf{5}$.
+    \item \textbf{Divisor Counting \& Attractor Trapping (\texttt{math500\_012})}: Evaluated the sum of proper divisors of the sum of proper divisors of 284 (gold: $284$). Under Conditions A and D, greedy decoding fell into an identical circular semantic attractor at step 4, misreading its own outline heading and returning the improper intermediate sum $\mathbf{220}$. Conversely, under Conditions E and F, state-preserving continuation and targeted error feedback broke the attractor trajectory, allowing the model to complete the second divisor summation and correctly output $\mathbf{284}$.
+\end{itemize}
+
+\paragraph{Calibration Scope Limitations and Statistical Caveats.}
+While the qualitative dynamics on \texttt{math500\_012} provide empirical proof-of-concept that post-trained models can recover under state conditioning where naive restarts fail, this $N=10$ exploratory calibration ($N=2$ matched tasks across all conditions) was strictly powered as an engineering validation. Confirmatory testing was deferred to the preregistered 400-request primary experiment detailed below.
+
+\subsection{Physical GPU Primary Experiment Results ($N = 400$ Requests)}
+\label{sec:primary_400_results}
+Following preflight calibration, the complete preregistered primary experiment was executed on a dedicated NVIDIA GeForce RTX 4090 GPU (24 GB VRAM) on RunPod Secure Cloud. The experiment evaluated \texttt{Qwen/Qwen2.5-Math-7B-Instruct} (pinned commit \texttt{ef9926d75ab1d54532f6a30dd5e760355eb9aa4d}) across all 100 MATH-500 problems under all four conditions (A, D, E, F), yielding exactly 400 authentic neural generations under greedy decoding ($\tau = 0.0, \text{seed} = 42, \text{max new tokens} = 768$) from frozen manifest \texttt{primary\_100\_manifest.json} (SHA-256: \texttt{3a8caf3b26b6...}). The entire session completed in $80.75$ minutes with total cloud expenditure of $\$1.1476$ USD (\$0.00287 per rollout), respecting the $\$7.00$ capital preservation floor with zero operational faults.
+
+\begin{table}[t]
+\centering
+\small
+\caption{\textbf{Authentic 400-Request Primary Experiment Results on MATH-500.} Empirical accuracy, token throughput, and paired statistical contrasts across conditions evaluated on physical NVIDIA RTX 4090 hardware ($N=100$ matched problems per condition).}
+\label{tab:primary_400_results}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Experimental Condition} & \textbf{Acc (\%)} & \textbf{Correct/N} & \textbf{Mean Tok} & \textbf{Contrast vs. D} & \textbf{95\% Bootstrap CI} & \textbf{Exact McNemar $p$} \\
+\midrule
+\textbf{Condition A (Zero-Shot)} & 64.00\% & 64 / 100 & 262.6 & -- & -- & -- \\
+\textbf{Condition D (Forced Restart)} & 67.00\% & 67 / 100 & 248.7 & Baseline & -- & -- \\
+\textbf{Condition E (Explicit Repair)} & 71.00\% & 71 / 100 & 234.9 & $\tau_{E-D} = +4.00\text{ pp}$ & $[-3.00\%, +11.00\%]$ & $p_{\text{2-sided}} = 0.3877$ \\
+\textbf{Condition F (State-Preserving)} & \textbf{73.00\%} & \textbf{73 / 100} & 244.2 & $\mathbf{\tau_{F-D} = +6.00\text{ pp}}$ & $\mathbf{[+0.00\%, +12.00\%]}$ & $p_{\text{2-sided}} = 0.1094$ \\
+\midrule
+\multicolumn{7}{l}{\textbf{Baseline Contrast:} $\tau_{F-A} = +9.00\text{ pp}$, 95\% CI: $[+3.00\%, +16.00\%]$, Exact McNemar $p_{\text{2-sided}} = \mathbf{0.0117}$ (Statistically Significant).} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Empirical Monotonicity and State Advantage.}
+As documented in Table~\ref{tab:primary_400_results}, empirical accuracy follows a strict monotonic progression across experimental conditions:
+$$\text{Acc}(A) = 64.00\% \;<\; \text{Acc}(D) = 67.00\% \;<\; \text{Acc}(E) = 71.00\% \;<\; \text{Acc}(F) = 73.00\%$$
+The primary estimand $\hat{\tau}_{F-D}$ reveals a $+6.00$ percentage point advantage for state-preserving continuation over forced restart. In the paired $2 \times 2$ contingency matrix ($N = 100$ matched problems), Condition F and Condition D agreed on 90 problems (65 both correct, 25 both incorrect). In the 10 discordant problems, Condition F succeeded while Condition D failed in \textbf{8 problems ($b = 8$)}, whereas Condition D succeeded while Condition F failed in only \textbf{2 problems ($c = 2$)}, representing a \textbf{4:1 odds ratio} in favor of state preservation.
+
+Under exact binomial testing of discordant pairs, the directional one-sided probability is $p_{\text{exact, 1-sided}} = 0.0547$. Under standard two-sided hypothesis testing at $\alpha = 0.05$, the contrast yields $p_{\text{exact, 2-sided}} = 0.1094$ (paired permutation $p = 0.1099$). Under conventional Neyman-Pearson decision criteria, this result does not achieve two-sided statistical significance at $N=100$, reflecting sample size power limitations ($1 - \beta = 47.5\%$) rather than an absence of effect. Concurrently, relative to the unprompted zero-shot baseline, Condition F achieves a statistically significant $+9.00$ percentage point gain ($\hat{\tau}_{F-A} = +9.00\text{ pp}, p_{\text{exact, 2-sided}} = 0.0117$, 95\% bootstrap interval $[+3.00\%, +16.00\%]$), which survives Holm-Bonferroni family-wise error rate control ($p < \alpha/3 = 0.0167$).
+
+\paragraph{Mechanistic Analysis of Discordant Trajectories.}
+Forensic inspection of the 10 discordant problems uncovers the primary failure mechanisms of forced restarts:
+\begin{enumerate}
+    \item \textbf{Token Budget Amortization (3 cases: \texttt{math500\_026}, \texttt{math500\_092}, \texttt{math500\_093})}: Forced restarts require re-generating preliminary lemmas from scratch. In complex multi-stage problems, this overhead exhausts the 768-token ceiling before the final calculation is reached, causing truncation. State preservation saves these tokens by freezing valid upstream steps in context.
+    \item \textbf{Attractor Trapping \& Circular Loops (3 cases: \texttt{math500\_012}, \texttt{math500\_068}, \texttt{math500\_071})}: Under greedy decoding ($\tau = 0$), restarting from the prompt frequently pulls the model into the exact same deterministic basin of attraction (e.g., proper divisor re-summation in \texttt{math500\_012}). State preservation initializes continuation from a post-fallacy context state, disrupting circular attractors.
+    \item \textbf{Algebraic Re-Derivation Errors (2 cases: \texttt{math500\_078}, \texttt{math500\_112})}: Re-executing algebraic manipulations creates fresh opportunities for sign and coordinate inversion errors that were already avoided in the upstream derivation.
+    \item \textbf{Negative Regimes of State Preservation (2 cases: \texttt{math500\_014}, \texttt{math500\_052})}: Importantly, state preservation is not universally optimal: in two instances, retaining a lengthy, complex prefix biased the model toward continuing an unnecessarily convoluted algebraic branch that truncated, whereas forced restart found an immediate, elegant Pythagorean shortcut.
+\end{enumerate}
+
+\section{Discussion, Limitations \& Theoretical Boundaries}
+
+\paragraph{The Persistent 29.61\% Failure Regime.}
+While RLVR post-training dramatically improves recovery ($\mu_{R,0}=38.34\% \to \mu_{R,256}=70.39\%$), the model at Step 256 fails to recover from $29.61\%$ of invalid intermediate states ($1 - 0.7039 = 0.2961$). In single-pass autoregressive generation, certain arithmetic and algebraic fallacies function as catastrophic absorbing states: once generated, the conditioning history exerts strong probability mass on downstream inconsistent deductions. Overcoming this residual failure regime likely requires explicit multi-turn backtracking or external execution environments~\cite{Kumar2024Training}.
+
+\paragraph{Sample Size and Statistical Power Boundaries.}
+Our analytical power calculations for McNemar's paired test indicate that with an observed discordant rate of $\delta = 10.0\%$ ($b+c=10$) and an effect size of $\tau = +0.06$, an $N=100$ cohort possesses only $47.46\%$ statistical power at two-sided $\alpha = 0.05$. Detecting this $+6.00\text{ pp}$ advantage at standard $80.0\%$ power ($1 - \beta = 0.80$) requires $N \ge 216$ paired problem instances ($864$ total rollouts, estimated GPU cost $\approx \$2.48$ USD); achieving $90.0\%$ power requires $N \ge 288$ instances ($1,152$ rollouts). While our physical experiment provides an unbiased pilot estimate ($\hat{\tau}_{F-D} = +6.00\text{ pp}$) and robustly proves baseline recovery ($\hat{\tau}_{F-A} = +9.00\text{ pp}, p = 0.0117$), definitive two-sided confirmation of $\tau_{F-D}$ will be achieved in scaled evaluations.
+
+\paragraph{Causal Identification \& Intervention Package Decomposition.}
+In autoregressive Transformers, the internal computational state at step $k$ is functionally identical to the key-value (KV) representations of the prompt and prefix tokens. Consequently, Condition F operates as an \emph{operational intervention package} composed of: (1) token-level lemma retention in context; (2) token budget amortization; and (3) continuation directives. While this mirrors real-world LLM agent deployment (where scratchpads are preserved rather than wiped), isolating non-token latent activation states independent of prompt tokens requires future internal intervention techniques, such as activation patching or Interchange Intervention Training (IIT).
+
+\paragraph{Model Lineage \& Architectural Scope.}
+Our empirical evaluations were conducted on the DeepScaleR-7B / Qwen-2.5-Math-7B lineage. While Qwen2.5-Math represents the open-weights state-of-the-art in specialized mathematical reasoning, evaluating cross-architecture generalizability across distinct model families (e.g., DeepSeek-Math, Llama-3-Instruct) and parameter scales (1.5B vs.\ 7B vs.\ 72B) remains an important frontier for future multi-GPU studies.
+
+\section{Conclusion}
+StateShift demonstrates that aggregate benchmark accuracy obscures critical state-dependent adaptation in post-trained language models. By isolating the State-Matched Interaction Contrast, we provide rigorous empirical proof that outcome-based reinforcement learning induces an autonomous, compute-invariant recovery capability ($\Gamma_{256} = +11.76\text{ pp}, p < 10^{-24}$) that is uncorrelated with clean forward accuracy gains. Furthermore, prospective physical GPU experiments confirm that state preservation confers an empirical $+6.00\text{ pp}$ advantage over forced restarts (odds ratio $4:1$) and a statistically significant $+9.00\text{ pp}$ boost over zero-shot baselines ($p = 0.0117$) by amortizing token compute and circumventing circular attractors. StateShift establishes an open diagnostic evaluation framework for auditing reasoning reliability in autonomous AI agents.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,39 @@
+{
+  "strict_mode_discrepancies": [],
+  "cleanroom_mode_discrepancies": [
+    {
+      "request_id": "primary_100_req_0202",
+      "problem_id": "math500_007",
+      "condition_code": "Condition_D_Forced_Restart",
+      "gold_answer": "90^\\circ",
+      "independent_extracted": "90",
+      "independent_correct": true,
+      "m17_extracted": "90",
+      "m17_correct": false,
+      "model_output_tail": "} - \\frac{4}{12} + \\frac{3}{12} = \\frac{1 - 4 + 3}{12} = \\frac{0}{12} = 0.\\]\nSince the dot product is 0, the cosine of the angle \\(\\theta\\) between the two vectors is 0. Therefore, the angle \\(\\theta\\) is:\n\\[\\theta = \\cos^{-1}(0) = 90^\\circ.\\]\nThus, the angle between the two lines is \\(\\boxed{90}\\)."
+    },
+    {
+      "request_id": "primary_100_req_0203",
+      "problem_id": "math500_007",
+      "condition_code": "Condition_E_Explicit_Repair",
+      "gold_answer": "90^\\circ",
+      "independent_extracted": "90",
+      "independent_correct": true,
+      "m17_extracted": "90",
+      "m17_correct": false,
+      "model_output_tail": "2} = \\frac{1 - 4 + 3}{12} = \\frac{0}{12} = 0.\\]\nThis means that the dot product of the two direction vectors is 0, which implies that the vectors are orthogonal (perpendicular) to each other. Therefore, the angle \\(\\theta\\) between the two lines is \\(90^\\circ\\).\n\nThe final answer is:\n\\[\\boxed{90}.\\]"
+    },
+    {
+      "request_id": "primary_100_req_0204",
+      "problem_id": "math500_007",
+      "condition_code": "Condition_F_State_Preserving",
+      "gold_answer": "90^\\circ",
+      "independent_extracted": "90",
+      "independent_correct": true,
+      "m17_extracted": "90",
+      "m17_correct": false,
+      "model_output_tail": "ac{3}{12} = \\frac{1 - 4 + 3}{12} = \\frac{0}{12} = 0.\\]\nThis means that the dot product of the two direction vectors is 0, which implies that the vectors are orthogonal (perpendicular) to each other. Therefore, the angle \\(\\theta\\) between the two lines is \\(90^\\circ\\).\n\nThe answer is:\n\\[\\boxed{90}\\]"
+    }
+  ],
+  "scientific_audit_note": "Under strict degree evaluation, exactly 0 discrepancies exist across all 400 records. Under unit-flexible evaluation, exactly 3 records differ (all in math500_007: D, E, F produce 90 vs gold 90^\\circ). Crucially, because D and F both gain +1, the primary contrast tau_{F-D} remains IDENTICALLY +6.00% (74% vs 68% in unit-flexible, 73% vs 67% in strict)."
+}
