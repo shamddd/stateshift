@@ -41,7 +41,7 @@ We evaluate three instruction-tuned model families across two independent RL tra
 The preregistered directional criterion $R_f = \frac{Q^*_{\text{OOD}}}{Q^*_{\text{IID}}} < 1.0$ was observed in all three tested model families ($R_{\text{SmolLM2}} = 0.0632$, $R_{\text{Qwen}} = 0.0648$, $R_{\text{TinyLlama}} = 0.0576$). Up-front RLVR amortizes initial training costs significantly faster under compositional distribution shift.
 
 \section{Robustness, Protocol Deviation \& Sensitivity Analysis}
-We explicitly disclose a technical protocol deviation during execution: while the preregistered hard stop ceiling was set to $12.00$ MPS accelerator-hours, the total completion time reached $12.62$ MPS accelerator-hours (+5.17\% overrun) due to the final run completing without an in-loop active device interrupt callback. 
+We explicitly disclose a technical protocol deviation during execution: while the preregistered hard stop ceiling was set to $12.00$ MPS accelerator-hours, the total completion time reached $12.62$ MPS accelerator-hours (+5.17\% overrun) due to the final run completing without an in-loop active device interrupt callback.
 
 To evaluate whether this deviation impacted our scientific conclusions, we analyze two pre-specified datasets:
 \begin{itemize}

@@ -1,6 +1,6 @@
 # DATA DICTIONARY & FIELD SPECIFICATION
 
-**Project**: StateShift  
+**Project**: StateShift
 
 ---
 

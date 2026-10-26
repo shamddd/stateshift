@@ -1,9 +1,9 @@
 # StateShift Manuscript Source & Publication Companion
 
-**Manuscript Title**: *StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training*  
-**Author**: Sham Satish Thakare (Independent Researcher, Pune, Maharashtra, India)  
-**Research Status**: Working Paper / Ongoing Manuscript Revision  
-**Historical Submission**: *Artificial Intelligence* (Elsevier), manuscript ARTINT-D-26-01491  
+**Manuscript Title**: *StateShift: Tracking State-Dependent Reasoning Recovery Across Post-Training*
+**Author**: Sham Satish Thakare (Independent Researcher, Pune, Maharashtra, India)
+**Research Status**: Working Paper / Ongoing Manuscript Revision
+**Historical Submission**: *Artificial Intelligence* (Elsevier), manuscript ARTINT-D-26-01491
 
 ---
 

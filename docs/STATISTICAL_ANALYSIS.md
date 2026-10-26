@@ -1,6 +1,6 @@
 # STATISTICAL ANALYSIS & INFERENCE DOCUMENTATION
 
-**Project**: StateShift  
+**Project**: StateShift
 
 ---
 

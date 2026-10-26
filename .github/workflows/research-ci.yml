@@ -1,0 +1,75 @@
+name: StateShift Research Reproducibility & Publication CI
+
+on:
+  push:
+    branches: [ main, master, "release/**", "research/**" ]
+  pull_request:
+    branches: [ main, master, "release/**" ]
+
+jobs:
+  reproducibility-and-tests:
+    name: Scientific Verification (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Scientific Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy pandas scipy pytest
+
+    - name: Verify Python Syntax
+      run: |
+        python -m compileall experiments/
+
+    - name: Verify Dataset Checksums
+      run: |
+        echo "Verifying Study 1 SHA-256..."
+        echo "49549bbd73349bb0e1879603bdbeb04c4a8617ab85d0b31323cfeb188a5c6139  data/study1/controlled_endpoint_outcomes.csv" | sha256sum -c -
+
+        echo "Verifying Study 2 Generations SHA-256..."
+        echo "bb1774557d9cf4059c9d8825530cac192e6813a93b10fe0948ce10b6522e69b2  data/study2/stateshift_primary_400_generations.jsonl" | sha256sum -c -
+
+        echo "Verifying Study 2 Outcomes SHA-256..."
+        echo "19a328a95dd25ec326fe824361386cc0ddf731f2bf1c392253be0aa19c2385ba  data/study2/final_verified_outcomes.csv" | sha256sum -c -
+
+    - name: Run Study 1 Checkpoint-Lineage Reproduction
+      run: |
+        python experiments/study1_checkpoint_lineage/reproduce_study1.py
+
+    - name: Run Study 2 Reasoning-Recovery Reproduction
+      run: |
+        python experiments/study2_reasoning_recovery/reproduce_study2.py
+
+    - name: Run Exact Discrete Power Engine
+      run: |
+        python experiments/study2_reasoning_recovery/exact_power_analysis.py
+
+  manuscript-compilation:
+    name: LaTeX Paper Compilation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Tectonic
+      uses: wchargin/setup-tectonic@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Compile arXiv Release Candidate PDF
+      working-directory: paper
+      run: |
+        tectonic STATESHIFT_ARXIV_RELEASE_CANDIDATE.tex
+        ls -lh STATESHIFT_ARXIV_RELEASE_CANDIDATE.pdf
