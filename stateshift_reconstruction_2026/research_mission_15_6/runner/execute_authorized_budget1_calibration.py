@@ -47,8 +47,10 @@ from research_mission_15_6.deployment.supervisor_first_provisioner import (
 )
 from research_mission_15_6.auth.execution_lock import is_cloud_execution_locked
 
-LOCK_FILE = os.path.join(REPO_DIR, ".cloud_execution_locked")
-LOCK_FILE_BAK = os.path.join(REPO_DIR, ".cloud_execution_locked.bak")
+LOCK_FILES = [
+    os.path.join(REPO_DIR, ".cloud_execution_locked"),
+    os.path.abspath(os.path.join(REPO_DIR, "..", ".cloud_execution_locked")),
+]
 SSH_KEY_PATH = os.path.expanduser("~/.ssh/id_ed25519")
 SSH_PUB_PATH = os.path.expanduser("~/.ssh/id_ed25519.pub")
 
@@ -125,23 +127,27 @@ def query_runpod_account() -> Dict[str, Any]:
 def lock_cloud_execution():
     """Fail-closed relocking."""
     os.environ["STATE_SHIFT_CLOUD_EXECUTION_DISABLED"] = "1"
-    if os.path.exists(LOCK_FILE_BAK) and not os.path.exists(LOCK_FILE):
-        os.replace(LOCK_FILE_BAK, LOCK_FILE)
-    elif not os.path.exists(LOCK_FILE):
-        with open(LOCK_FILE, "w", encoding="utf-8") as f:
-            json.dump({
-                "locked": True,
-                "reason": "Calibration session completed. Fail-closed relock active.",
-                "timestamp_utc": time.time()
-            }, f, indent=2)
+    for lf in LOCK_FILES:
+        bak = lf + ".bak"
+        if os.path.exists(bak) and not os.path.exists(lf):
+            os.replace(bak, lf)
+        elif not os.path.exists(lf):
+            with open(lf, "w", encoding="utf-8") as f:
+                json.dump({
+                    "locked": True,
+                    "reason": "Calibration session completed. Fail-closed relock active.",
+                    "timestamp_utc": time.time()
+                }, f, indent=2)
     print("[Safety Guard] Cloud execution lock RE-ENGAGED.")
 
 
 def unlock_cloud_execution_for_session():
     """Unlocks execution strictly for this single authorized process."""
     os.environ["STATE_SHIFT_CLOUD_EXECUTION_DISABLED"] = "0"
-    if os.path.exists(LOCK_FILE):
-        os.replace(LOCK_FILE, LOCK_FILE_BAK)
+    for lf in LOCK_FILES:
+        if os.path.exists(lf):
+            bak = lf + ".bak"
+            os.replace(lf, bak)
     print("[Safety Guard] Cloud execution unlocked for authorized session.")
 
 
