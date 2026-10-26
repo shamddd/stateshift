@@ -1,0 +1,17 @@
+{
+  "status": "READY",
+  "lifecycle_state": "ACTIVE",
+  "watchdog_pid": 39377,
+  "experiment_id": "stateshift_calib_b1_01",
+  "pod_id": "PRE_PROVISION",
+  "session_id": "sess_b1_1792980305",
+  "timestamp_utc": 1792980306.9850922,
+  "iso_time": "2026-10-26T02:05:06Z",
+  "max_authorized_usd": 1.0,
+  "emergency_trigger_usd": 0.7,
+  "account_preservation_floor_usd": 0.32,
+  "initial_account_balance": 1.3174140101,
+  "pre_existing_uptime_seconds": 0.0,
+  "gpu_hourly_rate": 0.89,
+  "reported_gpu_hourly_rate": null
+}

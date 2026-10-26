@@ -1,0 +1,11 @@
+{
+  "timestamp_utc": 1792980615.713172,
+  "elapsed_minutes": 4.18,
+  "effective_spend_usd": 0.062,
+  "emergency_trigger_usd": 0.7,
+  "max_authorized_usd": 1.0,
+  "pod_id": "PRE_PROVISION",
+  "watchdog_pid": 39418,
+  "lifecycle_state": "ACTIVE",
+  "status": "WATCHING"
+}

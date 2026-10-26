@@ -91,13 +91,16 @@ class RemoteExperimentRunner:
         if os.path.exists(self.output_file):
             try:
                 with open(self.output_file, "r", encoding="utf-8") as f:
-                    for line in f:
+                    for line_num, line in enumerate(f, start=1):
                         line_str = line.strip()
                         if line_str:
-                            rec = json.loads(line_str)
-                            rid = rec.get("request_id")
-                            if rid:
-                                self.completed_request_ids.add(rid)
+                            try:
+                                rec = json.loads(line_str)
+                                rid = rec.get("request_id")
+                                if rid:
+                                    self.completed_request_ids.add(rid)
+                            except Exception as line_err:
+                                print(f"[RemoteRunner] Warning: skipping corrupted JSON line {line_num}: {line_err}")
                 print(f"[RemoteRunner] Resuming: {len(self.completed_request_ids)} requests already completed on disk.")
             except Exception as e:
                 print(f"[RemoteRunner] Notice scanning output file: {e}")

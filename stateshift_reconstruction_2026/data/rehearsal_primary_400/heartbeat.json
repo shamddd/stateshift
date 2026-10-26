@@ -1,0 +1,9 @@
+{
+  "timestamp_utc": 1792982510.1205518,
+  "status": "COMPLETE",
+  "current_request_id": null,
+  "completed_count": 400,
+  "total_requests": 400,
+  "active_engine": "vllm",
+  "experiment_id": "stateshift_rehearsal_400"
+}
