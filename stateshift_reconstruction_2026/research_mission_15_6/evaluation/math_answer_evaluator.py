@@ -202,6 +202,12 @@ def is_answer_correct(predicted: Optional[str], gold: Optional[str]) -> bool:
     if norm_pred.replace(" ", "") == norm_gold.replace(" ", ""):
         return True
 
+    # Check stripping single variable assignment prefix (e.g. x = 5 vs 5)
+    pred_no_var = re.sub(r"^[a-zA-Z]\s*=\s*", "", norm_pred).strip()
+    gold_no_var = re.sub(r"^[a-zA-Z]\s*=\s*", "", norm_gold).strip()
+    if pred_no_var == gold_no_var or pred_no_var.replace(" ", "") == gold_no_var.replace(" ", ""):
+        return True
+
     # Numeric check
     val_pred = parse_numeric_value(norm_pred)
     val_gold = parse_numeric_value(norm_gold)
