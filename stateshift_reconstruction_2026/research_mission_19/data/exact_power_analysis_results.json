@@ -1,0 +1,115 @@
+{
+  "parameters": {
+    "p10": 0.08,
+    "p01": 0.02,
+    "delta": 0.1,
+    "tau": 0.06,
+    "psi": 0.7999999999999999,
+    "alpha": 0.05
+  },
+  "power_at_n100": {
+    "exact_discrete_unconditional_power": 0.36193564315327664,
+    "asymptotic_normal_power": 0.47458245354641915,
+    "beta_type2_error": 0.6380643568467234
+  },
+  "sample_size_targets": {
+    "0.7": {
+      "exact_N": 188,
+      "asymp_N": 171,
+      "total_rollouts_exact": 752,
+      "gpu_cost_est_usd": 2.16
+    },
+    "0.8": {
+      "exact_N": 231,
+      "asymp_N": 216,
+      "total_rollouts_exact": 924,
+      "gpu_cost_est_usd": 2.65
+    },
+    "0.85": {
+      "exact_N": 260,
+      "asymp_N": 247,
+      "total_rollouts_exact": 1040,
+      "gpu_cost_est_usd": 2.98
+    },
+    "0.9": {
+      "exact_N": 299,
+      "asymp_N": 288,
+      "total_rollouts_exact": 1196,
+      "gpu_cost_est_usd": 3.43
+    },
+    "0.95": {
+      "exact_N": 360,
+      "asymp_N": 356,
+      "total_rollouts_exact": 1440,
+      "gpu_cost_est_usd": 4.13
+    }
+  },
+  "sensitivity_grid": [
+    {
+      "delta": 0.08,
+      "tau": 0.04,
+      "n80": 421,
+      "n90": 539
+    },
+    {
+      "delta": 0.08,
+      "tau": 0.06,
+      "n80": 180,
+      "n90": 227
+    },
+    {
+      "delta": 0.1,
+      "tau": 0.04,
+      "n80": 517,
+      "n90": 677
+    },
+    {
+      "delta": 0.1,
+      "tau": 0.06,
+      "n80": 231,
+      "n90": 299
+    },
+    {
+      "delta": 0.1,
+      "tau": 0.08,
+      "n80": 125,
+      "n90": 157
+    },
+    {
+      "delta": 0.12,
+      "tau": 0.04,
+      "n80": 622,
+      "n90": 815
+    },
+    {
+      "delta": 0.12,
+      "tau": 0.06,
+      "n80": 281,
+      "n90": 359
+    },
+    {
+      "delta": 0.12,
+      "tau": 0.08,
+      "n80": 153,
+      "n90": 197
+    },
+    {
+      "delta": 0.14,
+      "tau": 0.04,
+      "n80": 723,
+      "n90": 949
+    },
+    {
+      "delta": 0.14,
+      "tau": 0.06,
+      "n80": 322,
+      "n90": 420
+    },
+    {
+      "delta": 0.14,
+      "tau": 0.08,
+      "n80": 183,
+      "n90": 236
+    }
+  ]
+}
