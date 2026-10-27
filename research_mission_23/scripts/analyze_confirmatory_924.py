@@ -116,6 +116,18 @@ def compute_paired_contrast(records_cond1: dict, records_cond2: dict, cond1_name
     }
 
 
+def get_short_condition(cond_code: str) -> str:
+    """Normalizes condition code to single character A, D, E, F."""
+    if "Condition_A" in cond_code or cond_code == "A":
+        return "A"
+    elif "Condition_D" in cond_code or cond_code == "D":
+        return "D"
+    elif "Condition_E" in cond_code or cond_code == "E":
+        return "E"
+    elif "Condition_F" in cond_code or cond_code == "F":
+        return "F"
+    return cond_code
+
 def analyze_confirmatory_data(jsonl_path: str = CONFIRMATORY_JSONL):
     print(f"Loading confirmatory records from: {jsonl_path}...")
     if not os.path.exists(jsonl_path):
@@ -130,7 +142,7 @@ def analyze_confirmatory_data(jsonl_path: str = CONFIRMATORY_JSONL):
             if line:
                 rec = json.loads(line)
                 all_records.append(rec)
-                cond = rec["condition_code"]
+                cond = get_short_condition(rec["condition_code"])
                 pid = rec["problem_id"]
                 records_by_cond[cond][pid] = rec
                 
@@ -193,8 +205,8 @@ def analyze_confirmatory_data(jsonl_path: str = CONFIRMATORY_JSONL):
                     pid = item["problem_id"]
                     if pid not in manifest_meta:
                         manifest_meta[pid] = {
-                            "level": item.get("problem_level", "Unknown"),
-                            "subject": item.get("subdiscipline", "Unknown")
+                            "level": f"Level {item.get('difficulty_level', item.get('problem_level', 'Unknown'))}",
+                            "subject": item.get("subject", item.get("subdiscipline", "Unknown"))
                         }
                         
     # Stratified McNemar for F vs D by Level
@@ -206,12 +218,23 @@ def analyze_confirmatory_data(jsonl_path: str = CONFIRMATORY_JSONL):
         sub_D = {pid: records_by_cond["D"][pid] for pid in lvl_pids if pid in records_by_cond["D"]}
         if sub_F and sub_D:
             level_contrasts[lvl] = compute_paired_contrast(sub_F, sub_D, "F", "D")
+
+    # Stratified McNemar for F vs D by Subject
+    subjects = sorted(set(m["subject"] for m in manifest_meta.values()))
+    subject_contrasts = {}
+    for subj in subjects:
+        subj_pids = {pid for pid, m in manifest_meta.items() if m["subject"] == subj}
+        sub_F = {pid: records_by_cond["F"][pid] for pid in subj_pids if pid in records_by_cond["F"]}
+        sub_D = {pid: records_by_cond["D"][pid] for pid in subj_pids if pid in records_by_cond["D"]}
+        if sub_F and sub_D:
+            subject_contrasts[subj] = compute_paired_contrast(sub_F, sub_D, "F", "D")
             
     results_payload = {
         "primary_contrast_F_vs_D": primary_res,
         "secondary_contrasts": secondary_contrasts,
         "token_and_headroom_stats": token_stats,
-        "difficulty_stratification": level_contrasts
+        "difficulty_stratification": level_contrasts,
+        "subject_stratification": subject_contrasts
     }
     
     with open(SUMMARY_JSON, "w", encoding="utf-8") as sf:
@@ -297,7 +320,18 @@ Condition D   Correct (+)       {primary_res['a']:<12} {primary_res['c']:<12} {p
     md_content += """
 ---
 
-## 6. Preregistration Fidelity & Causal Scope Compliance
+## 6. Subgroup Stratification by Mathematical Subdiscipline
+
+| Subject | Sample Size | F Acc | D Acc | $\\hat{\\tau}_{F-D}$ | Discordant ($b/c$) | Exact $p$-value |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+"""
+    for subj, s_res in sorted(subject_contrasts.items()):
+        md_content += f"| **{subj}** | {s_res['N']} | {s_res['F_accuracy']*100:.1f}% | {s_res['D_accuracy']*100:.1f}% | {s_res['tau_diff']:+.4f} | {s_res['b']}/{s_res['c']} | {s_res['mcnemar_exact_p']:.4f} |\n"
+
+    md_content += """
+---
+
+## 7. Preregistration Fidelity & Causal Scope Compliance
 
 1. **Preregistration Adherence:**
    - Sample size $N=231$ held-out problems strictly executed as preregistered.

@@ -1,0 +1,19 @@
+{
+  "experiment_id": "stateshift_confirmatory_924_m23",
+  "session_id": "sess_m23_1793093929",
+  "pod_id": "jiqmjv5ij2erx2",
+  "initial_balance_usd": 1.197614134,
+  "final_balance_usd": 0.6181138053,
+  "net_spent_usd": 0.5795,
+  "authorized_spending_ceiling_usd": 1.6,
+  "total_records_ingested": 924,
+  "hardware_info": {
+    "gpu_hardware": "NVIDIA GeForce RTX 4090, 24564 MiB, 595.91.07",
+    "workspace_disk": "overlay          40G   16M   40G   1% /",
+    "remote_python": "Python 3.10.12",
+    "ssh_ip": "103.196.86.82",
+    "ssh_port": 25799
+  },
+  "completed_at_iso": "2026-10-27T10:20:11Z",
+  "status": "COMPLETED_WITHIN_BUDGET"
+}
