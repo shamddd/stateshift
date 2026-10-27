@@ -19,7 +19,7 @@
     urlcolor=blue!80!black
 }
 
-\title{\textbf{StateShift: Tracking State-Dependent Reasoning Recovery\\Across Post-Training --- A Preregistered Confirmatory Study\\and Mechanistic Analysis}}
+\title{\textbf{StateShift: A Confirmatory Study of Reasoning-Context Continuation\\and Forced Restart in Mathematical Language Models}}
 
 \author{
   \textbf{Sham Satish Thakare} \\
@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-Standard evaluations of reinforcement-learning post-training in large language models emphasize aggregate single-turn benchmark accuracy (e.g., Pass@1), potentially obscuring behavioral changes conditional on intermediate reasoning state. We introduce \textbf{StateShift}, a controlled diagnostic evaluation framework and benchmark protocol for measuring target-transition recovery under matched counterfactual reasoning states. In Study~1, evaluating the post-training trajectory of the DeepScaleR-7B lineage ($N=454$ decontaminated competition problems, $29,056$ row-level outcome records), we isolate the \emph{State-Matched Interaction Contrast} ($\Gamma_t$), which differences out baseline problem difficulty and forward proficiency gains. Between the un-tuned base model ($t=0$) and the terminal checkpoint ($t=256$), we observe a statistically significant interaction gain of $\Gamma_{256} = \mathbf{+11.76\text{ percentage points}}$ ($95\%$ bootstrap CI $[+9.61, +13.96]\text{ pp}$, cluster-robust $p < 10^{-20}$), decoupled from clean forward accuracy ($R^2 = 0.63\%$). In Study~2, a prospective physical GPU discovery pilot ($400$ authentic neural generations on NVIDIA RTX 4090 with \texttt{Qwen2.5-Math-7B-Instruct}, $N=100$), state-preserving continuation achieved an apparent $+6.00\text{ pp}$ empirical advantage over forced restart ($73.0\%$ vs $67.0\%$, odds ratio $4:1$, exact two-sided $p = 0.1094$). Exact discrete binomial power modeling revealed that $N=100$ achieved only $36.19\%$ unconditional power, establishing $N=231$ as the preregistered minimum sample size required for $80\%$ power. In Study~3, we executed the frozen, preregistered confirmatory trial across $231$ held-out MATH-500 problems ($924$ authentic RTX 4090 neural generations across four conditions: A, D, E, F). The primary preregistered contrast definitively refutes the pilot's point estimate: state-preserving continuation achieves $67.97\%$ ($157/231$) versus $68.40\%$ ($158/231$) for forced restart, yielding $\hat{\tau}_{F-D} = \mathbf{-0.0043 \quad (-0.43\%)}$ ($95\%$ paired Wald CI $[-4.50\%, +3.64\%]$, Newcombe score CI $[-4.51\%, +3.65\%]$, exact two-sided McNemar $p = \mathbf{1.000000}$), strictly excluding the pilot's $+6.00\text{ pp}$ effect. Dual-evaluator parsing confirms zero discrepancies ($0/924$, $100\%$ invariance). Forensic trace auditing of all $23$ discordant cases ($b=11, c=12$) reveals that this null outcome represents an exact dynamical cancellation between two opposing forces: a \emph{Reasoning Headroom Advantage} ($+11$ problems where prefix retention prevents 768-token truncation) and a \emph{Cognitive Inertia / Deliberation Trap} ($-12$ problems where corrupted prefixes induce recursive verification loops and error propagation). These results demonstrate that autoregressive reasoning systems cannot rely on naive prefix retention without active corruption filtering.
+Standard evaluations of reinforcement-learning post-training in large language models emphasize aggregate single-turn benchmark accuracy (e.g., Pass@1), potentially obscuring behavioral dynamics conditional on intermediate reasoning state. We introduce \textbf{StateShift}, a controlled diagnostic evaluation framework for evaluating reasoning recovery under matched counterfactual conditions. In Study~1, evaluating the post-training trajectory of the DeepScaleR-7B lineage ($N=454$ decontaminated competition problems, $29,056$ row-level outcome records), we isolate the \emph{State-Matched Interaction Contrast} ($\Gamma_t$), which differences out baseline problem difficulty and forward proficiency gains. Between the un-tuned base model ($t=0$) and the terminal checkpoint ($t=256$), we observe a statistically significant interaction gain of $\Gamma_{256} = \mathbf{+11.76\text{ percentage points}}$ ($95\%$ bootstrap CI $[+9.61, +13.96]\text{ pp}$, cluster-robust $p < 10^{-20}$), while the raw problem-level correlation between clean gains and recovery gains is modest ($r = 0.0794, p = 0.091$). In Study~2, an unpreregistered discovery pilot on physical NVIDIA RTX 4090 hardware ($400$ neural generations with \texttt{Qwen2.5-Math-7B-Instruct}, $N=100$) suggested an apparent $+6.00\text{ pp}$ empirical advantage for state-preserving continuation over forced restart ($73.0\%$ vs $67.0\%$, odds ratio $4:1$, exact two-sided $p = 0.1094$). Exact discrete binomial power modeling revealed that $N=100$ achieved only $36.19\%$ unconditional power, establishing $N=231$ as the preregistered minimum sample size required for $80\%$ power. In Study~3, we executed the frozen, preregistered confirmatory trial across $231$ held-out MATH-500 problems ($924$ authentic RTX 4090 neural generations across four conditions: A, D, E, F). The primary preregistered contrast refutes the pilot's point estimate: state-preserving continuation achieves $67.97\%$ ($157/231$) versus $68.40\%$ ($158/231$) for forced restart, yielding $\hat{\tau}_{F-D} = \mathbf{-0.0043 \quad (-0.43\%)}$ ($95\%$ paired Wald CI $[-4.50\%, +3.64\%]$, Newcombe score CI $[-4.51\%, +3.65\%]$, exact two-sided McNemar $p = \mathbf{1.000000}$), strictly excluding the pilot's $+6.00\text{ pp}$ effect. Dual-evaluator parsing confirms zero discrepancies ($0/924$, $100\%$ invariance). Qualitative trace inspection of the $23$ discordant problems ($b=11$ continuation-only successes, $c=12$ restart-only successes) indicates that performance differences are shaped by multiple competing factors: while prefix retention can conserve token budget on lengthy derivations ($8/11$ cases in $b$ truncated under restart), it can also induce repetitive verification loops or anchor generation to flawed intermediate premises ($7/12$ truncations, $5/12$ derivation slips in $c$). Because token budget and prefix validity were not factorially manipulated, the experiment identifies the net effect of the bundled prompt intervention rather than isolated mechanistic components. These findings demonstrate that inference-time search architectures cannot assume that preserving partial reasoning context is uniformly superior to a clean restart.
 \end{abstract}
 
 \section{Introduction}
@@ -81,7 +81,7 @@ where $h_k$ is the final hidden activation vector computed over the prompt and p
 \begin{equation}
 do(\text{Condition F}) = \{\mathcal{S}_{1:k-1}\} \;\cup\; \{\Delta \mathcal{B}_{\text{token}}\} \;\cup\; \{\mathcal{P}_{\text{continue}}\}
 \end{equation}
-which bundles: (1) valid semantic lemmas in context; (2) token budget headroom conservation; and (3) continuation prompt directives. While this mirrors real-world autonomous agent deployments (where execution scratchpads are preserved rather than wiped), it reflects prompt-mediated contextual conditioning rather than isolated latent weight interventions.
+which bundles: (1) valid semantic lemmas in context; (2) token budget headroom conservation; and (3) continuation prompt directives. While this mirrors real-world autonomous agent deployments (where execution scratchpads are preserved rather than wiped), it represents a bundled prompt-level intervention rather than isolated latent weight interventions. The primary contrast $\hat{\tau}_{F-D}$ therefore identifies the total effect of this bundled package relative to a clean forced restart.
 
 \section{Study 1: Intermediate Recovery Dynamics Across Checkpoint Lineage}
 \label{sec:study1_lineage}
@@ -112,8 +112,10 @@ As illustrated in Figure~\ref{fig:training_dynamics}, post-training induces a pr
 \end{equation}
 Clustered error modeling ($df=453$) confirms analytical significance ($SE = 0.0114, t = 10.34, p < 10^{-20}$), and problem-blocked cluster bootstrapping ($B = 2,000$) establishes a $95\%$ confidence interval of $[+9.61, +13.96]\text{ pp}$. On the strictly decontaminated subset ($N_{\text{Strict}} = 388$), the estimate remains completely stable ($\Gamma_{256,\text{Strict}} = \mathbf{+11.60\text{ pp}}, p < 10^{-18}$), proving that recovery gains do not reflect memorized training leakage.
 
-\subsection{Decoupling Recovery Adaptation from Forward Proficiency}
-Does recovery adaptation simply mirror general capability growth? We conduct an orthogonal problem-level variance decomposition. For each problem pair $i \in \{1, \dots, 454\}$, we compute the forward gain $\Delta C_i = Y_{C,256,i} - Y_{C,0,i}$ and the recovery gain $\Delta R_i = Y_{R,256,i} - Y_{R,0,i}$. Pearson correlation analysis yields $r = 0.0794$ ($p = 0.091, R^2 = 0.63\%$). Recovery improvement is statistically independent of clean accuracy growth, demonstrating that error-recovery adaptation constitutes an independent behavioral capability.
+\subsection{Relationship Between Recovery Adaptation and Clean Capability Growth}
+Does recovery adaptation simply mirror general capability growth? To examine their empirical association, we compute for each problem pair $i \in \{1, \dots, 454\}$ the sample forward gain $\Delta C_i = Y_{C,256,i} - Y_{C,0,i}$ and the recovery gain $\Delta R_i = Y_{R,256,i} - Y_{R,0,i}$. In the analyzed sample, the observed linear correlation between these difference scores was weak ($r = 0.0794, p = 0.091, R^2 = 0.63\%, 95\% \text{ CI } [-0.0128, +0.1702]$). 
+
+We emphasize that a non-significant linear correlation in sample difference scores does not establish statistical independence. In classical test theory, subtracting two finite stochastic estimates ($K=16$) concentrates measurement error, drastically attenuating the observed correlation toward zero: split-half reliability analysis reveals that difference scores have low reliability ($\text{Rel}(\Delta C) = 0.1767, \text{Rel}(\Delta R) = 0.1009$), which accounts for the observed attenuation. While the observed linear association is modest in this sample, recovery adaptation and forward capability may share underlying latent representations.
 
 Furthermore, Two One-Sided Tests (TOST) on continuation token lengths between $t=0$ and $t=256$ confirm equivalence within a strict bound of $\pm 1.0$ token ($p = 0.0256$, mean shift $\Delta = +0.0206$ tokens, $482.47 \to 482.50$). Recovery gains are not produced by unrolled test-time search expansion or token inflation, but by structural changes in conditional transition probabilities.
 
@@ -125,7 +127,7 @@ Furthermore, Two One-Sided Tests (TOST) on continuation token lengths between $t
 \end{figure}
 
 \subsection{Ecological Validation: Autonomous Self-Correction}
-In an orthogonal validation of $3,200$ unperturbed rollouts, models exhibit an endogenous error incidence of $18.19\%$ ($582 / 3,200$ episodes). As shown in Figure~\ref{fig:funnel}, under unperturbed generation, the model spontaneously self-corrects and reaches the correct final answer in $30.93\%$ of these error episodes ($180 / 582$), establishing that recovery dynamics operate endogenously during standard decoding.
+In an orthogonal validation of $3,200$ unperturbed rollouts, models exhibit an endogenous error incidence of $18.19\%$ ($582 / 3,200$ episodes). As shown in Figure~\ref{fig:funnel}, conditional on an endogenous error occurring during unperturbed decoding, the model reaches the correct final answer in $30.93\%$ of qualifying error episodes ($180 / 582$, $95\%$ bootstrap CI $[27.19\%, 34.82\%]$). This observation reflects endogenous decoding dynamics conditional on error occurrence, rather than an unprompted causal self-repair probability.
 
 \section{Study 2: Prospective Discovery Pilot \& Exact Power Modeling}
 \label{sec:study2_pilot}
@@ -150,10 +152,10 @@ Following lineage evaluation, a prospective discovery experiment was executed on
 }
 \end{table}
 
-As reported in Table~\ref{tab:pilot_results}, Condition F achieved an apparent $+6.00\text{ pp}$ advantage over Condition D ($73.0\%$ vs $67.0\%$). In the paired $2 \times 2$ table, Condition F succeeded while Condition D failed in 8 problems ($b = 8$), whereas Condition D succeeded while Condition F failed in 2 problems ($c = 2$), representing an odds ratio of 4:1. However, exact two-sided McNemar testing yielded $p = 0.1094$, failing to achieve statistical significance at $\alpha = 0.05$.
+As reported in Table~\ref{tab:pilot_results}, Condition F achieved an apparent $+6.00\text{ pp}$ advantage over Condition D ($73.0\%$ vs $67.0\%$). In the paired $2 \times 2$ table, Condition F succeeded while Condition D failed in 8 problems ($b = 8$), whereas Condition D succeeded while Condition F failed in 2 problems ($c = 2$), representing an observed odds ratio of 4:1. However, exact two-sided McNemar testing yielded $p = 0.1094$, failing to achieve statistical significance at $\alpha = 0.05$.
 
 \subsection{Exact Discrete Binomial Power Modeling and Sample Size Preregistration}
-To determine whether this null finding represented true equivalence or inadequate statistical power, we formulated an exact discrete binomial power model. In paired binary trials, the number of discordant pairs $K \sim \text{Binomial}(N, q)$ is discrete ($q = p_{10} + p_{01}$). Accounting for the discrete probability distribution over $K$, the exact unconditional power at $N=100$ ($q = 0.10, \theta = 0.80$) is only \textbf{36.19\%} (Type II error rate = $63.81\%$). 
+To determine whether this pilot finding represented a true effect or was underpowered, we formulated an exact discrete binomial power model. In paired binary trials, the number of discordant pairs $K \sim \text{Binomial}(N, q)$ is discrete ($q = p_{10} + p_{01}$). Accounting for the discrete probability distribution over $K$, the exact unconditional power at $N=100$ ($q = 0.10, \theta = 0.80$) is only \textbf{36.19\%} (Type II error rate = $63.81\%$). 
 
 Exact power modeling proved that achieving an \textbf{80.0\% probability of rejecting $H_0$} ($1 - \beta \ge 0.80$) under pilot parameters required:
 \begin{equation}
@@ -218,15 +220,12 @@ The paired odds ratio is $\text{OR} = 11/12 = \mathbf{0.9167}$ ($95\%$ exact Fis
 \end{tabular}
 \end{table}
 
-As shown in Table~\ref{tab:contingency_matrix}, Conditions F and D agree on $208$ of the $231$ problems ($90.04\%$ raw agreement, correlation $\phi = 0.7706$). In the $23$ discordant cases, Condition F won in $11$ problems, while Condition D won in $12$ problems. All confidence intervals strictly exclude the pilot point estimate of $+0.0600$, definitively demonstrating that the unpreregistered pilot reflected small-sample winner's curse.
+As shown in Table~\ref{tab:contingency_matrix}, Conditions F and D agree on $208$ of the $231$ problems ($90.04\%$ raw agreement, correlation $\phi = 0.7706$). In the $23$ discordant cases, Condition F won in $11$ problems, while Condition D won in $12$ problems. All confidence intervals strictly exclude the pilot point estimate of $+0.0600$, definitively refuting the hypothesis of a large continuation advantage.
 
-\subsection{Practical Equivalence (TOST)}
-To test whether the true effect is practically negligible, we conduct Two One-Sided Tests (TOST) under an equivalence margin of $\Delta = \pm 0.0385$ ($\pm 3.85\text{ pp}$):
-\begin{itemize}
-    \item $H_{01}: \tau \le -0.0385 \implies z_1 = \frac{-0.0043 - (-0.0385)}{0.0208} = +1.6463 \implies p_1 = 0.0494$
-    \item $H_{02}: \tau \ge +0.0385 \implies z_2 = \frac{-0.0043 - 0.0385}{0.0208} = -2.0632 \implies p_2 = 0.0195$
-\end{itemize}
-Because both $p_1, p_2 < 0.05$, the data are statistically compatible with practical equivalence within bounds of $\pm 3.85\text{ pp}$, demonstrating that any true difference between state-preserving continuation and forced restart is minimal.
+\subsection{Estimation Precision and Compatibility Bounds}
+Under the preregistered frequentist testing protocol, the exact two-sided McNemar test yields $p = 1.000000$, failing to reject the null hypothesis of equal recovery rates ($H_0: \tau_{F-D} = 0$). We emphasize that failing to detect a statistically significant difference does not constitute confirmatory proof of exact or practical equivalence.
+
+To characterize estimation precision, the paired Wald $95\%$ confidence interval $[-0.0450, +0.0364]$ (and Newcombe score interval $[-0.0451, +0.0365]$) defines the range of population differences statistically compatible with the observed data. These bounds strictly exclude the discovery pilot's point estimate of $+0.0600$. If an equivalence framework is applied post-hoc, the narrowest symmetric equivalence margin that would reject under two one-sided tests at $\alpha=0.05$ is $\Delta = \pm 3.85\text{ pp}$ (corresponding to the $90\%$ confidence bound $[-0.0385, +0.0298]$). However, because this threshold was derived from the observed data variance rather than prespecified on domain-substantive grounds, it is reported strictly as an exploratory diagnostic of estimation precision rather than confirmatory evidence of practical equivalence.
 
 \section{Evaluator Robustness \& Sensitivity Analysis}
 \label{sec:evaluator_sensitivity}
@@ -239,47 +238,42 @@ To eliminate any risk that the confirmatory null result was an artifact of strin
 
 Across all 924 confirmatory generations, Path A and Path B yielded \textbf{exactly 0 discrepancies} ($0/924$, $100\%$ agreement). The confirmatory contingency counts ($a=146, b=11, c=12, d=62$) and exact test statistics are completely invariant to evaluator choice.
 
-\section{Forensic Mechanistic Analysis: The Opposing Causal Forces}
+\section{Qualitative Error Analysis: Discordant Reasoning Patterns}
 \label{sec:mechanisms}
 
-Why did the discordance rate remain virtually constant ($\approx 10\%$, $10/100$ in pilot vs.\ $23/231$ in confirmatory) while the win-loss ratio shifted from $8:2$ to $11:12$? Line-by-line forensic analysis of model tokens across all $23$ discordant problems reveals the underlying causal dynamics:
+Why did the discordance rate remain virtually constant ($\approx 10\%$, $10/100$ in pilot vs.\ $23/231$ in confirmatory) while the win-loss ratio shifted from $8:2$ to $11:12$? Line-by-line inspection of model tokens across all $23$ discordant problems provides qualitative insight into the failure modes associated with continuation versus forced restart.
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Forensic Causal Classification of Discordant Problems ($N=23$).} Decomposition of mechanisms driving win/loss outcomes between Conditions F and D.}
+\caption{\textbf{Qualitative Failure Mode Classification of Discordant Problems ($N=23$).} Observable generation attributes driving win/loss outcomes between Conditions F and D.}
 \label{tab:discordant_mechanisms}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lcll}
 \toprule
-\textbf{Discordant Group} & \textbf{Count} & \textbf{Primary Failure Mechanism} & \textbf{Causal Dynamical Driver} \\
+\textbf{Discordant Group} & \textbf{Count} & \textbf{Observable Failure Mode} & \textbf{Exploratory Behavioral Hypothesis} \\
 \midrule
-\textbf{Cell $b$ ($D=0, F=1$)} & 8 & Token Length Exhaustion in D ($8/11$ cases) & \textbf{Reasoning Headroom Advantage in F} \\
-& 3 & Fresh Arithmetic/Sign Error in D ($3/11$ cases) & Stochastic Derivation Variance \\
+\textbf{Cell $b$ ($D=0, F=1$)} & 8 & Length Truncation in D ($8/11$ cases) & Token Headroom Conservation in F \\
+& 3 & Arithmetic / Algebraic Slip in D ($3/11$ cases) & Derivation Variance from Fresh Start \\
 \midrule
-\textbf{Cell $c$ ($D=1, F=0$)} & 6 & Deliberation / Truncation Loop in F ($6/12$ cases) & \textbf{Cognitive Inertia / Deliberation Trap in F} \\
-& 5 & Direct Error Inheritance in F ($5/12$ cases) & Anchor Bias on Corrupted Prefix \\
-& 1 & Sub-goal Abandonment in F ($1/12$ cases) & Attention Dilution from Prompt Overhead \\
+\textbf{Cell $c$ ($D=1, F=0$)} & 7 & Length Truncation in F ($7/12$ cases) & Re-verification / Looping Overhead in F \\
+& 5 & Erroneous Deduction in F ($5/12$ cases) & Prefix Anchoring / Fallacy Inheritance in F \\
 \bottomrule
 \end{tabular}
 }
 \end{table}
 
-\subsection{Force 1: Reasoning Headroom Advantage ($+11$ Problems)}
-In 8 of the 11 problems where Condition F succeeded while Condition D failed (e.g., \texttt{math500\_139}, \texttt{math500\_177}, \texttt{math500\_384}), Condition D failed exclusively due to sequence length exhaustion (\texttt{finish\_reason=length}, reaching the 768-token ceiling) while attempting to re-solve long proofs from scratch. Condition F succeeded because the pre-loaded valid prefix provided $\approx 250$ tokens of computational headroom, allowing the model to complete the derivation before hitting the token limit.
+\subsection{Pattern 1: Token Budget Depletion Under Forced Restart ($8/11$ in Cell $b$)}
+In 8 of the 11 problems where Condition F succeeded while Condition D failed (e.g., \texttt{math500\_156}, \texttt{math500\_173}, \texttt{math500\_231}, \texttt{math500\_400}), Condition D failed because the generation reached the 768-token ceiling without emitting a final answer (\texttt{finish\_reason=length}). Because Condition D must regenerate all preliminary lemmas from scratch, long derivations risk budget exhaustion. Condition F completed these derivations under the token limit, suggesting that pre-loaded prefixes can provide useful token headroom on length-intensive derivations.
 
-\subsection{Force 2: Cognitive Inertia and the Deliberation Trap ($-12$ Problems)}
-Conversely, in all 12 problems where Condition D succeeded while Condition F failed (e.g., \texttt{math500\_081}, \texttt{math500\_222}, \texttt{math500\_431}), preserving the corrupted prefix harmed the model:
+\subsection{Pattern 2: Re-verification Overhead and Prefix Anchoring ($12/12$ in Cell $c$)}
+Conversely, in all 12 problems where Condition D succeeded while Condition F failed (e.g., \texttt{math500\_139}, \texttt{math500\_219}, \texttt{math500\_304}, \texttt{math500\_385}), providing the flawed prefix degraded performance:
 \begin{itemize}
-    \item \textbf{Deliberation Loops ($6/12$ cases)}: The model spent hundreds of tokens attempting to rationalize, re-verify, or patch the flawed step in context, burning through its token budget and truncating without an answer.
-    \item \textbf{Anchor Bias / Error Inheritance ($5/12$ cases)}: The model accepted the corrupted identity or sign error in the prefix as an immutable truth and derived a mathematically consistent but globally incorrect answer. Forced restart (Condition D) wiped the corrupted premise, allowing the model to derive the true relationship cleanly from first principles.
+    \item \textbf{Length Truncation from Re-checking ($7/12$ cases)}: In 7 problems, the model in Condition F engaged in extensive re-derivation or verification loops attempting to reconcile the prefix, exhausting its 768-token budget without reaching a solution.
+    \item \textbf{Prefix Anchoring / Fallacy Inheritance ($5/12$ cases)}: In 5 problems, the model completed normally but accepted erroneous intermediate premises from the prefix into downstream steps, generating an incorrect final answer. Clean restart (Condition D) avoided these invalid premises entirely.
 \end{itemize}
 
-\subsection{Dynamical Synthesis}
-The net treatment effect represents the algebraic sum of these two opposing forces:
-\begin{equation}
-\text{Net Treatment Effect} = \text{Headroom Advantage } (+11) - \text{Cognitive Inertia Trap } (-12) = -1 \approx 0
-\end{equation}
-Rather than an absence of effect, the confirmatory trial reveals a dynamic equilibrium between token capacity savings and attention anchoring.
+\subsection{Exploratory Status of Mechanistic Hypotheses}
+Because the confirmatory trial evaluated a bundled prompt intervention without factorial manipulation of token limits or prefix validity, the observed counts ($b=11, c=12$) cannot be interpreted as identified weights of separate physical mechanisms. The net treatment effect ($\hat{\tau}_{F-D} = -0.43\%$) reflects the combined outcome of these competing dynamics under a fixed 768-token ceiling.
 
 \section{Subgroup Heterogeneity and Post-Treatment Diagnostics}
 \label{sec:subgroups}
@@ -293,25 +287,25 @@ Conditioning on generation completion (\texttt{finish\_reason == 'stop'}) yields
 \section{Preregistered Blueprint for Future Mechanistic Trials}
 \label{sec:future_blueprint}
 
-To enable future researchers to decouple headroom from inertia, we preregister a $2 \times 2 \times 2$ factorial experimental design:
+To enable future researchers to decouple headroom from prefix anchoring, we formulate a $2 \times 2 \times 2$ factorial experimental design:
 \begin{itemize}
     \item \textbf{Factor 1 (Prefix Validity)}: Uncorrupted Ground-Truth Prefix ($C=0$) vs.\ Corrupted Step Prefix ($C=1$).
     \item \textbf{Factor 2 (Prompt Framing)}: Neutral Continuation ($G=0$) vs.\ Explicit Error-Flagging Directive ($G=1$).
     \item \textbf{Factor 3 (Token Budget)}: Standard Budget ($B=768$) vs.\ Expanded Budget ($B=2048$).
 \end{itemize}
-Under this design, testing with $B=2048$ eliminates token truncation in forced restart, isolating pure cognitive inertia.
+Under this design, testing with $B=2048$ eliminates token truncation in forced restart, isolating pure prefix anchoring.
 
 \section{Discussion, Reproducibility \& Open Science}
 \label{sec:discussion}
 
 \paragraph{Inference-Time Search Implications.}
-In test-time compute algorithms like Monte Carlo Tree Search (MCTS) or branch-and-bound decoding, engineers often assume that rolling back to the nearest branch point is strictly superior to restarting. Our findings show that without active context excision or memory cleansing, preserving flawed reasoning trajectories degrades performance via cognitive inertia.
+In test-time compute algorithms like Monte Carlo Tree Search (MCTS) or branch-and-bound decoding, engineers often assume that rolling back to the nearest branch point is strictly superior to restarting. Our findings show that without active context excision or memory cleansing, preserving flawed reasoning trajectories degrades performance via prefix anchoring and verification looping.
 
 \paragraph{Provider Teardown \& Financial Audit.}
 Execution utilized an ephemeral NVIDIA RTX 4090 instance on RunPod. Total compute duration was $38.15$ minutes of active neural inference, incurring $\$0.5795$ USD in compute charges. Independent provider GraphQL inspection confirmed $0$ running pods and $0$ active volumes following immediate automated termination.
 
 \section{Conclusion}
-StateShift establishes that post-training reasoning recovery dynamics cannot be understood through aggregate benchmark scores alone. In our preregistered confirmatory trial ($N=231$, 924 real GPU rollouts), state-preserving continuation did not improve recovery over forced restart ($\hat{\tau} = -0.43\%, p=1.000000$), disproving the discovery pilot's apparent advantage. Forensic auditing uncovered the underlying causal reality: token headroom savings and cognitive inertia deliberation traps act as opposing forces that cancel out under standard decoding. These findings highlight the vital necessity of preregistered confirmatory trials and provide a rigorous foundation for future inference-time search architectures.
+StateShift demonstrates that post-training reasoning recovery dynamics cannot be understood through aggregate benchmark scores alone. In our preregistered confirmatory trial ($N=231$, 924 real GPU rollouts), state-preserving continuation did not improve recovery over forced restart ($\hat{\tau} = -0.43\%, p=1.000000$), disproving the discovery pilot's apparent advantage. Qualitative trace analysis revealed competing dynamics: token headroom savings on long derivations are counterbalanced by prefix anchoring and verification overhead under fixed capacity limits. These findings highlight the vital necessity of preregistered confirmatory trials and provide a rigorous foundation for future inference-time search architectures.
 
 \bibliographystyle{plain}
 \bibliography{references}
