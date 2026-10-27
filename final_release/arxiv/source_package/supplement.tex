@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue!80!black
+}
+
+\title{\textbf{Supplementary Material: StateShift: A Confirmatory Evaluation of Reasoning-Context Continuation and Forced Restart in Mathematical Language Models}}
+\author{
+  \textbf{Sham Satish Thakare} \\
+  Independent AI Researcher \\
+  \texttt{github.com/shamddd} \\
+}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\section{Strict Contamination Sensitivity Analysis (Study 1)}
+Under strict decontamination filtering ($N_{\text{Strict}} = 388$), removing any problem with $n$-gram overlap ($n \ge 13$) or high embedding cosine similarity ($> 0.85$) against training sets, the state-by-checkpoint interaction remains virtually identical:
+\begin{equation}
+\Gamma_{256,\text{Strict}} = +0.1160 \quad (95\% \text{ CI } [+0.0913, +0.1408], p < 10^{-18}).
+\end{equation}
+
+\section{Nine-Checkpoint Empirical Contrast Table (Study 1)}
+Table~\ref{tab:supp_trajectory} details the exact cell means and interaction estimates across all nine sampled checkpoints along the DeepScaleR-7B lineage ($N=454$ problem pairs, $29,056$ row-level outcome records).
+
+\begin{table}[h]
+\centering
+\caption{Complete Nine-Checkpoint Empirical Interaction Contrast Table.}
+\label{tab:supp_trajectory}
+\begin{tabular}{ccccccc}
+\toprule
+Checkpoint ($t$) & $\mu_{R,t}$ & $\mu_{C,t}$ & $\Delta_{R,t}$ & $\Delta_{C,t}$ & $\Gamma_t$ & $95\%$ Bootstrap CI \\
+\midrule
+0   & 0.3834 & 0.3892 & 0.0000 & 0.0000 & +0.0000 & --- \\
+32  & 0.4086 & 0.3811 & +0.0252 & -0.0081 & +0.0333 & [+0.0023, +0.0677] \\
+64  & 0.4537 & 0.4258 & +0.0703 & +0.0366 & +0.0337 & [+0.0081, +0.0610] \\
+96  & 0.5044 & 0.4328 & +0.1210 & +0.0436 & +0.0774 & [+0.0390, +0.1116] \\
+128 & 0.5609 & 0.4919 & +0.1775 & +0.1027 & +0.0748 & [+0.0462, +0.1025] \\
+160 & 0.5958 & 0.5419 & +0.2124 & +0.1527 & +0.0598 & [+0.0238, +0.0935] \\
+192 & 0.6571 & 0.5653 & +0.2737 & +0.1761 & +0.0976 & [+0.0695, +0.1252] \\
+224 & 0.6641 & 0.5749 & +0.2807 & +0.1857 & +0.0950 & [+0.0627, +0.1282] \\
+256 & 0.7039 & 0.5921 & +0.3205 & +0.2029 & +0.1176 & [+0.0955, +0.1400] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Exact Discrete Binomial Power Modeling (Study 2)}
+In paired binary trials, let $K \sim \text{Binomial}(N, q)$ denote the number of discordant pairs, where $q = p_{10} + p_{01}$. Conditional on $K$, the number of successes under Condition F follows $B \sim \text{Binomial}(K, \theta)$, where $\theta = p_{10} / q$. Under the null hypothesis $H_0: \theta = 0.50$, the exact two-sided rejection region at level $\alpha = 0.05$ is defined by critical values $c_L(K)$ and $c_U(K)$ such that $P_{H_0}(B \le c_L \text{ or } B \ge c_U) \le 0.05$.
+
+The unconditional power of the exact McNemar test is the expectation over the distribution of $K$:
+\begin{equation}
+\text{Power}(N, q, \theta) = \sum_{k=1}^N \binom{N}{k} q^k (1-q)^{N-k} \left[ \sum_{b=0}^{c_L(k)} \binom{k}{b} \theta^b (1-\theta)^{k-b} + \sum_{b=c_U(k)}^k \binom{k}{b} \theta^b (1-\theta)^{k-b} \right]
+\end{equation}
+Under pilot parameters ($q = 0.10, \theta = 8/10 = 0.80$), unconditional power is $36.19\%$ at $N=100$. The minimum sample size achieving $\ge 80.0\%$ unconditional power is $N = 231$ paired problems ($1 - \beta = 80.02\%$).
+
+\section{Confirmatory Hardware and Pinned Revisions (Study 3)}
+All 924 confirmatory rollouts were executed on RunPod Secure Cloud:
+\begin{itemize}
+    \item \textbf{Accelerator}: NVIDIA GeForce RTX 4090 (24,564 MiB VRAM, Driver 595.91.07, CUDA 13.0).
+    \item \textbf{Model}: \texttt{Qwen/Qwen2.5-Math-7B-Instruct} pinned to commit hash \texttt{ef9926d75ab1d54532f6a30dd5e760355eb9aa4d}.
+    \item \textbf{Decoding}: Deterministic greedy search ($\tau = 0.0, \text{seed} = 42, \text{max new tokens} = 768$).
+    \item \textbf{Financial Spend}: $\$0.5795$ USD active compute charges ($38.15$ minutes).
+    \item \textbf{Teardown}: Verified via authenticated GraphQL query returning $0$ active pods and $0$ active volumes.
+\end{itemize}
+
+\section{Complete Listing of the 23 Discordant Problems}
+Table~\ref{tab:discordant_full} provides the complete accounting of all 23 discordant problems between Conditions D and F in the confirmatory trial.
+
+\begin{table}[h]
+\centering
+\caption{Complete Listing of the 23 Discordant Problems ($N=231$, Study 3).}
+\label{tab:discordant_full}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccll}
+\toprule
+Cell & Problem ID & Subject & Level & Gold Answer & Condition D Outcome & Condition F Outcome \\
+\midrule
+$b$ & \texttt{math500\_138} & Counting \& Prob & 4 & $1/3$ & $1/6$ (\texttt{stop}, 288 tok) & $1/3$ (\texttt{stop}, 319 tok) [Correct] \\
+$b$ & \texttt{math500\_156} & Geometry & 4 & $30^\circ$ & Truncated (\texttt{length}, 768 tok) & $30$ (\texttt{stop}, 696 tok) [Correct] \\
+$b$ & \texttt{math500\_173} & Algebra & 3 & $4$ & Truncated (\texttt{length}, 768 tok) & $4$ (\texttt{stop}, 649 tok) [Correct] \\
+$b$ & \texttt{math500\_231} & Algebra & 3 & $10$ & Truncated (\texttt{length}, 768 tok) & $10$ (\texttt{stop}, 475 tok) [Correct] \\
+$b$ & \texttt{math500\_296} & Intermediate Alg & 5 & \text{(B)} & Truncated (\texttt{length}, 768 tok) & \text{B} (\texttt{stop}, 381 tok) [Correct] \\
+$b$ & \texttt{math500\_303} & Algebra & 3 & $28$ & $33.6$ (\texttt{stop}, 609 tok) & $28$ (\texttt{stop}, 340 tok) [Correct] \\
+$b$ & \texttt{math500\_326} & Precalculus & 3 & $9/100$ & Truncated (\texttt{length}, 768 tok) & $9/100$ (\texttt{stop}, 632 tok) [Correct] \\
+$b$ & \texttt{math500\_376} & Geometry & 1 & $(8,-2)$ & $(22/3, -4/3)$ (\texttt{stop}, 722 tok) & $(8,-2)$ (\texttt{stop}, 562 tok) [Correct] \\
+$b$ & \texttt{math500\_400} & Geometry & 3 & $14/3$ & Truncated (\texttt{length}, 768 tok) & $14/3$ (\texttt{stop}, 631 tok) [Correct] \\
+$b$ & \texttt{math500\_435} & Intermediate Alg & 1 & $(-\infty,2)\cup(3,\infty)$ & Truncated (\texttt{length}, 768 tok) & $(-\infty,2)\cup(3,\infty)$ (\texttt{stop}, 749 tok) [Correct] \\
+$b$ & \texttt{math500\_466} & Precalculus & 5 & $8\pi$ & Truncated (\texttt{length}, 768 tok) & $8\pi$ (\texttt{stop}, 608 tok) [Correct] \\
+\midrule
+$c$ & \texttt{math500\_139} & Intermediate Alg & 2 & $1$ & $1$ (\texttt{stop}, 432 tok) [Correct] & Truncated (\texttt{length}, 768 tok) \\
+$c$ & \texttt{math500\_163} & Intermediate Alg & 4 & $-35/9$ & $-35/9$ (\texttt{stop}, 518 tok) [Correct] & $-31/9$ (\texttt{stop}, 532 tok) \\
+$c$ & \texttt{math500\_219} & Precalculus & 4 & $1/2$ & $1/2$ (\texttt{stop}, 449 tok) [Correct] & Truncated (\texttt{length}, 768 tok) \\
+$c$ & \texttt{math500\_252} & Prealgebra & 2 & $81$ & $81$ (\texttt{stop}, 627 tok) [Correct] & $77$ (\texttt{stop}, 655 tok) \\
+$c$ & \texttt{math500\_272} & Prealgebra & 1 & $1030$ & $1030$ (\texttt{stop}, 745 tok) [Correct] & Truncated (\texttt{length}, 768 tok) \\
+$c$ & \texttt{math500\_304} & Intermediate Alg & 4 & $9$ & $9$ (\texttt{stop}, 690 tok) [Correct] & Truncated (\texttt{length}, 768 tok) \\
+$c$ & \texttt{math500\_385} & Number Theory & 1 & $22$ & $22$ (\texttt{stop}, 498 tok) [Correct] & $3$ (\texttt{stop}, 451 tok) \\
+$c$ & \texttt{math500\_398} & Counting \& Prob & 5 & \text{Navin} & \text{Navin} (\texttt{stop}, 484 tok) [Correct] & \text{Ian} (\texttt{stop}, 470 tok) \\
+$c$ & \texttt{math500\_403} & Number Theory & 4 & $3$ & $3$ (\texttt{length}, 768 tok) [Correct] & $4$ (\texttt{stop}, 585 tok) \\
+$c$ & \texttt{math500\_409} & Precalculus & 1 & $2\sqrt{5}$ & $2\sqrt{5}$ (\texttt{stop}, 715 tok) [Correct] & $10$ (\texttt{length}, 768 tok) \\
+$c$ & \texttt{math500\_416} & Precalculus & 4 & $1/8$ & $1/8$ (\texttt{stop}, 569 tok) [Correct] & Truncated (\texttt{length}, 768 tok) \\
+$c$ & \texttt{math500\_462} & Number Theory & 2 & $59$ & $59$ (\texttt{stop}, 509 tok) [Correct] & Truncated (\texttt{length}, 768 tok) \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\end{document}
