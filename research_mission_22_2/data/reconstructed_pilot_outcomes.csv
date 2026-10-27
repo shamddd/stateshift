@@ -1,0 +1,101 @@
+problem_id,subject,difficulty_level,gold_answer,pred_A,pred_D,pred_E,pred_F,PathA_A,PathA_D,PathA_E,PathA_F,PathB_A,PathB_D,PathB_E,PathB_F
+math500_001,Intermediate Algebra,1,p - q,p - q,p - q,p - q,p - q,True,True,True,True,True,True,True,True
+math500_002,Algebra,2,\frac{14}{3},\frac{14}{3},\frac{14}{3},\frac{14}{3},\frac{14}{3},True,True,True,True,True,True,True,True
+math500_003,Number Theory,3,9,9,9,9,9,True,True,True,True,True,True,True,True
+math500_005,Prealgebra,4,42,42,42,42,42,True,True,True,True,True,True,True,True
+math500_006,Number Theory,5,27,27,27,27,27,True,True,True,True,True,True,True,True
+math500_007,Precalculus,1,90^\circ,,90,90,90,False,False,False,False,False,True,True,True
+math500_008,Algebra,2,3\sqrt{13},3\sqrt{13},3\sqrt{13},3\sqrt{13},3\sqrt{13},True,True,True,True,True,True,True,True
+math500_009,Prealgebra,3,4,,,,,False,False,False,False,False,False,False,False
+math500_010,Number Theory,4,2220,2220,2220,2220,2220,True,True,True,True,True,True,True,True
+math500_011,Intermediate Algebra,5,\frac{3}{56},,,,,False,False,False,False,False,False,False,False
+math500_012,Number Theory,1,284,220,220,284,284,False,False,True,True,False,False,True,True
+math500_013,Geometry,2,5,5,5,5,5,True,True,True,True,True,True,True,True
+math500_014,Precalculus,3,\sqrt{51},\sqrt{51},\sqrt{51},\sqrt{51},,True,True,True,False,True,True,True,False
+math500_015,Precalculus,4,6 - 5i,6 - 5i,6 - 5i,6 - 5i,6 - 5i,True,True,True,True,True,True,True,True
+math500_016,Intermediate Algebra,5,-50,-50,-50,-50,-50,True,True,True,True,True,True,True,True
+math500_018,Geometry,1,28,28,28,28,28,True,True,True,True,True,True,True,True
+math500_019,Intermediate Algebra,2,3,3,3,3,3,True,True,True,True,True,True,True,True
+math500_020,Algebra,3,6+9i,6 + 9i,6+9i,6+9i,6+9i,True,True,True,True,True,True,True,True
+math500_021,Intermediate Algebra,4,13535,,,,,False,False,False,False,False,False,False,False
+math500_022,Algebra,5,5,,5,5,5,False,True,True,True,False,True,True,True
+math500_023,Algebra,1,x=5,5,5,5,5,True,True,True,True,True,True,True,True
+math500_024,Algebra,2,10,,,10,,False,False,True,False,False,False,True,False
+math500_025,Intermediate Algebra,3,"1,-2",,,,,False,False,False,False,False,False,False,False
+math500_026,Counting & Probability,4,144,,,144,144,False,False,True,True,False,False,True,True
+math500_027,Prealgebra,5,78,78,78,78,78,True,True,True,True,True,True,True,True
+math500_029,Counting & Probability,1,225,225,225,225,225,True,True,True,True,True,True,True,True
+math500_032,Counting & Probability,2,720,720,720,720,720,True,True,True,True,True,True,True,True
+math500_033,Algebra,3,\frac{243}{625},,\frac{243}{625},,\frac{243}{625},False,True,False,True,False,True,False,True
+math500_034,Counting & Probability,4,-125,zero to find the value of \(k\):,,,,False,False,False,False,False,False,False,False
+math500_035,Number Theory,5,3,3,3,3,3,True,True,True,True,True,True,True,True
+math500_036,Intermediate Algebra,1,"3, 5, 7","3, 5, 7","3, 5, 7","3, 5, 7","3, 5, 7",True,True,True,True,True,True,True,True
+math500_037,Geometry,2,72,72,72,72,72,True,True,True,True,True,True,True,True
+math500_038,Algebra,3,2000,2000,2000,2000,2000,True,True,True,True,True,True,True,True
+math500_039,Number Theory,4,23,23,23,23,23,True,True,True,True,True,True,True,True
+math500_040,Prealgebra,5,12,12,12,12,12,True,True,True,True,True,True,True,True
+math500_041,Geometry,1,17,,,the vector \(\overrightarrow{CD}\),the vector \(\overrightarrow{DC}\),False,False,False,False,False,False,False,False
+math500_042,Algebra,2,4,4,4,4,4,True,True,True,True,True,True,True,True
+math500_043,Intermediate Algebra,3,70 \sqrt{2},,,,50 + 10\sqrt{41},False,False,False,False,False,False,False,False
+math500_044,Prealgebra,4,1.25,1.25,1.25,1.25,1.25,True,True,True,True,True,True,True,True
+math500_045,Geometry,5,2,2,2,6,2,True,True,False,True,True,True,False,True
+math500_046,Precalculus,1,6,6,6,,6,True,True,False,True,True,True,False,True
+math500_047,Algebra,2,5,5,5,5,5,True,True,True,True,True,True,True,True
+math500_048,Algebra,3,\frac{3}{2},\frac{3}{2},\frac{3}{2},\frac{3}{2},\frac{3}{2},True,True,True,True,True,True,True,True
+math500_049,Prealgebra,4,83,83,83,83,83,True,True,True,True,True,True,True,True
+math500_050,Number Theory,5,203,,,203,256,False,False,True,False,False,False,True,False
+math500_051,Intermediate Algebra,1,x^5 - x^4 + x^3 - x^2 + x - 1,x^5 - x^4 + x^3 - x^2 + x - 1,x^5 - x^4 + x^3 - x^2 + x - 1,x^5 - x^4 + x^3 - x^2 + x - 1,x^5 - x^4 + x^3 - x^2 + x - 1,True,True,True,True,True,True,True,True
+math500_052,Prealgebra,2,12,,12,12,,False,True,True,False,False,True,True,False
+math500_055,Algebra,3,3,3,3,3,3,True,True,True,True,True,True,True,True
+math500_056,Algebra,4,11,11,11,11,11,True,True,True,True,True,True,True,True
+math500_057,Intermediate Algebra,5,16,16,16,16,16,True,True,True,True,True,True,True,True
+math500_058,Algebra,1,9901,,9901,9901,9901,False,True,True,True,False,True,True,True
+math500_059,Prealgebra,2,5,5,5,5,5,True,True,True,True,True,True,True,True
+math500_060,Intermediate Algebra,3,"(6,31,-1)",,,,,False,False,False,False,False,False,False,False
+math500_061,Intermediate Algebra,4,-256,-256,-256,-256,-256,True,True,True,True,True,True,True,True
+math500_062,Precalculus,5,4,,,,,False,False,False,False,False,False,False,False
+math500_063,Intermediate Algebra,1,10,,,10,,False,False,True,False,False,False,True,False
+math500_064,Precalculus,2,\frac{35}{64},,,,,False,False,False,False,False,False,False,False
+math500_065,Prealgebra,3,1,1,1,1,1,True,True,True,True,True,True,True,True
+math500_066,Algebra,4,x^3+3x-6,x^3 + 3x - 6,x^3 + 3x - 6,x^3 + 3x - 6,x^3 + 3x - 6,True,True,True,True,True,True,True,True
+math500_067,Prealgebra,5,10,10,10,10,10,True,True,True,True,True,True,True,True
+math500_068,Precalculus,1,46,46,45,47,46,True,False,False,True,True,False,False,True
+math500_069,Intermediate Algebra,2,-1,-1,-1,-1,-1,True,True,True,True,True,True,True,True
+math500_070,Number Theory,3,40_9,40_9,40_9,40_9,40_9,True,True,True,True,True,True,True,True
+math500_071,Number Theory,4,2516_8,2516_8,5236,2516_8,2516_8,True,False,True,True,True,False,True,True
+math500_072,Geometry,5,3,3,3,3,3,True,True,True,True,True,True,True,True
+math500_073,Algebra,1,\frac{3\sqrt{3}}{4},\frac{3\sqrt{3}}{4},\frac{3\sqrt{3}}{4},\frac{3\sqrt{3}}{4},\frac{3\sqrt{3}}{4},True,True,True,True,True,True,True,True
+math500_074,Precalculus,2,\cot x,\cot x,\cot x,\cot x,\cot x,True,True,True,True,True,True,True,True
+math500_075,Counting & Probability,3,\frac{11}{36},\frac{11}{36},\frac{11}{36},\frac{11}{36},\frac{11}{36},True,True,True,True,True,True,True,True
+math500_076,Intermediate Algebra,4,0,0,0,0,0,True,True,True,True,True,True,True,True
+math500_077,Algebra,5,4,4,4,4,4,True,True,True,True,True,True,True,True
+math500_078,Intermediate Algebra,1,"(-2,1)","\left(-\frac{6}{5}, \frac{1}{2}\right)","\left(-\frac{6}{5}, \frac{1}{2}\right)","(-2, 1)","(-2, 1)",False,False,True,True,False,False,True,True
+math500_079,Prealgebra,2,2,2,2,2,2,True,True,True,True,True,True,True,True
+math500_081,Algebra,3,3,\frac{7}{4},3,3,3,False,True,True,True,False,True,True,True
+math500_083,Intermediate Algebra,4,2,2,2,2,2,True,True,True,True,True,True,True,True
+math500_084,Algebra,5,-1,\(12t^4 + 26t^3 - 8t^2 - 16t + 6\),-1,-1,-1,False,True,True,True,False,True,True,True
+math500_085,Geometry,1,\sqrt{5},\sqrt{5},\sqrt{5},\sqrt{5},\sqrt{5},True,True,True,True,True,True,True,True
+math500_086,Prealgebra,2,240,240,240,240,240,True,True,True,True,True,True,True,True
+math500_088,Algebra,3,2,,,,,False,False,False,False,False,False,False,False
+math500_089,Number Theory,4,21,,,63,,False,False,False,False,False,False,False,False
+math500_090,Prealgebra,5,\frac{3}{2},\frac{3}{2},\frac{3}{2},15,\frac{3}{2},True,True,False,True,True,True,False,True
+math500_092,Counting & Probability,1,\frac{448}{15625},,,\frac{448}{78125},\frac{2240}{78125},False,False,False,True,False,False,False,True
+math500_093,Algebra,2,33,33,,33,33,True,False,True,True,True,False,True,True
+math500_094,Prealgebra,3,80,105,50,130,130,False,False,False,False,False,False,False,False
+math500_095,Precalculus,4,-4,-4,-4,-4,-4,True,True,True,True,True,True,True,True
+math500_096,Intermediate Algebra,5,1 \pm \sqrt{19},,,,,False,False,False,False,False,False,False,False
+math500_097,Prealgebra,1,\text{east},\text{east},\text{east},\text{east},\text{east},True,True,True,True,True,True,True,True
+math500_098,Prealgebra,2,2k+2,2k + 2,2k + 2,2k + 2,2k + 2,True,True,True,True,True,True,True,True
+math500_099,Precalculus,3,\begin{pmatrix} -1/3 \\ 2/3 \\ 5/3 \end{pmatrix},,,,,False,False,False,False,False,False,False,False
+math500_100,Geometry,4,145^\circ,125,70,,70,False,False,False,False,False,False,False,False
+math500_101,Intermediate Algebra,5,850,,,,10,False,False,False,False,False,False,False,False
+math500_102,Intermediate Algebra,1,(a+5)(b+2),(a + 5)(b + 2),(a + 5)(b + 2),(a+5)(b+2),(a + 5)(b + 2),True,True,True,True,True,True,True,True
+math500_103,Intermediate Algebra,2,"(3,4]",,,,"\(x\), we get:",False,False,False,False,False,False,False,False
+math500_104,Intermediate Algebra,3,40,,,,,False,False,False,False,False,False,False,False
+math500_105,Prealgebra,4,29,29,29,29,29,True,True,True,True,True,True,True,True
+math500_106,Intermediate Algebra,5,\frac43,\frac{4}{3},\frac{4}{3},\frac{4}{3},\frac{4}{3},False,False,False,False,False,False,False,False
+math500_107,Number Theory,1,9,9,9,9,9,True,True,True,True,True,True,True,True
+math500_108,Intermediate Algebra,2,2,2,2,2,2,True,True,True,True,True,True,True,True
+math500_109,Precalculus,3,120^\circ,,,,,False,False,False,False,False,False,False,False
+math500_111,Counting & Probability,4,210,210,210,210,210,True,True,True,True,True,True,True,True
+math500_112,Algebra,5,13,9,6,,13,False,False,False,True,False,False,False,True

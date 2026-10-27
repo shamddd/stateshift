@@ -1,0 +1,4 @@
+problem_id,condition,condition_name,gold_answer,extracted_prediction,path_a_strict,path_b_flexible,root_cause
+math500_007,D,Condition_D_Forced_Restart,90^\circ,90,False,True,Degree symbol normalization (^\circ vs plain integer degree)
+math500_007,E,Condition_E_Explicit_Repair,90^\circ,90,False,True,Degree symbol normalization (^\circ vs plain integer degree)
+math500_007,F,Condition_F_State_Preserving,90^\circ,90,False,True,Degree symbol normalization (^\circ vs plain integer degree)
