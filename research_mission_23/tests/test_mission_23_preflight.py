@@ -78,3 +78,30 @@ def test_runner_dry_run_local_cpu_success():
     res = subprocess.run(cmd, capture_output=True, text=True)
     assert res.returncode == 0
     assert "DRY-RUN STATUS: FULL PREFLIGHT SUCCESS. READY FOR EXECUTION." in res.stdout
+
+def test_runner_micro_batch_mock_eval(tmp_path):
+    """Verify that runner micro-batching executes cleanly and adheres to the 23-field schema."""
+    out_file = tmp_path / "mock_batch_out.jsonl"
+    cmd = [
+        "python3", str(RUNNER_SCRIPT),
+        "--mock-eval",
+        "--batch-size", "4",
+        "--output", str(out_file)
+    ]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    assert res.returncode == 0
+    assert out_file.exists()
+    with open(out_file, "r", encoding="utf-8") as f:
+        lines = [json.loads(l) for l in f if l.strip()]
+    assert len(lines) == 10
+    required_fields = {
+        "request_id", "problem_id", "condition_code", "prompt_sha256",
+        "gold_answer", "model_id", "model_revision", "tokenizer_revision",
+        "temperature", "max_tokens", "seed", "sampling_mode",
+        "prompt_tokens", "output_tokens", "total_tokens", "finish_reason",
+        "elapsed_seconds", "generation_timestamp", "execution_id",
+        "source_type", "extracted_answer", "is_correct", "model_output"
+    }
+    for l in lines:
+        assert required_fields.issubset(l.keys())
+        assert l["source_type"] == "MOCK_LOCAL_TEST"

@@ -1,0 +1,13 @@
+{
+  "mission": "StateShift Research Mission 23",
+  "principal_investigator": "Sham Satish Thakare",
+  "authorized_spend_cap_usd": 1.60,
+  "projected_cost_usd": 0.37,
+  "batch_size": 8,
+  "model_id": "Qwen/Qwen2.5-Math-7B-Instruct",
+  "model_revision": "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d",
+  "hardware": "NVIDIA GeForce RTX 4090",
+  "manifest_sha256": "2dca098c14b41b759ada7d9d1ea9fe51bf82bf38c1790429905e4dd267d2e8c5",
+  "issued_at_epoch": 1793075000.0,
+  "expires_at_epoch": 1900000000.0
+}

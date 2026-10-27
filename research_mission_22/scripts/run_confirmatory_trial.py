@@ -231,6 +231,111 @@ class ConfirmatoryNeuralRunner:
         }
         return record
 
+    def execute_batch(self, batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Executes a micro-batch of requests on GPU using left-padded generation."""
+        if not batch:
+            return []
+        if len(batch) == 1:
+            return [self.execute_request(batch[0])]
+
+        t0 = time.time()
+        if self.mock_eval or self.dry_run:
+            # Deterministic local mock completion for CPU test suites
+            records = []
+            for req in batch:
+                records.append(self.execute_request(req))
+            return records
+
+        import torch
+        self.tokenizer.padding_side = "left"
+        if self.tokenizer.pad_token_id is None:
+            self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+
+        prompts = [req["prompt_text"] for req in batch]
+        inputs = self.tokenizer(prompts, padding=True, return_tensors="pt").to(self.model.device)
+        input_ids = inputs["input_ids"]
+        attention_mask = inputs["attention_mask"]
+        prompt_lens = [int(attention_mask[i].sum().item()) for i in range(len(batch))]
+        
+        with torch.no_grad():
+            out_ids = self.model.generate(
+                **inputs,
+                max_new_tokens=self.max_tokens,
+                do_sample=False,
+                pad_token_id=self.tokenizer.pad_token_id
+            )
+
+        elapsed = time.time() - t0
+        elapsed_per_req = round(elapsed / len(batch), 4)
+
+        records = []
+        eos_id = self.tokenizer.eos_token_id
+        for i, req in enumerate(batch):
+            seq_gen = out_ids[i][input_ids.shape[1]:]
+            eos_matches = (seq_gen == eos_id).nonzero(as_tuple=True)[0]
+            if len(eos_matches) > 0:
+                first_eos = eos_matches[0].item()
+                actual_gen_ids = seq_gen[:first_eos]
+                output_tokens = first_eos + 1
+                finish_reason = "stop"
+            else:
+                actual_gen_ids = seq_gen
+                output_tokens = int(len(seq_gen))
+                finish_reason = "length" if output_tokens >= self.max_tokens else "stop"
+
+            raw_output = self.tokenizer.decode(actual_gen_ids, skip_special_tokens=True)
+            extracted = cleanroom_extract_boxed(raw_output)
+            gold_answer = req.get("gold_answer", "")
+            is_corr = cleanroom_is_mathematically_equivalent(extracted, gold_answer)
+
+            prompt_tokens = prompt_lens[i]
+            record = {
+                "request_id": req["request_id"],
+                "problem_id": req["problem_id"],
+                "condition_code": req["condition_code"],
+                "prompt_sha256": req.get("prompt_sha256", hashlib.sha256(req["prompt_text"].encode()).hexdigest()),
+                "gold_answer": gold_answer,
+                "model_id": self.model_id,
+                "model_revision": self.model_revision,
+                "tokenizer_revision": self.model_revision,
+                "temperature": self.temperature,
+                "max_tokens": self.max_tokens,
+                "seed": self.seed,
+                "sampling_mode": "greedy",
+                "prompt_tokens": prompt_tokens,
+                "output_tokens": output_tokens,
+                "total_tokens": prompt_tokens + output_tokens,
+                "finish_reason": finish_reason,
+                "elapsed_seconds": elapsed_per_req,
+                "generation_timestamp": time.time(),
+                "execution_id": self.execution_id,
+                "source_type": "REAL_MODEL_INFERENCE",
+                "extracted_answer": extracted,
+                "is_correct": is_corr,
+                "model_output": raw_output
+            }
+            records.append(record)
+        return records
+
+    def run_all(self, batch_size: int = 8):
+        """Processes all uncompleted requests using micro-batches and atomic appending."""
+        uncompleted = [r for r in self.requests if r["request_id"] not in self.completed_ids]
+        print(f"[ConfirmatoryRunner] Total requests: {len(self.requests)} | Completed: {len(self.completed_ids)} | Remaining: {len(uncompleted)}")
+        if not uncompleted:
+            print("[ConfirmatoryRunner] All requests already completed!")
+            return
+
+        total_batches = (len(uncompleted) + batch_size - 1) // batch_size
+        for b_idx in range(total_batches):
+            batch = uncompleted[b_idx * batch_size : (b_idx + 1) * batch_size]
+            t_b0 = time.time()
+            records = self.execute_batch(batch)
+            for rec in records:
+                append_atomic_record(self.output_path, rec)
+                self.completed_ids.add(rec["request_id"])
+            b_dur = time.time() - t_b0
+            print(f"[Batch {b_idx + 1}/{total_batches}] Processed {len(records)} requests in {b_dur:.2f}s | Progress: {len(self.completed_ids)}/{len(self.requests)}")
+
 def main():
     parser = argparse.ArgumentParser(description="StateShift Confirmatory Trial Runner")
     parser.add_argument("--dry-run", action="store_true", help="Perform preflight dry run without GPU provisioning")
@@ -238,6 +343,7 @@ def main():
     parser.add_argument("--manifest", type=str, default="research_mission_22/data/confirmatory_231_manifest.jsonl", help="Path to manifest")
     parser.add_argument("--output", type=str, default="research_mission_22_1/data/confirmatory_mock_generations.jsonl", help="Path to output JSONL")
     parser.add_argument("--auth-token", type=str, default="", help="Path to session authorization token")
+    parser.add_argument("--batch-size", type=int, default=8, help="Micro-batch size for GPU inference")
     parser.add_argument("--primary-contrast-only", action="store_true", help="Run only Condition D and Condition F (462 requests)")
     args = parser.parse_args()
     
@@ -258,23 +364,26 @@ def main():
         print("=" * 80)
         print(f"[PASS] Confirmatory manifest cryptographic hash matches: {EXPECTED_MANIFEST_SHA256[:12]}...")
         print(f"[PASS] Successfully parsed {len(runner.requests)} requests from manifest.")
+        print(f"[PASS] Micro-batching configured: batch_size={args.batch_size}")
         print("DRY-RUN STATUS: FULL PREFLIGHT SUCCESS. READY FOR EXECUTION.")
         print("=" * 80)
         return
         
     if args.mock_eval:
-        print(f"Executing CPU mock test for {len(runner.requests)} requests...")
-        for r in runner.requests[:10]: # Quick smoke test on 10 requests
-            rec = runner.execute_request(r)
+        print(f"Executing CPU mock test for {len(runner.requests)} requests (batch_size={args.batch_size})...")
+        sample_batch = runner.requests[:10]
+        records = runner.execute_batch(sample_batch)
+        for rec in records:
             append_atomic_record(output_path, rec)
-        print(f"[PASS] Successfully wrote {min(10, len(runner.requests))} mock records to {output_path}")
+        print(f"[PASS] Successfully wrote {len(records)} mock records to {output_path}")
         return
         
     # Cloud execution attempt: Enforce lock and auth checks
     check_fail_closed_lock(base_dir)
     verify_session_authorization(args.auth_token, max_spend_cap=1.60)
-    print("Executing cloud runner on GPU...")
+    print(f"Executing cloud runner on GPU with micro-batching (batch_size={args.batch_size})...")
     runner.init_neural_model()
+    runner.run_all(batch_size=args.batch_size)
 
 if __name__ == "__main__":
     main()
