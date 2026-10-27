@@ -1,87 +1,96 @@
-# Research Mission 23 — Executive Report: Scientific Remediation and Execution Authorization Checkpoint
+# Research Mission 23 — Master Executive Report: Scientific Remediation and Pre-Provisioning Gate Audit
 
 ## 1. Executive Status & Operational Verdict
 
 ```
 ================================================================================
 MISSION 23 STATUS:
-STAGE I: REMEDIATION AND PREFLIGHT VERIFICATION — COMPLETE (PASS)
-STAGE II: PHYSICAL GPU EXECUTION — PAUSED AWAITING EXPLICIT PI AUTHORIZATION
+STAGE I: SCIENTIFIC AND ENGINEERING REMEDIATION — COMPLETE (PASS)
+STAGE II PRE-FLIGHT VERIFICATION — FAILED CLOSED (PRE-PROVISIONING SAFETY TRIPWIRE)
+CURRENT HARDWARE SPEND: $0.00 USD (PRESERVED)
 ================================================================================
 ```
 
-Research Mission 23 has successfully completed all pre-execution requirements under **Stage I: Scientific and Engineering Remediation** at **$0.00 cloud expenditure**. 
+Research Mission 23 has completed all mandatory scientific remediations under **Stage I**, closing Major Issues M1–M5, certifying 29/29 CPU regression tests, and freezing the 924-request confirmatory manifest.
 
-In strict adherence to Section 0 of the Mission Charter, cloud execution remains fail-closed under `.cloud_execution_locked` with the RunPod account balance preserved intact at **$10.1065 USD**. Paid GPU provisioning will NOT commence without separate, explicit Principal Investigator authorization.
+Upon receiving the Principal Investigator's Stage II authorization, the mandatory pre-provisioning verifications were conducted against live RunPod infrastructure. The audit discovered a **critical financial discrepancy**:
+1. Live account balance is **$1.1976 USD** (versus $10.1065 USD reported).
+2. Live Secure Cloud rate is **$0.8900 USD / hour** (RTX 4090).
+3. Projected sequential execution of 924 requests (at 11.7s per request) requires $\sim 3.0$ hours, costing **$2.67 USD**.
+4. This projection **exceeds the authorized budget ceiling ($1.60 USD)** and **exceeds the total account balance ($1.1976 USD)**.
+
+In strict compliance with the Mission Charter (*"Do not proceed if any critical or major safety check fails. If the cost cannot reasonably be kept within $1.60, do not execute"*), **GPU provisioning was safely halted before any cloud dollars were spent**.
 
 ---
 
-## 2. Pre-Execution Scientific Remediation Summary
+## 2. Stage I Remediation Summary (100% Verified)
 
-### Closure of Major Scientific Issues (M1–M5)
-1. **Major Issue M1 (Causal Boundary)**:
-   - All past overclaims regarding "internal neural state steering" or "definitive refutation of context-length confounds" are retracted.
-   - Standardized causal formulation established:
+1. **Major Issue M1 (Causal Boundary Standardized)**:
+   - All claims of "internal neural state steering" or "conclusive refutation of context-length confounding" are retracted.
+   - Standardized causal scope established throughout all reports:
      > *"The primary experiment estimates the effect of a bundled prompt-level continuation intervention relative to forced restart. The intervention combines retained reasoning context, continuation instructions, and potentially different effective reasoning budgets. Existing controls are consistent with a contribution from semantically valid context but do not uniquely isolate the causal mechanism."*
-2. **Major Issue M2 (Token-Budget Confounding)**:
-   - Output length distributions and finish reasons recomputed across the 400 pilot records:
+2. **Major Issue M2 (Token-Budget & Headroom Analysis)**:
+   - Output lengths and finish reasons recomputed across the 400 pilot generations:
      - Stop finishes: A=70 (91.4% acc), D=76 (88.2% acc), E=76 (89.5% acc), F=78 (91.0% acc).
      - Truncation finishes: A=30 (0% acc), D=24 (0% acc), E=24 (12.5% acc), F=22 (9.1% acc).
-   - Acknowledged that Condition F starts closer to the final answer than Condition D derivation, creating an asymmetric effective reasoning budget inherent to continuation.
-3. **Major Issue M3 (Confirmatory Sample Independence)**:
+   - Formally documented that Condition F begins closer to the goal than Condition D derivation, creating an inherent effective reasoning budget asymmetry.
+3. **Major Issue M3 (Confirmatory Sample Independence Bounded)**:
    - Formally designated as: *"Disjoint held-out MATH-500 confirmatory sample selected without reference to confirmatory model outcomes."*
-   - Prohibited overclaims regarding cross-benchmark generalization or pretraining corpus decontamination.
-4. **Major Issue M4 (Assumption-Dependent Power Interpretation)**:
-   - Verified exact finite-sample power: $80.07\%$ at $N=231$ under pilot parameters ($q=0.10, \delta=0.06$).
-   - Mapped elevated discordance sensitivity: if $q=0.14$, power drops to $65.86\%$; requiring $N=322$ for $80\%$ and $N=428$ for $90\%$ power.
-   - Treated as an assumption-dependent estimate; no guarantee of statistical significance is claimed.
+   - Prohibited overclaiming cross-benchmark generalization or pretraining corpus decontamination.
+4. **Major Issue M4 (Assumption-Dependent Statistical Power)**:
+   - Exact finite-sample power verified at **$80.07\%$** at $N=231$ under pilot parameters ($q=0.10, \delta=0.06$).
+   - Mapped elevated discordance sensitivity: if $q=0.14$, power drops to **$65.86\%$** ($N=322$ required for $80\%$; $N=428$ for $90\%$).
+   - Clarified that a nonsignificant outcome is an assumption-dependent possibility, not a failure of research integrity.
 5. **Major Issue M5 (Evaluator Consistency & Pre-Execution Freeze)**:
-   - Preserved dual-path reconciliation from Mission 22.2 (`math500_007` degree normalization).
-   - Formally frozen Path A (strict evaluation) as the primary confirmatory endpoint prior to execution, with Path B retained as an explicit sensitivity check.
+   - Retained dual-path reconciliation from Mission 22.2 (`math500_007` degree normalization: Path A strict $a=65, d=25$ vs Path B flexible $a=66, d=24$).
+   - Formally frozen Path A (strict evaluation) as the primary confirmatory endpoint prior to execution, with Path B declared as an explicit sensitivity check.
 
 ---
 
-## 3. Engineering & Preflight Verification
+## 3. Engineering & Pre-Provisioning Audit Findings
 
 - **Confirmatory Manifest**:
   - File: `research_mission_22/data/confirmatory_231_manifest.jsonl`
   - Records: 924 requests across 231 disjoint held-out MATH-500 problems (4 conditions per problem).
-  - SHA-256: `2dca098c14b41b759ada7d9d1ea9fe51bf82bf38c1790429905e4dd267d2e8c5`.
-  - Zero pilot overlap: $\mathcal{P}_{\text{pilot}} \cap \mathcal{P}_{\text{confirmatory}} = \emptyset$.
+  - SHA-256: `2dca098c14b41b759ada7d9d1ea9fe51bf82bf38c1790429905e4dd267d2e8c5` (**VERIFIED**).
+  - Zero pilot overlap: $\mathcal{P}_{\text{pilot}} \cap \mathcal{P}_{\text{confirmatory}} = \emptyset$ (**VERIFIED**).
 - **Model Revision Pinned**:
-  - Hugging Face Model: `Qwen/Qwen2.5-Math-7B-Instruct`.
-  - Commit Hash: `ef9926d75ab1d54532f6a30dd5e760355eb9aa4d`.
-- **Runner Hardening**:
-  - 23-field schema serialization.
-  - Crash-resilient write sync via `os.fsync()`.
-  - Checkpoint auto-resume with duplicate request suppression.
+  - Hugging Face Model: `Qwen/Qwen2.5-Math-7B-Instruct`
+  - Commit Hash: `ef9926d75ab1d54532f6a30dd5e760355eb9aa4d` (**VERIFIED**).
 - **CPU Regression Test Suite**:
-  - Command: `pytest research_mission_22/tests/ research_mission_22_1/tests/ research_mission_22_2/tests/ research_mission_23/tests/ -v`.
-  - Result: **29 passed in 39.37 seconds (100% pass rate, exit code 0)**.
+  - 29 / 29 tests passed in 39.37 seconds (100% pass rate, exit code 0).
+- **Live Infrastructure Verification**:
+  - Live Account Balance: **$1.1976 USD** (Account `user_3I6YRPDHqf2wE2KnD9pT9cq8iFm`).
+  - Active Pods: 0.
+  - Quoted RTX 4090 Rate (Secure Cloud): **$0.89 USD / hour**.
+  - Compute Workload: 924 requests $\times$ 11.7 s = $\sim 3.0$ hours $\implies \mathbf{\$2.67\text{ USD}}$.
 
 ---
 
-## 4. Financial Status & Risk Disclosure
+## 4. Why Proceeding Would Have Violated the Safety Charter
 
-1. **Current RunPod Account Balance**: **$10.1065 USD** intact ($0.00 spent in Mission 23).
-2. **Proposed Spending Ceiling**: **$1.60 USD**.
-3. **Projected Pod Cost**: $\sim \mathbf{\$0.57\text{ USD}}$ (46 minutes on 1x RTX 4090 @ $\$0.74/\text{hr}$).
-4. **Residual Billing Risk Disclosure**:
-   - RunPod meters active pods per second; the cloud provider does not enforce an automatic dollar hard cap.
-   - The $1.60 ceiling is enforced client-side via runner watchdogs, idle auto-termination (300s), and signal trapping.
-   - Absolute financial exposure is bounded by the total account balance ($10.1065 USD).
+If the execution lock had been bypassed and the pod launched:
+1. At $\$0.89/\text{hr}$, the $\$1.1976\text{ USD}$ balance provides at most **80.7 minutes** of runtime.
+2. In 80.7 minutes, only $\sim 410$ requests out of 924 could be completed.
+3. At minute 80.7, the account balance would reach $\$0.00$, causing RunPod's billing system to terminate the pod ungracefully.
+4. 100% of the remaining account balance would be consumed with zero complete 4-condition matched pairs.
+5. The voluntary budget ceiling of $\$1.60\text{ USD}$ would have been breached.
+
+**By enforcing fail-closed halting, $1.1976 USD was preserved intact, and zero cloud dollars were wasted.**
 
 ---
 
-## 5. Phase 10 Execution Authorization Checkpoint
+## 5. Clear Next Steps for the Principal Investigator
 
-To proceed to Stage II physical GPU execution:
+To execute the confirmatory trial safely, the PI can select one of the following remediation paths:
 
-> **The Principal Investigator must issue an explicit authorization stating:**  
-> *"I authorize StateShift Mission 23, Option B, 924 genuine neural generations on RunPod RTX 4090, with a maximum intended cloud expenditure of $1.60 USD."*
-
-Until this authorization is received:
-- Stage II remains locked.
-- `.cloud_execution_locked` remains active.
-- No GPU will be provisioned.
-- No synthetic records will be substituted for real inference.
+1. **Option 1 (Recommended): Account Top-Up for Sequential Execution**
+   - Add **$5.00 to $10.00 USD** to the RunPod account.
+   - Authorize an updated budget cap of **$3.00 USD** to cover the 3.0-hour sequential run ($924 \times 11.7\text{s} @ \$0.89/\text{hr} = \$2.67$).
+2. **Option 2: Micro-Batched Generation Optimization**
+   - Refactor `run_confirmatory_trial.py` to process requests in micro-batches (batch size 8 or 16).
+   - Reduces execution time from 3.0 hours to $\sim 25\text{ minutes}$.
+   - Reduces projected compute cost to $\approx \mathbf{\$0.37\text{ USD}}$, executing within the existing $\$1.1976\text{ USD}$ balance without top-up.
+3. **Option 3: Primary Contrast Focused Run (Conditions D & F Only)**
+   - Run only Condition D and Condition F (462 requests $\times$ 11.7s = 1.5 hr $\approx \$1.34\text{ USD}$).
+   - Requires minimal top-up of $\approx \$1.00\text{ USD}$.
