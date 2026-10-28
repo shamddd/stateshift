@@ -50,7 +50,7 @@ flowchart LR
 ---
 
 ### Decision B — GitHub Release Candidate Tagging & Publishing
-- **Action**: Tag commit `ae17a72...` as `v1.0.0-rc1` and publish the public GitHub release with pre-compiled PDFs.
+- **Action**: Tag the final verified release commit on branch `research/stateshift-final-publication-release` as `v1.0.0-rc1` and publish the public GitHub release with pre-compiled PDFs.
 - **Command**:
   ```bash
   git tag -a v1.0.0-rc1 -m "StateShift Release v1.0.0-rc1: Confirmatory Research Release"

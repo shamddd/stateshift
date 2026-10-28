@@ -57,7 +57,7 @@ All historical scientific overclaims (causal mechanism pseudo-equations, claims 
 | **Contingency Matrix (F vs D)**| $a=65, b=8, c=2, d=25$ | $a=146, b=11, c=12, d=62$ | 100% Reconciled |
 | **Concordant / Discordant** | 90 (90.0%) / 10 (10.0%) | 208 (90.04%) / 23 (9.96%) | 100% Reconciled |
 | **Treatment Effect ($\hat{\tau}_{F-D}$)**| $\mathbf{+6.00\text{ percentage points}}$ | $\mathbf{-0.43\text{ percentage points}}$ | 100% Reconciled |
-| **Standard Error ($\text{SE}$)** | $0.02966$ | $0.02076$ | 100% Reconciled |
+| **Standard Error ($\text{SE}$)** | $0.03105$ ($3.10\text{ pp}$) | $0.02076$ ($2.08\text{ pp}$) | 100% Reconciled |
 | **Paired 95% Confidence Interval**| $[-0.09\%, +12.09\%]$ | $\mathbf{[-4.50\%, +3.64\%]}$ | 100% Reconciled |
 | **Exact McNemar $p$-value** | $\mathbf{p = 0.109375}$ (Trend) | $\mathbf{p = 1.000000}$ (Exact Null) | 100% Reconciled |
 | **Evaluator Sensitivity Discrepancies**| 0 off-diagonal shifts | **0 discrepancies across 924 outputs** | 100% Invariant |
@@ -146,7 +146,7 @@ A cleanroom simulation confirmed that an independent researcher can clone the re
 All local research, audit, and engineering work is **FINISHED**. The repository is frozen. The following external actions are held pending your explicit instruction:
 
 1. **Authorize Decision A**: Push `research/stateshift-final-publication-release` to GitHub origin and open PR to `main`.
-2. **Authorize Decision B**: Tag commit `ae17a72...` as `v1.0.0-rc1` and publish the public GitHub release.
+2. **Authorize Decision B**: Tag the verified release commit on branch `research/stateshift-final-publication-release` as `v1.0.0-rc1` and publish the public GitHub release.
 3. **Authorize Decision C**: Submit `final_release/arxiv/source_package/` to arXiv.
 4. **Authorize Decision D**: Submit `final_release/neurips2027/anonymous_submission.pdf` to NeurIPS 2027 upon portal opening.
 
