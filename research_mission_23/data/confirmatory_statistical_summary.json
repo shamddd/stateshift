@@ -1,0 +1,424 @@
+{
+  "primary_contrast_F_vs_D": {
+    "contrast": "F vs D",
+    "N": 231,
+    "a": 146,
+    "b": 11,
+    "c": 12,
+    "d": 62,
+    "F_accuracy": 0.6797,
+    "D_accuracy": 0.684,
+    "tau_diff": -0.0043,
+    "se_tau": 0.0208,
+    "ci_95": [
+      -0.045,
+      0.0364
+    ],
+    "mcnemar_exact_p": 1.0,
+    "odds_ratio": 0.9167,
+    "odds_ratio_95_ci": [
+      0.3665,
+      2.2693
+    ]
+  },
+  "secondary_contrasts": [
+    {
+      "contrast": "F vs A",
+      "N": 231,
+      "a": 138,
+      "b": 19,
+      "c": 16,
+      "d": 58,
+      "F_accuracy": 0.6797,
+      "A_accuracy": 0.6667,
+      "tau_diff": 0.013,
+      "se_tau": 0.0256,
+      "ci_95": [
+        -0.0372,
+        0.0632
+      ],
+      "mcnemar_exact_p": 0.735879,
+      "odds_ratio": 1.1875,
+      "odds_ratio_95_ci": [
+        0.5784,
+        2.469
+      ],
+      "holm_bonferroni_threshold": 0.05,
+      "significant_holm": false
+    },
+    {
+      "contrast": "F vs E",
+      "N": 231,
+      "a": 144,
+      "b": 13,
+      "c": 10,
+      "d": 64,
+      "F_accuracy": 0.6797,
+      "E_accuracy": 0.6667,
+      "tau_diff": 0.013,
+      "se_tau": 0.0207,
+      "ci_95": [
+        -0.0277,
+        0.0536
+      ],
+      "mcnemar_exact_p": 0.677639,
+      "odds_ratio": 1.3,
+      "odds_ratio_95_ci": [
+        0.5266,
+        3.3119
+      ],
+      "holm_bonferroni_threshold": 0.025,
+      "significant_holm": false
+    },
+    {
+      "contrast": "E vs D",
+      "N": 231,
+      "a": 140,
+      "b": 14,
+      "c": 18,
+      "d": 59,
+      "E_accuracy": 0.6667,
+      "D_accuracy": 0.684,
+      "tau_diff": -0.0173,
+      "se_tau": 0.0245,
+      "ci_95": [
+        -0.0653,
+        0.0306
+      ],
+      "mcnemar_exact_p": 0.596615,
+      "odds_ratio": 0.7778,
+      "odds_ratio_95_ci": [
+        0.358,
+        1.6552
+      ],
+      "holm_bonferroni_threshold": 0.016667,
+      "significant_holm": false
+    },
+    {
+      "contrast": "D vs A",
+      "N": 231,
+      "a": 144,
+      "b": 14,
+      "c": 10,
+      "d": 63,
+      "D_accuracy": 0.684,
+      "A_accuracy": 0.6667,
+      "tau_diff": 0.0173,
+      "se_tau": 0.0212,
+      "ci_95": [
+        -0.0242,
+        0.0588
+      ],
+      "mcnemar_exact_p": 0.541256,
+      "odds_ratio": 1.4,
+      "odds_ratio_95_ci": [
+        0.5784,
+        3.5229
+      ],
+      "holm_bonferroni_threshold": 0.0125,
+      "significant_holm": false
+    }
+  ],
+  "token_and_headroom_stats": {
+    "A": {
+      "mean_output_tokens": 528.07,
+      "median_output_tokens": 508.0,
+      "std_output_tokens": 194.01,
+      "stop_finish_count": 172,
+      "length_truncation_count": 59,
+      "overall_accuracy": 0.6667
+    },
+    "D": {
+      "mean_output_tokens": 525.27,
+      "median_output_tokens": 515.0,
+      "std_output_tokens": 195.62,
+      "stop_finish_count": 173,
+      "length_truncation_count": 58,
+      "overall_accuracy": 0.684
+    },
+    "E": {
+      "mean_output_tokens": 513.72,
+      "median_output_tokens": 501.0,
+      "std_output_tokens": 207.72,
+      "stop_finish_count": 167,
+      "length_truncation_count": 64,
+      "overall_accuracy": 0.6667
+    },
+    "F": {
+      "mean_output_tokens": 510.1,
+      "median_output_tokens": 483.0,
+      "std_output_tokens": 199.82,
+      "stop_finish_count": 170,
+      "length_truncation_count": 61,
+      "overall_accuracy": 0.6797
+    }
+  },
+  "difficulty_stratification": {
+    "Level 1": {
+      "contrast": "F vs D",
+      "N": 47,
+      "a": 28,
+      "b": 2,
+      "c": 3,
+      "d": 14,
+      "F_accuracy": 0.6383,
+      "D_accuracy": 0.6596,
+      "tau_diff": -0.0213,
+      "se_tau": 0.0475,
+      "ci_95": [
+        -0.1143,
+        0.0718
+      ],
+      "mcnemar_exact_p": 1.0,
+      "odds_ratio": 0.6667,
+      "odds_ratio_95_ci": [
+        0.0557,
+        5.8198
+      ]
+    },
+    "Level 2": {
+      "contrast": "F vs D",
+      "N": 46,
+      "a": 29,
+      "b": 1,
+      "c": 2,
+      "d": 14,
+      "F_accuracy": 0.6522,
+      "D_accuracy": 0.6739,
+      "tau_diff": -0.0217,
+      "se_tau": 0.0375,
+      "ci_95": [
+        -0.0953,
+        0.0518
+      ],
+      "mcnemar_exact_p": 1.0,
+      "odds_ratio": 0.5,
+      "odds_ratio_95_ci": [
+        0.0085,
+        9.6045
+      ]
+    },
+    "Level 3": {
+      "contrast": "F vs D",
+      "N": 46,
+      "a": 32,
+      "b": 5,
+      "c": 2,
+      "d": 7,
+      "F_accuracy": 0.8043,
+      "D_accuracy": 0.7391,
+      "tau_diff": 0.0652,
+      "se_tau": 0.0567,
+      "ci_95": [
+        -0.0459,
+        0.1764
+      ],
+      "mcnemar_exact_p": 0.453125,
+      "odds_ratio": 2.5,
+      "odds_ratio_95_ci": [
+        0.4093,
+        26.2535
+      ]
+    },
+    "Level 4": {
+      "contrast": "F vs D",
+      "N": 46,
+      "a": 28,
+      "b": 1,
+      "c": 3,
+      "d": 14,
+      "F_accuracy": 0.6304,
+      "D_accuracy": 0.6739,
+      "tau_diff": -0.0435,
+      "se_tau": 0.043,
+      "ci_95": [
+        -0.1278,
+        0.0408
+      ],
+      "mcnemar_exact_p": 0.625,
+      "odds_ratio": 0.3333,
+      "odds_ratio_95_ci": [
+        0.0063,
+        4.1514
+      ]
+    },
+    "Level 5": {
+      "contrast": "F vs D",
+      "N": 46,
+      "a": 29,
+      "b": 2,
+      "c": 2,
+      "d": 13,
+      "F_accuracy": 0.6739,
+      "D_accuracy": 0.6739,
+      "tau_diff": 0.0,
+      "se_tau": 0.0435,
+      "ci_95": [
+        -0.0852,
+        0.0852
+      ],
+      "mcnemar_exact_p": 1.0,
+      "odds_ratio": 1.0,
+      "odds_ratio_95_ci": [
+        0.0725,
+        13.796
+      ]
+    }
+  },
+  "subject_stratification": {
+    "Algebra": {
+      "contrast": "F vs D",
+      "N": 59,
+      "a": 48,
+      "b": 3,
+      "c": 2,
+      "d": 6,
+      "F_accuracy": 0.8644,
+      "D_accuracy": 0.8475,
+      "tau_diff": 0.0169,
+      "se_tau": 0.0378,
+      "ci_95": [
+        -0.0572,
+        0.0911
+      ],
+      "mcnemar_exact_p": 1.0,
+      "odds_ratio": 1.5,
+      "odds_ratio_95_ci": [
+        0.1718,
+        17.9592
+      ]
+    },
+    "Counting & Probability": {
+      "contrast": "F vs D",
+      "N": 17,
+      "a": 9,
+      "b": 1,
+      "c": 1,
+      "d": 6,
+      "F_accuracy": 0.5882,
+      "D_accuracy": 0.5882,
+      "tau_diff": 0.0,
+      "se_tau": 0.0832,
+      "ci_95": [
+        -0.163,
+        0.163
+      ],
+      "mcnemar_exact_p": 1.0,
+      "odds_ratio": 1.0,
+      "odds_ratio_95_ci": [
+        0.0127,
+        78.4968
+      ]
+    },
+    "Geometry": {
+      "contrast": "F vs D",
+      "N": 20,
+      "a": 12,
+      "b": 3,
+      "c": 0,
+      "d": 5,
+      "F_accuracy": 0.75,
+      "D_accuracy": 0.6,
+      "tau_diff": 0.15,
+      "se_tau": 0.0798,
+      "ci_95": [
+        -0.0065,
+        0.3065
+      ],
+      "mcnemar_exact_p": 0.25,
+      "odds_ratio": "inf",
+      "odds_ratio_95_ci": [
+        0.4132,
+        "inf"
+      ]
+    },
+    "Intermediate Algebra": {
+      "contrast": "F vs D",
+      "N": 41,
+      "a": 15,
+      "b": 1,
+      "c": 3,
+      "d": 22,
+      "F_accuracy": 0.3902,
+      "D_accuracy": 0.439,
+      "tau_diff": -0.0488,
+      "se_tau": 0.0482,
+      "ci_95": [
+        -0.1432,
+        0.0457
+      ],
+      "mcnemar_exact_p": 0.625,
+      "odds_ratio": 0.3333,
+      "odds_ratio_95_ci": [
+        0.0063,
+        4.1514
+      ]
+    },
+    "Number Theory": {
+      "contrast": "F vs D",
+      "N": 28,
+      "a": 21,
+      "b": 0,
+      "c": 3,
+      "d": 4,
+      "F_accuracy": 0.75,
+      "D_accuracy": 0.8571,
+      "tau_diff": -0.1071,
+      "se_tau": 0.0585,
+      "ci_95": [
+        -0.2217,
+        0.0074
+      ],
+      "mcnemar_exact_p": 0.25,
+      "odds_ratio": 0.0,
+      "odds_ratio_95_ci": [
+        0.0,
+        2.42
+      ]
+    },
+    "Prealgebra": {
+      "contrast": "F vs D",
+      "N": 42,
+      "a": 34,
+      "b": 0,
+      "c": 2,
+      "d": 6,
+      "F_accuracy": 0.8095,
+      "D_accuracy": 0.8571,
+      "tau_diff": -0.0476,
+      "se_tau": 0.0329,
+      "ci_95": [
+        -0.112,
+        0.0168
+      ],
+      "mcnemar_exact_p": 0.5,
+      "odds_ratio": 0.0,
+      "odds_ratio_95_ci": [
+        0.0,
+        5.3246
+      ]
+    },
+    "Precalculus": {
+      "contrast": "F vs D",
+      "N": 24,
+      "a": 7,
+      "b": 3,
+      "c": 1,
+      "d": 13,
+      "F_accuracy": 0.4167,
+      "D_accuracy": 0.3333,
+      "tau_diff": 0.0833,
+      "se_tau": 0.0816,
+      "ci_95": [
+        -0.0766,
+        0.2432
+      ],
+      "mcnemar_exact_p": 0.625,
+      "odds_ratio": 3.0,
+      "odds_ratio_95_ci": [
+        0.2409,
+        157.4921
+      ]
+    }
+  }
+}

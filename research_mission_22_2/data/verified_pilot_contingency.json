@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "title": "StateShift Pilot 2x2 Contingency Reconciliation Ledger",
+    "total_problems": 100,
+    "raw_generations_file": "data/study2/stateshift_primary_400_generations.jsonl",
+    "discrepant_problems_count": 1,
+    "discrepant_problem_ids": [
+      "math500_007"
+    ]
+  },
+  "path_a_canonical_historical_baseline": {
+    "description": "Strict degree normalization matching data/study2/final_verified_outcomes.csv (Missions 17-21)",
+    "degree_policy": "strip_degree=False in baseline (90 != 90^\\circ)",
+    "results": {
+      "table": {
+        "a": 65,
+        "b": 8,
+        "c": 2,
+        "d": 25
+      },
+      "accuracy_D": 0.67,
+      "accuracy_F": 0.73,
+      "delta_F_minus_D": 0.06,
+      "discordant_n": 10,
+      "b": 8,
+      "c": 2,
+      "odds_ratio": 4.0,
+      "exact_mcnemar_p": 0.109375
+    }
+  },
+  "path_b_cleanroom_sensitivity": {
+    "description": "Unit-flexible degree normalization (Mission 18 cleanroom / Mission 22.1)",
+    "degree_policy": "strip_degree=True (90 == 90^\\circ)",
+    "results": {
+      "table": {
+        "a": 66,
+        "b": 8,
+        "c": 2,
+        "d": 24
+      },
+      "accuracy_D": 0.68,
+      "accuracy_F": 0.74,
+      "delta_F_minus_D": 0.06,
+      "discordant_n": 10,
+      "b": 8,
+      "c": 2,
+      "odds_ratio": 4.0,
+      "exact_mcnemar_p": 0.109375
+    }
+  },
+  "invariance_proof": {
+    "discordant_cell_b": 8,
+    "discordant_cell_c": 2,
+    "discordant_total_n_d": 10,
+    "effect_size_tau": 0.06,
+    "exact_mcnemar_p_value": 0.109375,
+    "invariant": true,
+    "formal_statement": "Because math500_007 is concordant under both evaluators (D=0,F=0 in Path A; D=1,F=1 in Path B), the discordant pair counts b=8 and c=2 are strictly invariant, guaranteeing that the estimated intervention effect tau=+6.00 pp and exact McNemar p-value p=0.109375 are mathematically identical across all published StateShift reports."
+  }
+}
